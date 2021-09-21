@@ -219,7 +219,7 @@ Weh.setCookies("xxxxxx=xxxxxxxxxx;xxxxxxx=xxxxxxxxxxxxxxx;xxxxxx=xxxxxxx")  # �
 
 #### 如何获取你账号的 Cookies
 
-1. 打开 https://exhentai.org/ 如果你没有登陆的话，那就先登录一下
+1. 打开 https://exhentai.org/ 如果你没有登录的话，那就先登录一下
 2. 右键 -> 检查 / 审查元素 -> 控制台 （或者 F12）
 3. 输入 `document.cookie` 并回车
 4. 复制返回内容，这就是你的 Cookies
