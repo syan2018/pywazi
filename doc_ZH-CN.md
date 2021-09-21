@@ -355,7 +355,7 @@ Weh.uploaderAllSearch(0, "如歌的行板")
 
 ```python
 Weh.advancedSearch({
-	"cats": ["Non-H"],  # 需要搜索的分类
+    "cats": ["Non-H"],  # 需要搜索的分类
     "search": "",  # 搜索内容
     "sgn": True,  # 是否搜索画廊名称
     "sgt": True,  # 是否搜索画廊标签
@@ -387,7 +387,7 @@ Weh.advancedSearch({
 
 ```python
 Weh.imageSearch({
-	"type": "sha1",
+    "type": "sha1",
     "sha1": "C75774D8D2F003C8337F1EA57BA3184A9A4FD515",
     "similar": True,  # 是否搜索相似的图片
     "cover": True,  # 是否搜索封面
@@ -399,7 +399,7 @@ Weh.imageSearch({
 
 ```python
 Weh.imageSearch({
-	"type": "file",
+    "type": "file",
     "path": "./11.jpg", # 绝对和相对均可
     "similar": True, # 是否搜索相似的图片
     "cover": True, # 是否搜索封面
