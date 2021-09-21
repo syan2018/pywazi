@@ -447,7 +447,7 @@ Weh.customSearch({
 		},
 		"options": {
 			"useSimilarityScan": True,  # 是否启用相似搜索
-			"onlySearchCovers": False,  # 是否指搜索封面
+			"onlySearchCovers": False,  # 是否只搜索封面
 			"showExpunged": False  # 查看被移除的画廊
 		}
 	}
