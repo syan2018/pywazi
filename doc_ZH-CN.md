@@ -173,8 +173,8 @@ Wjb.giveParams({
 })
 
 # 可选内容
-wjb.customUrl("https://www.javbus.icu/")  # 设置镜像站
-wjb.useDomainApi(True)  # 是否使用主站的 Api 部分镜像站需要设置为 True
+Wjb.customUrl("https://www.javbus.icu/")  # 设置镜像站
+Wjb.useDomainApi(True)  # 是否使用主站的 Api 部分镜像站需要设置为 True
 ```
 
 
