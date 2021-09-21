@@ -425,7 +425,7 @@ Weh.customSearch({
 			"torrentFilenames": False,  # 是否搜索种子名
 			"low-powerTags": False,  # 是否搜索低能标签
 			"downvotedTags": False,  # 是否搜索投票给差的标签
-			"expungedGalleries": False,  # 是否搜索被移除的标签
+			"expungedGalleries": False,  # 是否搜索被移除的画廊
 		},
 		"limit": {
 			"onlyShowGalleriesWithTorrents": False,  # 是否只搜索带种子的画廊
