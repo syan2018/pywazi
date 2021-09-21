@@ -46,3 +46,6 @@ This project can not be developed without the following open source projects:
 2. PicAcg ：[AnkiKong/picacomic: 哔咔漫画相关api (github.com)](https://github.com/AnkiKong/picacomic)；[tonquer/picacg-windows: 哔咔漫画，picacomic，bika，PC客户端。 (github.com)](https://github.com/tonquer/picacg-windows)；https://www.hiczp.com/wang-luo/mo-ni-bi-ka-android-ke-hu-duan.html（GitHub ：[czp3009/czp-blog (github.com)](https://github.com/czp3009/czp-blog)）。
 
 Thanks to [cloudwindy (github.com)](https://github.com/cloudwindy) for the ExHentai account, I was able to do the development testing.
+
+## Translate
+Use: https://www.deepl.com/zh/translator
