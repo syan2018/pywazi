@@ -1,8 +1,4 @@
 <p align="center">
-<a href="https://github.com/Yazawazi/pywazi"><img src="https://raw.githubusercontent.com/Yazawazi/pywazi/main/pywazi.png" alt="logo" title="很丑的logo" /></a>
-</p>
-
-<p align="center">
 PyWazi is a data acquisition, processing and manipulation module for ExHentai, JavBus, Danbooru and PicAcg, using Python 3. The current version is 1.1, if you have ideas or problems with it, please feel free to open an issue.
 </p>
 
