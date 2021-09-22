@@ -27,7 +27,7 @@ Sometimes my ideas are confusing, and I don't follow PEP 8, so some code may not
 If this does not solve the problem, please open an issue and provide information about the context, the possible code, the required module version, etc.
 
 ## Development Documentation
-It is not finished yet, because the latest version is still not tested.
+See `doc.md` for English version and `doc_ZH-CN.md` for Simplified Chinese version.
 
 ## What's the use
 You can use PyWazi alone to develop crawlers, or you can use the module to develop other open source projects.
