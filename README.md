@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/Yazawazi/pywazi"><img src="https://raw.githubusercontent.com/Yazawazi/pywazi/main/pywazi.png" alt="logo" title="很丑的logo" width="450" /></a>
+<a href="https://github.com/Yazawazi/pywazi"><img src="https://raw.githubusercontent.com/Yazawazi/pywazi/main/pywazi.png" alt="logo" title="很丑的logo" /></a>
 </p>
 
 <p align="center">
