@@ -1,8 +1,11 @@
 <p align="center">
 # PyWazi
 PyWazi 是一个针对 ExHentai, JavBus, Danbooru, PicAcg 的数据采集、处理和操作模块，使用 Python 语言。目前版本为 1.1，如果你有想法或在使用中出现问题了，欢迎提出 issue。
+</p>
 
-[![Python](https://shields.io/badge/Python-3-green?style=flat-square)](https://www.python.org/) [![Version](https://shields.io/badge/Version-1.1-yellow?style=flat-square)](https://github.com/Yazawazi/pywazi)
+<p align="center">
+<a href="https://www.python.org/"><img src="https://shields.io/badge/Python-3-green?style=flat-square" /></a>
+<a href="https://github.com/Yazawazi/pywazi"><img src="https://shields.io/badge/Version-1.1-yellow?style=flat-square" /></a>
 </p>
 
 ## 声明
