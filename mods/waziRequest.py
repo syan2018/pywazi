@@ -124,14 +124,14 @@ class waziRequest:
                 temp["proxyAddress"] = params["proxyAddress"]
             else:
                 if deProxies is None:
-                    temp["proxyAddress"] = "None"
+                    temp["proxyAddress"] = None
                 else:
                     temp["proxyAddress"] = deProxies["proxyAddress"]
             if "proxyPort" in params:
                 temp["proxyPort"] = params["proxyPort"]
             else:
                 if deProxies is None:
-                    temp["proxyPort"] = "None"
+                    temp["proxyPort"] = None
                 else:
                     temp["proxyPort"] = deProxies["proxyPort"]
 
