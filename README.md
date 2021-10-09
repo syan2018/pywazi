@@ -1,4 +1,8 @@
 <p align="center">
+<img src="https://i.loli.net/2021/10/09/vGaO5TtPFzkQRx2.jpg" width="80%"/>
+</p>
+
+<p align="center">
 PyWazi is a data acquisition, processing and manipulation module for ExHentai, JavBus, Danbooru and PicAcg, using Python 3. The current version is 1.1, if you have ideas or problems with it, please feel free to open an issue.
 </p>
 
@@ -30,6 +34,16 @@ Sometimes my ideas are confusing, and I don't follow PEP 8, so some code may not
 
 If this does not solve the problem, please open an issue and provide information about the context, the possible code, the required module version, etc.
 
+## Next Update
+
+1. support for external configuration reading;
+2. the possibility of setting global mode;
+3. making more interfaces to JavBus;
+4. re-testing the download function of PicAcg, as it sometimes has problems;
+5. optimize the code and add relevant comments;
+6. add the log output function;
+7. consider the implementation of the interface to other functions of ExHentai.
+
 ## Development Documentation
 See `doc.md` for English version and `doc_ZH-CN.md` for Simplified Chinese version.
 
@@ -49,7 +63,7 @@ This project can not be developed without the following open source projects:
 1. JavBus ：[WWILLV/iav: 可搜索javbus、btso的磁力链接和avgle的预览视频 (github.com)](https://github.com/WWILLV/iav)；
 2. PicAcg ：[AnkiKong/picacomic: 哔咔漫画相关api (github.com)](https://github.com/AnkiKong/picacomic)；[tonquer/picacg-windows: 哔咔漫画，picacomic，bika，PC客户端。 (github.com)](https://github.com/tonquer/picacg-windows)；https://www.hiczp.com/wang-luo/mo-ni-bi-ka-android-ke-hu-duan.html（GitHub ：[czp3009/czp-blog (github.com)](https://github.com/czp3009/czp-blog)）。
 
-Thanks to [cloudwindy (github.com)](https://github.com/cloudwindy) for the ExHentai account, I was able to do the development testing.
+Thanks to [cloudwindy (github.com)](https://github.com/cloudwindy) for the ExHentai account, I was able to do the development testing; Thanks to my friend **The Galaxy~ Of Dick** for the banner.
 
 ## Translate
 Use: https://www.deepl.com/zh/translator
