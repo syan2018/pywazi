@@ -3,7 +3,6 @@
 </p>
 
 <p align="center">
-# PyWazi
 PyWazi 是一个针对 ExHentai, JavBus, Danbooru, PicAcg 的数据采集、处理和操作模块，使用 Python 语言。目前版本为 1.1，如果你有想法或在使用中出现问题了，欢迎提出 issue。
 </p>
 
@@ -37,13 +36,13 @@ PyWazi 是一个针对 ExHentai, JavBus, Danbooru, PicAcg 的数据采集、处�
 
 ## 下次更新
 
-1. 支持外部配置读取；
-2. 可以设置全局模式；
-3. 对 JavBus 做更多的接口；
-4. 重新测试 PicAcg 的下载功能，因为有时会出现问题；
-5. 优化代码并增加相关注释；
-6. 增加日志输出功能；
-7. 考虑对 ExHentai 其他功能的接口实现。
+1. 支持外部配置读取（readConfig)；
+2. 可以设置全局模式（globalParams）；
+3. 对 JavBus 做更多的接口（分类与首页 出bug了倒是）；
+4. 重新测试 PicAcg 的下载功能，因为有时会出现问题（最近更新需要 分流 无效 api 确认）；
+5. 优化代码并增加相关注释（自定义证书检查）；
+6. 增加日志输出功能（这块做的累死我了）；
+7. 考虑对 ExHentai 其他功能的接口实现（跳过警告 强制解析模式 ?nw=session ?nw=always ?inline_set=dm_e vote？ 评论或许）。
 
 ## 开发文档
 英文版参见 `doc.md`，简体中文版参见 `doc_ZH-CN.md`。
