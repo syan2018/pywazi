@@ -36,7 +36,7 @@ PyWazi 是一个针对 ExHentai, JavBus, Danbooru, PicAcg 的数据采集、处�
 如果这些都解决不了问题，请发表 issue 并提供上下文，可能的代码，前置库版本等有关信息。
 
 ## 开发文档
-参见 `doc.md` 或访问 https://yazawazi.github.io/pywazi/。
+参见 `doc.md` 或访问 https://yazawazi.github.io/pywazi/
 
 ## 有什么用
 你可以单独使用 PyWazi 来进行开发爬虫，也可以使用该模块开发其他开源项目。
