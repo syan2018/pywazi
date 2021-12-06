@@ -36,6 +36,16 @@ def readConfig(filePath):
                 waziJavBus.giveParams(i["params"])
             if i["url"] is None:
                 pass
+            else:
+                waziJavBus.setApiUrl(i["url"])
+            if i["eaUrl"] is None:
+                pass
+            else:
+                waziJavBus.setEAApiUrl(i["eaUrl"])
+            if i["type"] is None:
+                pass
+            else:
+                waziJavBus.changeType(i["type"])
         elif i["name"] == "PicAcg":
             if i["params"] is None:
                 pass
@@ -45,6 +55,10 @@ def readConfig(filePath):
                 pass
             else:
                 waziPicAcg.login(i["login"]["username"], i["login"]["password"])
+            if i["image"] is None:
+                pass
+            else:
+                waziPicAcg.changeImageQuality(i["image"])
         elif i["name"] == "Danbooru":
             if i["params"] is None:
                 pass
@@ -67,6 +81,22 @@ def readConfig(filePath):
                 pass
             else:
                 waziExHentai.setParse(i["parse"])
+            if i["fullComment"] is None:
+                pass
+            else:
+                waziExHentai.needFullComments(i["fullComment"])
+            if i["thumbType"] is None:
+                pass
+            else:
+                waziExHentai.changeThumbnailMode(i["thumbType"])
+            if i["method"] is None:
+                pass
+            else:
+                waziExHentai.changeMethod(i["method"])
+            if i["jump"] is None:
+                pass
+            else:
+                waziExHentai.setJump(i["jump"])
         elif i["name"] == "Config":
             if i["save"] is None:
                 pass
