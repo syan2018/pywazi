@@ -6,6 +6,8 @@ See Readme.md & doc.md for more details.
 详情请看 Readme.md & doc.md。
 """
 
+from ins.waziInsLog import waziLog
+from ins.waziInsConfig import waziConfig
 from sites.waziJavBus import waziJavBus as Wjb
 from sites.waziPicAcg import waziPicAcg as Wpa
 from sites.waziDanbooru import waziDanbooru as Wdb
@@ -15,6 +17,74 @@ waziJavBus = Wjb()
 waziPicAcg = Wpa()
 waziDanbooru = Wdb()
 waziExHentai = Weh()
+
+def globalParams(filePath):
+    jsonData = waziConfig.readConfig(filePath)
+    waziJavBus.giveParams(jsonData)
+    waziPicAcg.giveParams(jsonData)
+    waziDanbooru.giveParams(jsonData)
+    waziExHentai.giveParams(jsonData)
+    return jsonData
+
+def readConfig(filePath):
+    jsonData = waziConfig.readConfig(filePath)
+    for i in jsonData:
+        if i["name"] == "JavBus":
+            if i["params"] is None:
+                pass
+            else:
+                waziJavBus.giveParams(i["params"])
+            if i["url"] is None:
+                pass
+        elif i["name"] == "PicAcg":
+            if i["params"] is None:
+                pass
+            else:
+                waziPicAcg.giveParams(i["params"])
+            if i["login"] is None:
+                pass
+            else:
+                waziPicAcg.login(i["login"]["username"], i["login"]["password"])
+        elif i["name"] == "Danbooru":
+            if i["params"] is None:
+                pass
+            else:
+                waziDanbooru.giveParams(i["params"])
+            if i["url"] is None:
+                pass
+            else:
+                waziDanbooru.setApi(i["url"])
+        elif i["name"] == "ExHentai":
+            if i["params"] is None:
+                pass
+            else:
+                waziExHentai.giveParams(i["params"])
+            if i["cookies"] is None:
+                pass
+            else:
+                waziExHentai.setCookies(i["cookies"])
+            if i["parse"] is None:
+                pass
+            else:
+                waziExHentai.setParse(i["parse"])
+        elif i["name"] == "Config":
+            if i["save"] is None:
+                pass
+            else:
+                waziLog.needSave(i["save"])
+            if i["level"] is None:
+                pass
+            else:
+                waziLog.setMinDisplayLevel(i["level"])
+        else:
+            pass
+    return True
+
+
+try:
+    returnInfo = readConfig("config.json")
+except:
+    pass
 
 # [1]: 代码使用： https://github.com/WWILLV/iav （未注明详细的版权协议）
 # [2]: Api 参考： https://github.com/AnkiKong/picacomic （MIT 版权）
