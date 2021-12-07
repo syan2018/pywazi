@@ -30,81 +30,45 @@ def defConfig(filePath):
     jsonData = waziConfig.readConfig(filePath)
     for i in jsonData:
         if i["name"] == "JavBus":
-            if i["params"] is None:
-                pass
-            else:
+            if "params" in i:
                 waziJavBus.giveParams(i["params"])
-            if i["url"] is None:
-                pass
-            else:
+            if "url" in i:
                 waziJavBus.setApiUrl(i["url"])
-            if i["eaUrl"] is None:
-                pass
-            else:
+            if "eaUrl" in i:
                 waziJavBus.setEAApiUrl(i["eaUrl"])
-            if i["type"] is None:
-                pass
-            else:
+            if "type" in i:
                 waziJavBus.changeType(i["type"])
         elif i["name"] == "PicAcg":
-            if i["params"] is None:
-                pass
-            else:
+            if "params" in i:
                 waziPicAcg.giveParams(i["params"])
-            if i["login"] is None:
-                pass
-            else:
+            if "login" in i:
                 waziPicAcg.login(i["login"]["username"], i["login"]["password"])
-            if i["image"] is None:
-                pass
-            else:
+            if "image" in i:
                 waziPicAcg.changeImageQuality(i["image"])
         elif i["name"] == "Danbooru":
-            if i["params"] is None:
-                pass
-            else:
+            if "params" in i:
                 waziDanbooru.giveParams(i["params"])
-            if i["url"] is None:
-                pass
-            else:
+            if "url" in i:
                 waziDanbooru.setApi(i["url"])
         elif i["name"] == "ExHentai":
-            if i["params"] is None:
-                pass
-            else:
+            if "params" in i:
                 waziExHentai.giveParams(i["params"])
-            if i["cookies"] is None:
-                pass
-            else:
+            if "cookies" in i:
                 waziExHentai.setCookies(i["cookies"])
-            if i["parse"] is None:
-                pass
-            else:
+            if "parse" in i:
                 waziExHentai.setParse(i["parse"])
-            if i["fullComment"] is None:
-                pass
-            else:
+            if "fullComment" in i:
                 waziExHentai.needFullComments(i["fullComment"])
-            if i["thumbType"] is None:
-                pass
-            else:
+            if "thumbType" in i:
                 waziExHentai.changeThumbnailMode(i["thumbType"])
-            if i["method"] is None:
-                pass
-            else:
+            if "method" in i:
                 waziExHentai.changeMethod(i["method"])
-            if i["jump"] is None:
-                pass
-            else:
+            if "jump" in i:
                 waziExHentai.setJump(i["jump"])
         elif i["name"] == "Config":
-            if i["save"] is None:
-                pass
-            else:
+            if "save" in i:
                 waziLog.needSave(i["save"])
-            if i["level"] is None:
-                pass
-            else:
+            if "level" in i:
                 waziLog.setMinDisplayLevel(i["level"])
         else:
             pass
