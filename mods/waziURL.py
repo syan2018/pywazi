@@ -1,5 +1,4 @@
 from mods import waziFun
-from urllib import parse
 from ins.waziInsLog import waziLog
 
 class waziURL:
@@ -16,10 +15,10 @@ class waziURL:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在检查末尾字符串。")
         if url.endswith("?"):
             waziLog.log("debug", f"({self.name}.{fuName}) 末尾字符串为 ?，无需手动添加。")
-            newURL = url + parse.urlencode(params)
+            newURL = url + params
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 末尾字符串没有 ?，正在手动添加。")
-            newURL = url + "?" + parse.urlencode(params)
+            newURL = url + "?" + params
         waziLog.log("info", f"({self.name}.{fuName}) URL 合成成功： {newURL}")
         return newURL
 
