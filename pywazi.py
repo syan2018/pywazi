@@ -26,7 +26,7 @@ def globalParams(filePath):
     waziExHentai.giveParams(jsonData)
     return jsonData
 
-def readConfig(filePath):
+def defConfig(filePath):
     jsonData = waziConfig.readConfig(filePath)
     for i in jsonData:
         if i["name"] == "JavBus":
@@ -112,7 +112,7 @@ def readConfig(filePath):
 
 
 try:
-    returnInfo = readConfig("config.json")
+    returnInfo = defConfig("./config.json")
 except:
     pass
 
