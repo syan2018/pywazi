@@ -77,7 +77,7 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建 GET 请求参数。")
         params = {
             "page": str(page),
-            "tags": urllib.parse.quote(tags),
+            "tags": tags,
             "limit": str(limit)
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")

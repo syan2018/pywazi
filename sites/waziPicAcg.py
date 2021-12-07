@@ -2,8 +2,6 @@ import os
 import json
 import uuid
 import base64
-import urllib.parse
-import urllib.request
 from mods import waziFun
 from ins.waziInsLog import waziLog
 from mods.waziCheck import waziCheck
@@ -221,8 +219,8 @@ class waziPicAcg:
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码、分区、标签和排序，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 分区： {c}， 标签： {t}， 排序： {s}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建 URL。")
-        newUrl = self.urls["comics"] + "?page=" + str(page) + "&c=" + urllib.parse.quote(c)
-        newUrl += "&t=" + urllib.parse.quote(t) + "&s=" + s
+        newUrl = self.urls["comics"] + "?page=" + str(page) + "&c=" + c
+        newUrl += "&t=" + t + "&s=" + s
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {newUrl}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
@@ -232,7 +230,7 @@ class waziPicAcg:
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和关键词，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 关键词： {keyword}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建 URL。")
-        newUrl = self.urls["search"] + "?page=" + str(page) + "&q=" + urllib.parse.quote(keyword)
+        newUrl = self.urls["search"] + "?page=" + str(page) + "&q=" + keyword
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {newUrl}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)

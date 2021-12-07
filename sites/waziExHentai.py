@@ -547,7 +547,7 @@ class waziExHentai:
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 搜索内容： {text}")
         params = {
             "page": str(page),
-            "f_search": urllib.parse.quote(text)
+            "f_search": text
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 参数合成完毕，正在提交给 getFullURL 合成完整 URL。")
         url = self.URL.getFullURL(self.urls["main"], params)
@@ -560,7 +560,7 @@ class waziExHentai:
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 搜索内容： {text}")
         params = {
             "page": str(page),
-            "f_search": urllib.parse.quote(text)
+            "f_search": text
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 参数合成完毕，正在提交给 getExHentaiAllURL 合成完整 URL。")
         url = self.URL.getExHentaiAllURL(self.urls["main"], params)
@@ -571,7 +571,7 @@ class waziExHentai:
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和标签参数，正在合成 URL。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {tag}")
-        url = self.urls["main"] + "tag/" + urllib.parse.quote(tag) + "/" + str(page) + "?empty=0"
+        url = self.urls["main"] + "tag/" + tag + "/" + str(page) + "?empty=0"
         waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕，递交给 getBooks： {url}")
         return waziExHentai.getBooks(self, url)
 
@@ -579,7 +579,7 @@ class waziExHentai:
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和上传者参数，正在合成 URL。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {uploader}")
-        url = self.urls["main"] + "uploader/" + urllib.parse.quote(uploader) + "/" + str(page) + "?empty=0"
+        url = self.urls["main"] + "uploader/" + uploader + "/" + str(page) + "?empty=0"
         waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕，递交给 getBooks： {url}")
         return waziExHentai.getBooks(self, url)
 
@@ -589,7 +589,7 @@ class waziExHentai:
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {uploader}")
         params = {
             "page": str(page),
-            "f_search": "uploader%3A" + urllib.parse.quote(uploader),
+            "f_search": "uploader%3A" + uploader,
             "f_spf": "",
             "f_spt": ""
         }
@@ -608,7 +608,7 @@ class waziExHentai:
         waziLog.log("debug", f"({self.name}.{fuName}) f_cats 数值写入完毕，数据为： {queryParams['f_cats']}")
         if str(params["search"]):
             waziLog.log("debug", f"({self.name}.{fuName}) 参数中存在搜索内容，准备写入。")
-            queryParams["f_search"] = urllib.parse.quote(str(params["search"]))
+            queryParams["f_search"] = str(params["search"])
             waziLog.log("debug", f"({self.name}.{fuName}) 已写入搜索内容，数据为： {queryParams['f_search']}")
         queryParams["advsearch"] = "1"
         waziLog.log("debug", f"({self.name}.{fuName}) 已打开高级搜索，正在解析剩余参数。")
@@ -712,7 +712,7 @@ class waziExHentai:
             waziLog.log("debug", f"({self.name}.{fuName}) 存在上传者信息，准备遍历。")
             for i in params["uploaders"]:
                 waziLog.log("debug", f"({self.name}.{fuName}) 上传者： {i}")
-                queryParams["f_search"] += "uploader:" + urllib.parse.quote(i) + "+"
+                queryParams["f_search"] += "uploader:" + i + "+"
             queryParams["f_search"] = queryParams["f_search"][:-1]
             waziLog.log("debug", f"({self.name}.{fuName}) 上传者数据写入完成，目前搜索内容：{queryParams['f_search']}")
         if "tags" in params:
@@ -722,7 +722,7 @@ class waziExHentai:
                 queryParams["f_search"] += "+"
             for i in params["tags"]:
                 waziLog.log("debug", f"({self.name}.{fuName}) 标签： {i}")
-                queryParams["f_search"] += urllib.parse.quote(i) + "+"
+                queryParams["f_search"] += i + "+"
             queryParams["f_search"] = queryParams["f_search"][:-1]
             waziLog.log("debug", f"({self.name}.{fuName}) 标签数据写入完成，目前搜索内容：{queryParams['f_search']}")
         if "text" in params:
@@ -731,7 +731,7 @@ class waziExHentai:
                 waziLog.log("debug", f"({self.name}.{fuName}) 检查到搜索内容非空，自动添加“+”。")
                 queryParams["f_search"] += "+"
             waziLog.log("debug", f"({self.name}.{fuName}) 搜索内容： {params['text']}")
-            queryParams["f_search"] += urllib.parse.quote(params["text"])
+            queryParams["f_search"] += params["text"]
             waziLog.log("debug", f"({self.name}.{fuName}) 自定义搜索内容写入完成，目前搜索内容：{queryParams['f_search']}")
         if "advanced" in params:
             waziLog.log("debug", f"({self.name}.{fuName}) 存在高级搜索内容，准备检索并写入数据。")
