@@ -520,9 +520,13 @@ class waziJavBus:
             waziLog.log("debug", f"({self.name}.{fuName}) 准备进入遍历。")
             for i in samples.find_all("img"):
                 waziLog.log("debug", f"({self.name}.{fuName}) 正在获取单个图集。")
+                if ea:
+                    sampleURL = i.attrs["src"]
+                else:
+                    sampleURL = self.apiUrl + i.attrs["src"]
                 sampleDict = {
                     "title": i.attrs["title"],
-                    "url": self.apiUrl + i.attrs["src"]
+                    "url": sampleURL
                 }
                 waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {sampleDict}")
                 samplesList.append(sampleDict)
