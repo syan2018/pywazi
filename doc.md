@@ -11,9 +11,9 @@ PyWazi 的设计哲学为以下几点：
 
 ## 关于与声明
 
-<a href="https://www.python.org/"><img src="https://shields.io/badge/Python-3-green?style=flat-square" /></a> <a href="https://github.com/Yazawazi/pywazi/tree/1.1.9-dev"><img src="https://shields.io/badge/Version-1.2_Dev-yellow?style=flat-square" /></a>
+<a href="https://www.python.org/"><img src="https://shields.io/badge/Python-3-green?style=flat-square" /></a> <a href="https://github.com/Yazawazi/pywazi/tree/1.1.9-dev"><img src="https://shields.io/badge/Version-1.2-green?style=flat-square" /></a>
 
-PyWazi 是一个针对 ExHentai, JavBus, Danbooru, PicAcg 的数据采集、处理和操作模块，使用 Python 语言。目前版本为 1.2 Dev，如果你有想法或在使用中出现问题了，欢迎提出 issue。
+PyWazi 是一个针对 ExHentai, JavBus, Danbooru, PicAcg 的数据采集、处理和操作模块，使用 Python 语言。目前版本为 1.2，如果你有想法或在使用中出现问题了，欢迎提出 issue。
 
 本模块完全开放源代码，仅供大家学习参考使用，不鼓励一切在中国大陆境内的使用该模块的商业行为。
 
