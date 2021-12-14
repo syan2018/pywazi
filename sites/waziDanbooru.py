@@ -110,6 +110,7 @@ class waziDanbooru:
             else:
                 waziLog.log("debug", f"({self.name}.{fuName}) 成功创建，继续执行。")
         downloadFiles = []
+        cantDownload = []
         waziLog.log("debug", f"({self.name}.{fuName}) 开始遍历 API 信息列表。")
         for i in lists:
             waziLog.log("debug", f"({self.name}.{fuName}) 目前正在处理的信息： {i}")
@@ -124,14 +125,15 @@ class waziDanbooru:
                     temp = self.request.do(requestParams)
                 except:
                     waziLog.log("warn", f"({self.name}.{fuName}) 图像： {i['file_url']} 无法下载， ID 为： {i['id']}")
+                    cantDownload.append({"fileURL": i["file_url"], "id": i["id"]})
                 else:
                     waziLog.log("debug", f"({self.name}.{fuName}) 正在将数据写入。")
                     f.write(temp.data)
                     waziLog.log("debug", f"({self.name}.{fuName}) 数据写入完成。")
             waziLog.log("debug", f"({self.name}.{fuName}) 文件： {fileName}， 完成。")
             downloadFiles.append(fileName)
-        waziLog.log("info", f"({self.name}.{fuName}) 完成下载，返回列表为： {downloadFiles}")
-        return downloadFiles
+        waziLog.log("info", f"({self.name}.{fuName}) 完成下载，返回元组为： {(downloadFiles, cantDownload)}")
+        return downloadFiles, cantDownload
 
     # 尺寸限制
     def getSizeLimit(self, size):
