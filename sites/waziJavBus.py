@@ -937,7 +937,7 @@ class waziJavBus:
     def withEASeriesBrowse(self, page, seriesId):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和系列 ID，正在获取。")
-        waziLog.log("error", f"({self.name}.{fuName}) 页码： {page}， 系列 ID： {seriesId}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 系列 ID： {seriesId}")
         if seriesId == "":
             waziLog.log("error", f"({self.name}.{fuName}) 无法合成 URL，因为系列 ID 不存在。")
             return "Error. / 错误。"
