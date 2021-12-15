@@ -145,7 +145,7 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 创建完成，正在分析。")
         if "limit" in size:
             waziLog.log("debug", f"({self.name}.{fuName}) 创建完成，正在分析。")
-            if size["limit"].lower == "b":
+            if size["limit"] == "b":
                 waziLog.log("debug", f"({self.name}.{fuName}) 大于尺寸，正在分析。")
                 if "width" in size:
                     waziLog.log("debug", f"({self.name}.{fuName}) 存在 width，正在写入。")
@@ -156,7 +156,7 @@ class waziDanbooru:
                     text += "height:" + str(size["height"]) + ".. "
                     waziLog.log("debug", f"({self.name}.{fuName}) 写入完成。")
                 waziLog.log("info", f"({self.name}.{fuName}) 全部写入成功，返回： {text}")
-            elif size["limit"].lower == "e":
+            elif size["limit"] == "e":
                 waziLog.log("debug", f"({self.name}.{fuName}) 匹配尺寸，正在分析。")
                 if "width" in size:
                     waziLog.log("debug", f"({self.name}.{fuName}) 存在 width，正在写入。")
@@ -167,7 +167,7 @@ class waziDanbooru:
                     text += "height:" + str(size["height"]) + " "
                     waziLog.log("debug", f"({self.name}.{fuName}) 写入完成。")
                 waziLog.log("info", f"({self.name}.{fuName}) 全部写入成功，返回： {text}")
-            elif size["limit"].lower == "s":
+            elif size["limit"] == "s":
                 if "width" in size:
                     waziLog.log("debug", f"({self.name}.{fuName}) 存在 width，正在写入。")
                     text += "width:.." + str(size["width"]) + " "
