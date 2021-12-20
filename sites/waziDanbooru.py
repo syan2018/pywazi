@@ -56,16 +56,16 @@ class waziDanbooru:
         try:
             temp = self.request.do(tempParams)
         except:
-            waziLog.log("error", f"({self.name}.{fuName}) 无法获取 API 信息，返回空列表。")
-            return []
+            waziLog.log("error", f"({self.name}.{fuName}) 无法获取 API 信息，返回空字典。")
+            return {}
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 成功请求，正在转换为字典格式返回。")
             try:
                 jsons = json.loads(temp.data.decode("utf-8"))
             except:
-                waziLog.log("error", f"({self.name}.{fuName}) 无法转换，疑似返回错误内容，程序返回空列表： "
+                waziLog.log("error", f"({self.name}.{fuName}) 无法转换，疑似返回错误内容，程序返回空字典： "
                                      f"{temp.data.decode('utf-8')}")
-                return []
+                return {}
             else:
                 waziLog.log("info", f"({self.name}.{fuName}) 转换完成，API 信息为： {jsons}")
                 return jsons
@@ -84,17 +84,14 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
         return waziDanbooru.toAPIJson(self, "/post.json", params)
 
-    def downloadPosts(self, page, tags, limit, path):
+    def download(self, posts, path):
         fuName = waziFun.getFuncName()
-        waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，标签，每页限制量信息，路径信息，正在准备下载。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {tags}， 每页限制量： {limit}， "
-                             f"下载路径： {path}")
-        waziLog.log("debug", f"({self.name}.{fuName}) 准备递交 getPosts 获取 API 信息列表。")
-        lists = waziDanbooru.getPosts(self, page, tags, limit)
-        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在检查列表是否为空。")
-        if not lists:
-            waziLog.log("error", f"({self.name}.{fuName}) 列表为空，无法获取，返回空列表。")
-            return []
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 Posts 和路径信息，正在准备下载。")
+        waziLog.log("debug", f"({self.name}.{fuName}) Posts 信息： {posts}， 路径信息： {path}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在检查 Posts 是否为空。")
+        if not posts:
+            waziLog.log("error", f"({self.name}.{fuName}) 列表为空，返回空元组。")
+            return [], []
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 列表不为空，继续执行。")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取路径是否存在。")
@@ -105,14 +102,14 @@ class waziDanbooru:
             try:
                 os.makedirs(path)
             except:
-                waziLog.log("error", f"({self.name}.{fuName}) 创建失败，返回空列表结束任务。")
-                return []
+                waziLog.log("error", f"({self.name}.{fuName}) 创建失败，返回空元组结束任务。")
+                return [], []
             else:
                 waziLog.log("debug", f"({self.name}.{fuName}) 成功创建，继续执行。")
         downloadFiles = []
         cantDownload = []
         waziLog.log("debug", f"({self.name}.{fuName}) 开始遍历 API 信息列表。")
-        for i in lists:
+        for i in posts:
             waziLog.log("debug", f"({self.name}.{fuName}) 目前正在处理的信息： {i}")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziRequest 请求： {i['file_url']}")
             requestParams = self.request.handleParams(self.params, "get", i["file_url"], self.headers, self.proxies)
@@ -134,6 +131,16 @@ class waziDanbooru:
             downloadFiles.append(fileName)
         waziLog.log("info", f"({self.name}.{fuName}) 完成下载，返回元组为： {(downloadFiles, cantDownload)}")
         return downloadFiles, cantDownload
+
+    def downloadPosts(self, page, tags, limit, path):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，标签，每页限制量信息，路径信息，正在准备下载。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {tags}， 每页限制量： {limit}， "
+                             f"下载路径： {path}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 准备递交 getPosts 获取 API 信息列表。")
+        lists = waziDanbooru.getPosts(self, page, tags, limit)
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
+        return waziDanbooru.download(self, lists, path)
 
     # 尺寸限制
     def getSizeLimit(self, size):
@@ -326,6 +333,30 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
         return waziDanbooru.toAPIJson(self, "/pool/show.json", params)
+
+    def downloadPools(self, poolId, page, path):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到图集 ID、页码和路径信息，正在合成 URL。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 图集 ID： {poolId}， 页码： {page}， 路径： {path}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在创建 GET 请求参数。")
+        params = {
+            "id": str(poolId),
+            "page": str(page)
+        }
+        waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
+        lists = waziDanbooru.toAPIJson(self, "/pool/show.json", params)
+        if not lists:
+            waziLog.log("error", f"({self.name}.{fuName}) 无法获取该页内容，返回空元组。")
+            return [], []
+        else:
+            try:
+                lists = lists["posts"]
+            except:
+                waziLog.log("error", f"({self.name}.{fuName}) 无法获取该页详细信息，返回空元组。")
+                return [], []
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
+        return waziDanbooru.download(self, lists, path)
 
     def customApi(self, port, params):
         fuName = waziFun.getFuncName()
