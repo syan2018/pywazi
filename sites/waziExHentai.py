@@ -689,6 +689,9 @@ class waziExHentai:
         if params["exp"]:
             waziLog.log("debug", f"({self.name}.{fuName}) 需要搜索被移除画廊，写入 fs_exp = 1")
             queryParams["fs_exp"] = "1"
+        if params["page"]:
+            waziLog.log("debug", f"({self.name}.{fuName}) 需要限定页码，写入 page = {params['page']}")
+            queryParams["page"] = str(params["page"])
         waziLog.log("debug", f"({self.name}.{fuName}) 参数合成完毕，正在提交给 getFullURL 合成完整 URL。")
         url = self.URL.getFullURL(self.urls["main"], queryParams)
         waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕，递交给 getBooks： {url}")
@@ -699,6 +702,10 @@ class waziExHentai:
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在合成请求参数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 参数： {params}")
         queryParams = {}
+        if "page" in params:
+            waziLog.log("debug", f"({self.name}.{fuName}) 存在 page 参数，正在写入。")
+            queryParams["page"] = params["page"]
+            waziLog.log("debug", f"({self.name}.{fuName}) 写入完成，page 为： {queryParams['page']}")
         if "cats" in params:
             waziLog.log("debug", f"({self.name}.{fuName}) 存在 cats 参数，正在计算 f_cats 并写入。")
             queryParams["f_cats"] = str(self.check.getSources(params))
