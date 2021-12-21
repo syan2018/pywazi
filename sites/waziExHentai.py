@@ -1285,11 +1285,19 @@ class waziExHentai:
         waziLog.log("info", f"({self.name}.{fuName}) 数据： {mpvLists}，结果返回。")
         return mpvLists
 
+    # Just for discord
+    def fromURLDownloadExHentaiTorrentFileForDiscordBotUpload(self, url):
+        tempParams = self.params
+        tempParams["useHeaders"] = True
+        requestParams = self.request.handleParams(tempParams, "get", url, self.headers, self.proxies)
+        fileData = self.request.do(requestParams).data
+        with open("./" + url.split("/")[-1], "wb") as f:
+            f.write(fileData)
+
     def getImages(self, soup, method, title, params):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup， 方式和参数，标题，正在获取图像列表。")
         waziLog.log("debug", f"({self.name}.{fuName}) 方式： {method}， 参数： {params}，标题： {title}")
-        waziTick = 0
         images = []
         waziLog.log("debug", f"({self.name}.{fuName}) 正在修改请求 Header。")
         tempParams = self.params
@@ -1298,13 +1306,12 @@ class waziExHentai:
         pics = soup.find_all(id = "gdt")[0].find_all("a")
         waziLog.log("debug", f"({self.name}.{fuName}) 已获取，准备进入循环遍历。")
         for pic in pics:
-            waziTick += 1
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取详细地址。")
             href = pic["href"]
             waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {href}，准备通过 returnSoup 获取 Soup。")
-            soup = waziExHentai.returnSoup(self, href)
+            soups = waziExHentai.returnSoup(self, href)
             waziLog.log("debug", f"({self.name}.{fuName}) 已获取，正在获取图像地址。")
-            src = soup.find_all(id = "img")[0].attrs["src"]
+            src = soups.find_all(id = "img")[0].attrs["src"]
             waziLog.log("debug", f"({self.name}.{fuName}) 图像地址： {src}")
             if method == "get":
                 waziLog.log("debug", f"({self.name}.{fuName}) 检测到获取模式，追加数据。")
