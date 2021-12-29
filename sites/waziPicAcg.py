@@ -58,7 +58,7 @@ class waziPicAcg:
             "comicRecommend": "https://picaapi.picacomic.com/comics/{comicId}/recommendation",
             "keywords": "https://picaapi.picacomic.com/keywords",
             "myComments": "https://picaapi.picacomic.com/users/my-comments",
-            "myFavourites": "https://picaapi.picacomic.com/users/favourite?s=dd",
+            "myFavourites": "https://picaapi.picacomic.com/users/favourite",
             "profile": "https://picaapi.picacomic.com/users/profile",
             "games": "https://picaapi.picacomic.com/games",
             "comicFavourite": "https://picaapi.picacomic.com/comics/{comicId}/favourite",
