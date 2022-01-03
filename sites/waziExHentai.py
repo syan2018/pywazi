@@ -1285,15 +1285,6 @@ class waziExHentai:
         waziLog.log("info", f"({self.name}.{fuName}) 数据： {mpvLists}，结果返回。")
         return mpvLists
 
-    # Just for discord
-    def fromURLDownloadExHentaiTorrentFileForDiscordBotUpload(self, url):
-        tempParams = self.params
-        tempParams["useHeaders"] = True
-        requestParams = self.request.handleParams(tempParams, "get", url, self.headers, self.proxies)
-        fileData = self.request.do(requestParams).data
-        with open("./" + url.split("/")[-1], "wb") as f:
-            f.write(fileData)
-
     def getImages(self, soup, method, title, params):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup， 方式和参数，标题，正在获取图像列表。")
@@ -1609,3 +1600,42 @@ class waziExHentai:
                     waziLog.log("debug", f"({self.name}.{fuName}) 写入完成。")
         waziLog.log("info", f"({self.name}.{fuName}) 下载文件路径： {files}")
         return files
+
+    def downloadFile(self, url, orgName, path):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，文件名和路径，正在准备下载。")
+        waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 文件名： {orgName}， 路径： {path}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取路径是否存在。")
+        isExists = os.path.exists(path)
+        waziLog.log("debug", f"({self.name}.{fuName}) 路径是否存在： {isExists}")
+        if not isExists:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到路径不存在，准备创建。")
+            try:
+                os.makedirs(path)
+            except:
+                waziLog.log("error", f"({self.name}.{fuName}) 创建失败。")
+                return False
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 成功创建，继续执行。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在合成请求参数。")
+        tempParams = self.params
+        tempParams["useHeaders"] = True
+        waziLog.log("debug", f"({self.name}.{fuName}) 合成完毕： {tempParams}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在处理请求参数。")
+        requestParams = self.request.handleParams(tempParams, "get", url, self.headers, self.proxies)
+        waziLog.log("debug", f"({self.name}.{fuName}) 处理完毕，正在修正文件名。")
+        fileName = os.path.join(path, self.fileName.toRight(orgName))
+        waziLog.log("debug", f"({self.name}.{fuName}) 文件名修正完成： {fileName}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在请求： {url}")
+        with open(fileName, "wb") as f:
+            try:
+                temp = self.request.do(requestParams)
+            except:
+                waziLog.log("error", f"({self.name}.{fuName}) 该文件无法下载！")
+                return False
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在将数据写入。")
+                f.write(temp.data)
+                waziLog.log("debug", f"({self.name}.{fuName}) 数据写入完成。")
+        waziLog.log("info", f"({self.name}.{fuName}) 文件： {fileName}， 完成。")
+        return True
