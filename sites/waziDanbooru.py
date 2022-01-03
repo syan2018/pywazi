@@ -84,6 +84,41 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
         return waziDanbooru.toAPIJson(self, "/post.json", params)
 
+    def downloadFile(self, url, orgName, path):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，文件名和路径，正在准备下载。")
+        waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 文件名： {orgName}， 路径： {path}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取路径是否存在。")
+        isExists = os.path.exists(path)
+        waziLog.log("debug", f"({self.name}.{fuName}) 路径是否存在： {isExists}")
+        if not isExists:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到路径不存在，准备创建。")
+            try:
+                os.makedirs(path)
+            except:
+                waziLog.log("error", f"({self.name}.{fuName}) 创建失败。")
+                return False
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 成功创建，继续执行。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在处理请求参数。")
+        requestParams = self.request.handleParams(self.params, "get", url, self.headers, self.proxies)
+        waziLog.log("debug", f"({self.name}.{fuName}) 处理完毕，正在修正文件名。")
+        fileName = os.path.join(path, self.fileName.toRight(orgName))
+        waziLog.log("debug", f"({self.name}.{fuName}) 文件名修正完成： {fileName}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在请求： {url}")
+        with open(fileName, "wb") as f:
+            try:
+                temp = self.request.do(requestParams)
+            except:
+                waziLog.log("error", f"({self.name}.{fuName}) 该文件无法下载！")
+                return False
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在将数据写入。")
+                f.write(temp.data)
+                waziLog.log("debug", f"({self.name}.{fuName}) 数据写入完成。")
+        waziLog.log("info", f"({self.name}.{fuName}) 文件： {fileName}， 完成。")
+        return True
+
     def download(self, posts, path):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Posts 和路径信息，正在准备下载。")
@@ -141,6 +176,9 @@ class waziDanbooru:
         lists = waziDanbooru.getPosts(self, page, tags, limit)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
         return waziDanbooru.download(self, lists, path)
+
+    # 我将不再 Code 任何对于搜索时特殊标签的合成函数
+    # 我觉得这个是用户的事情 请前往： https://yande.re/help/cheatsheet 获取更多介绍和帮助
 
     # 尺寸限制
     def getSizeLimit(self, size):
@@ -357,6 +395,21 @@ class waziDanbooru:
                 return [], []
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
         return waziDanbooru.download(self, lists, path)
+
+    def downloadPoolsWithZip(self, poolId, needJPG, path):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到图集 ID、是否需要 JPG 格式信息和路径，正在合成 URL。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 图集 ID： {poolId}， 是否需要 JPG 格式： {needJPG}， 路径： {path}")
+        if needJPG:
+            url = urllib.parse.urljoin(self.api, f"/pool/zip/{poolId}?jpeg=1")
+        else:
+            url = urllib.parse.urljoin(self.api, f"/pool/zip/{poolId}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 合成完成： {url}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 downloadFile 下载。")
+        if waziDanbooru.downloadFile(self, url, f"{poolId}.zip", path):
+            waziLog.log("info", f"({self.name}.{fuName}) 下载成功！")
+        else:
+            waziLog.log("error", f"({self.name}.{fuName}) 无法下载，请检查该站点是否允许图集直接使用 ZIP 下载。")
 
     def customApi(self, port, params):
         fuName = waziFun.getFuncName()
