@@ -1,5 +1,6 @@
-import random
+import os
 import re
+import random
 import urllib.parse
 import urllib.request
 from mods import waziFun
@@ -7,6 +8,7 @@ from bs4 import BeautifulSoup
 from mods.waziURL import waziURL
 from ins.waziInsLog import waziLog
 from mods.waziRequest import waziRequest
+from mods.waziFileName import waziFileName
 
 # 第一个非常棘手的事情 那就是这个网站有个 cf 的反 bot 机制
 # 绕过 cf 反 bot 机制可以使用 urllib
@@ -39,6 +41,7 @@ class waziJavBus:
         self.eaApiUrl = "https://www.javbus.red"
         self.URL = waziURL()
         self.request = waziRequest()
+        self.fileName = waziFileName()
         self.params = {}
         self.name = self.__class__.__name__
 
@@ -88,7 +91,7 @@ class waziJavBus:
     # But hey, look at this:
     # https://stackoverflow.com/questions/62684468/pythons-requests-triggers-cloudflares-security-while-urllib-does-not
     # I do not want to modify my request model, so just urllib!
-    def getPage(self, url, headers):
+    def getPage(self, url, headers, needOrg):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和请求头部，正在通过 urllib.request 获取。")
         newRequest = urllib.request
@@ -119,7 +122,10 @@ class waziJavBus:
             return "Error. / 错误。"
         else:
             waziLog.log("info", f"({self.name}.{fuName}) 数据已获取，返回。")
-            return BeautifulSoup(response.read(), "lxml")
+            if not needOrg:
+                return BeautifulSoup(response.read(), "lxml")
+            else:
+                return response.read()
 
     def getItems(self, soup, itemsType, ea):
         fuName = waziFun.getFuncName()
@@ -665,7 +671,7 @@ class waziJavBus:
                     url = self.apiUrl + "/genre/" + tag
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "normal", False)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -693,7 +699,7 @@ class waziJavBus:
                 url = self.eaApiUrl + "/genre/" + tag
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "normal", True)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -724,7 +730,7 @@ class waziJavBus:
                 url = self.apiUrl + "/star/" + workerId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "worker", False)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -745,7 +751,7 @@ class waziJavBus:
             url = self.eaApiUrl + "/star/" + workerId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "eaWorker", True)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -776,7 +782,7 @@ class waziJavBus:
                 url = self.apiUrl + "/director/" + directorId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "director", False)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -797,7 +803,7 @@ class waziJavBus:
             url = self.eaApiUrl + "/director/" + directorId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "director", True)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -828,7 +834,7 @@ class waziJavBus:
                 url = self.apiUrl + "/studio/" + studioId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "normal", False)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -849,7 +855,7 @@ class waziJavBus:
             url = self.eaApiUrl + "/studio/" + studioId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "normal", True)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -880,7 +886,7 @@ class waziJavBus:
                 url = self.apiUrl + "/label/" + labelId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "normal", False)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -901,7 +907,7 @@ class waziJavBus:
             url = self.eaApiUrl + "/label/" + labelId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "normal", True)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -932,7 +938,7 @@ class waziJavBus:
                 url = self.apiUrl + "/series/" + seriesId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "normal", False)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -953,7 +959,7 @@ class waziJavBus:
             url = self.eaApiUrl + "/series/" + seriesId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getItems 获取标签。")
         items = waziJavBus.getItems(self, pageSoup, "normal", True)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -970,7 +976,7 @@ class waziJavBus:
             url = self.apiUrl + "/genre"
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getTags 获取标签。")
         items = waziJavBus.getTags(self, pageSoup)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -982,7 +988,7 @@ class waziJavBus:
         url = self.eaApiUrl + "/genre"
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getTags 获取标签。")
         items = waziJavBus.getTags(self, pageSoup)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -1010,7 +1016,7 @@ class waziJavBus:
                 url = self.apiUrl + "/actresses"
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getWorkers 获取工作者列表。")
         items = waziJavBus.getWorkers(self, pageSoup, avType, False, False)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -1027,7 +1033,7 @@ class waziJavBus:
             url = self.eaApiUrl + "/actresses"
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getWorkers 获取工作者列表。")
         items = waziJavBus.getWorkers(self, pageSoup, 1, False, True)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -1039,7 +1045,7 @@ class waziJavBus:
         url = self.apiUrl + "/" + avId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getDetails 获取详细信息。")
         items = waziJavBus.getDetails(self, pageSoup, False)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -1051,7 +1057,7 @@ class waziJavBus:
         url = self.eaApiUrl + "/" + avId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 递交 URL 至 getPage 处理。")
-        pageSoup = waziJavBus.getPage(self, url, self.newHeaders)
+        pageSoup = waziJavBus.getPage(self, url, self.newHeaders, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getDetails 获取详细信息。")
         items = waziJavBus.getDetails(self, pageSoup, True)
         waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {items}")
@@ -1063,7 +1069,7 @@ class waziJavBus:
         url = self.apiUrl + "/" + avId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取详细信息。")
-        details = waziJavBus.getDetails(self, waziJavBus.getPage(self, url, self.newHeaders), False)
+        details = waziJavBus.getDetails(self, waziJavBus.getPage(self, url, self.newHeaders, False), False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {details}，正在获取磁力链接信息。")
         magnets = waziJavBus.getMagnet(self, avId, False)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {magnets}，正在组合。")
@@ -1077,7 +1083,7 @@ class waziJavBus:
         url = self.eaApiUrl + "/" + avId
         waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取详细信息。")
-        details = waziJavBus.getDetails(self, waziJavBus.getPage(self, url, self.newHeaders), True)
+        details = waziJavBus.getDetails(self, waziJavBus.getPage(self, url, self.newHeaders, False), True)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {details}，正在获取磁力链接信息。")
         magnets = waziJavBus.getMagnet(self, avId, True)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {magnets}，正在组合。")
@@ -1100,7 +1106,7 @@ class waziJavBus:
             url = self.apiUrl + "/searchstar/" + keyWord + "/" + str(page)
             waziLog.log("debug", f"({self.name}.{fuName}) URL 组合完成： {url}")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在进入相关函数。")
-            return waziJavBus.getWorkers(self, waziJavBus.getPage(self, url, self.newHeaders), 0, True, False)
+            return waziJavBus.getWorkers(self, waziJavBus.getPage(self, url, self.newHeaders, False), 0, True, False)
         elif int(searchType) == 3:
             waziLog.log("debug", f"({self.name}.{fuName}) 搜索导演，正在组合 URL。")
             url = self.apiUrl + "/search/" + keyWord + "/" + str(page) + "&type=2"
@@ -1118,7 +1124,7 @@ class waziJavBus:
             return []
         waziLog.log("debug", f"({self.name}.{fuName}) URL 组合完成： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在进入相关函数。")
-        return waziJavBus.getItems(self, waziJavBus.getPage(self, url, self.newHeaders), "normal", False)
+        return waziJavBus.getItems(self, waziJavBus.getPage(self, url, self.newHeaders, False), "normal", False)
 
     def eaSearch(self, searchType, keyWord, page):
         fuName = waziFun.getFuncName()
@@ -1129,13 +1135,13 @@ class waziJavBus:
             url = self.eaApiUrl + "/search/" + keyWord + "/" + str(page)
             waziLog.log("debug", f"({self.name}.{fuName}) URL 组合完成： {url}")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在进入相关函数。")
-            return waziJavBus.getItems(self, waziJavBus.getPage(self, url, self.newHeaders), "normal", True)
+            return waziJavBus.getItems(self, waziJavBus.getPage(self, url, self.newHeaders, False), "normal", True)
         elif int(searchType) == 1:
             waziLog.log("debug", f"({self.name}.{fuName}) 搜索工作者，正在组合 URL。")
             url = self.eaApiUrl + "/searchstar/" + keyWord + "/" + str(page)
             waziLog.log("debug", f"({self.name}.{fuName}) URL 组合完成： {url}")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在进入相关函数。")
-            return waziJavBus.getWorkers(self, waziJavBus.getPage(self, url, self.newHeaders), 1, False, True)
+            return waziJavBus.getWorkers(self, waziJavBus.getPage(self, url, self.newHeaders, False), 1, False, True)
         else:
             waziLog.log("warn", f"({self.name}.{fuName}) 不存在搜索信息，返回空列表。")
             return []
@@ -1161,7 +1167,7 @@ class waziJavBus:
         waziLog.log("debug", f"({self.name}.{fuName}) 准备发起请求。")
         if isEa:
             waziLog.log("debug", f"({self.name}.{fuName}) EA 使用 getPage。")
-            html = waziJavBus.getPage(self, url, self.newHeaders).prettify()
+            html = waziJavBus.getPage(self, url, self.newHeaders, False).prettify()
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 非 EA 走正常 request。")
             requestParams = self.request.handleParams(tempParams, "get", url, tempHeaders, self.proxies)
@@ -1213,7 +1219,7 @@ class waziJavBus:
             waziLog.log("debug", f"({self.name}.{fuName}) EA 使用 getPage。")
             newHeaders = self.headers
             del newHeaders["Host"]
-            soup = waziJavBus.getPage(self, ajaxUrl, self.headers)
+            soup = waziJavBus.getPage(self, ajaxUrl, self.headers, False)
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 非 EA 走正常 request。")
             requestParams = self.request.handleParams(tempParams, "get", ajaxUrl, self.headers, self.proxies)
@@ -1257,3 +1263,36 @@ class waziJavBus:
             waziLog.log("debug", f"({self.name}.{fuName}) 数据已追加。")
         waziLog.log("info", f"({self.name}.{fuName}) 数据获取完毕： {avLists}， 数据返回。")
         return avLists
+
+    def downloadFile(self, url, orgName, path):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，文件名和路径，正在准备下载。")
+        waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 文件名： {orgName}， 路径： {path}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取路径是否存在。")
+        isExists = os.path.exists(path)
+        waziLog.log("debug", f"({self.name}.{fuName}) 路径是否存在： {isExists}")
+        if not isExists:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到路径不存在，准备创建。")
+            try:
+                os.makedirs(path)
+            except:
+                waziLog.log("error", f"({self.name}.{fuName}) 创建失败。")
+                return False
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 成功创建，继续执行。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在修正文件名")
+        fileName = os.path.join(path, self.fileName.toRight(orgName))
+        waziLog.log("debug", f"({self.name}.{fuName}) 文件名修正完成： {fileName}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在请求： {url}")
+        with open(fileName, "wb") as f:
+            try:
+                temp = waziJavBus.getPage(self, url, self.newHeaders, True)
+            except:
+                waziLog.log("error", f"({self.name}.{fuName}) 该文件无法下载！")
+                return False
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在将数据写入。")
+                f.write(temp.data)
+                waziLog.log("debug", f"({self.name}.{fuName}) 数据写入完成。")
+        waziLog.log("info", f"({self.name}.{fuName}) 文件： {fileName}， 完成。")
+        return True
