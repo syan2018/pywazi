@@ -119,7 +119,7 @@ class waziDanbooru:
         waziLog.log("info", f"({self.name}.{fuName}) 文件： {fileName}， 完成。")
         return True
 
-    def download(self, posts, path):
+    def download(self, posts, path, key):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Posts 和路径信息，正在准备下载。")
         waziLog.log("debug", f"({self.name}.{fuName}) Posts 信息： {posts}， 路径信息： {path}")
@@ -145,19 +145,24 @@ class waziDanbooru:
         cantDownload = []
         waziLog.log("debug", f"({self.name}.{fuName}) 开始遍历 API 信息列表。")
         for i in posts:
+            if key in i:
+                pass
+            else:
+                waziLog.log("error", f"({self.name}.{fuName}) 无法查询到字段 {key} 的信息。")
+                return True
             waziLog.log("debug", f"({self.name}.{fuName}) 目前正在处理的信息： {i}")
-            waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziRequest 请求： {i['file_url']}")
-            requestParams = self.request.handleParams(self.params, "get", i["file_url"], self.headers, self.proxies)
+            waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziRequest 请求： {i[key]}")
+            requestParams = self.request.handleParams(self.params, "get", i[key], self.headers, self.proxies)
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取下载文件路径。")
-            fileName = os.path.join(path, self.fileName.toRight(str(i["id"]) + "." + i["file_url"].split(".")[-1]))
+            fileName = os.path.join(path, self.fileName.toRight(str(i["id"]) + "." + i[key].split(".")[-1]))
             waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {fileName}")
-            waziLog.log("debug", f"({self.name}.{fuName}) 正在请求： {i['file_url']}")
+            waziLog.log("debug", f"({self.name}.{fuName}) 正在请求： {i[key]}")
             with open(fileName, "wb") as f:
                 try:
                     temp = self.request.do(requestParams)
                 except:
-                    waziLog.log("warn", f"({self.name}.{fuName}) 图像： {i['file_url']} 无法下载， ID 为： {i['id']}")
-                    cantDownload.append({"fileURL": i["file_url"], "id": i["id"]})
+                    waziLog.log("warn", f"({self.name}.{fuName}) 图像： {i[key]} 无法下载， ID 为： {i['id']}")
+                    cantDownload.append({"fileURL": i[key], "id": i["id"]})
                 else:
                     waziLog.log("debug", f"({self.name}.{fuName}) 正在将数据写入。")
                     f.write(temp.data)
@@ -175,7 +180,7 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 准备递交 getPosts 获取 API 信息列表。")
         lists = waziDanbooru.getPosts(self, page, tags, limit)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
-        return waziDanbooru.download(self, lists, path)
+        return waziDanbooru.download(self, lists, path, "file_url")
 
     # 我将不再 Code 任何对于搜索时特殊标签的合成函数
     # 我觉得这个是用户的事情 请前往： https://yande.re/help/cheatsheet 获取更多介绍和帮助
@@ -394,7 +399,7 @@ class waziDanbooru:
                 waziLog.log("error", f"({self.name}.{fuName}) 无法获取该页详细信息，返回空元组。")
                 return [], []
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
-        return waziDanbooru.download(self, lists, path)
+        return waziDanbooru.download(self, lists, path, "file_url")
 
     def downloadPoolsWithZip(self, poolId, needJPG, path):
         fuName = waziFun.getFuncName()
