@@ -122,7 +122,7 @@ class waziDanbooru:
     def download(self, posts, path, key):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Posts 和路径信息，正在准备下载。")
-        waziLog.log("debug", f"({self.name}.{fuName}) Posts 信息： {posts}， 路径信息： {path}")
+        waziLog.log("debug", f"({self.name}.{fuName}) Posts 信息： {posts}， 路径信息： {path}， 键名： {key}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在检查 Posts 是否为空。")
         if not posts:
             waziLog.log("error", f"({self.name}.{fuName}) 列表为空，返回空元组。")
@@ -149,7 +149,7 @@ class waziDanbooru:
                 pass
             else:
                 waziLog.log("error", f"({self.name}.{fuName}) 无法查询到字段 {key} 的信息。")
-                return True
+                return [], []
             waziLog.log("debug", f"({self.name}.{fuName}) 目前正在处理的信息： {i}")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziRequest 请求： {i[key]}")
             requestParams = self.request.handleParams(self.params, "get", i[key], self.headers, self.proxies)
@@ -172,15 +172,15 @@ class waziDanbooru:
         waziLog.log("info", f"({self.name}.{fuName}) 完成下载，返回元组为： {(downloadFiles, cantDownload)}")
         return downloadFiles, cantDownload
 
-    def downloadPosts(self, page, tags, limit, path):
+    def downloadPosts(self, page, tags, limit, path, key = "file_url"):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，标签，每页限制量信息，路径信息，正在准备下载。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {tags}， 每页限制量： {limit}， "
-                             f"下载路径： {path}")
+                             f"下载路径： {path}， 键名： {key}")
         waziLog.log("debug", f"({self.name}.{fuName}) 准备递交 getPosts 获取 API 信息列表。")
         lists = waziDanbooru.getPosts(self, page, tags, limit)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
-        return waziDanbooru.download(self, lists, path, "file_url")
+        return waziDanbooru.download(self, lists, path, key)
 
     # 我将不再 Code 任何对于搜索时特殊标签的合成函数
     # 我觉得这个是用户的事情 请前往： https://yande.re/help/cheatsheet 获取更多介绍和帮助
@@ -377,10 +377,10 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
         return waziDanbooru.toAPIJson(self, "/pool/show.json", params)
 
-    def downloadPools(self, poolId, page, path):
+    def downloadPools(self, poolId, page, path, key = "file_url"):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到图集 ID、页码和路径信息，正在合成 URL。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 图集 ID： {poolId}， 页码： {page}， 路径： {path}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 图集 ID： {poolId}， 页码： {page}， 路径： {path}， 键名： {key}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建 GET 请求参数。")
         params = {
             "id": str(poolId),
@@ -399,7 +399,7 @@ class waziDanbooru:
                 waziLog.log("error", f"({self.name}.{fuName}) 无法获取该页详细信息，返回空元组。")
                 return [], []
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
-        return waziDanbooru.download(self, lists, path, "file_url")
+        return waziDanbooru.download(self, lists, path, key)
 
     def downloadPoolsWithZip(self, poolId, needJPG, path):
         fuName = waziFun.getFuncName()
