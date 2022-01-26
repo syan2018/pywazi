@@ -49,6 +49,12 @@ class waziAsianSister:
         else:
             waziLog.log("info", f"({self.name}.{fuName}) 获取成功，Soup 返回中。")
             return soup
+
+    def parsePerson(self, soup):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
+        person = {}
+
     
     def parseImagesAndVideos(self, soup):
         fuName = waziFun.getFuncName()
@@ -121,7 +127,7 @@ class waziAsianSister:
             waziLog.log("debug", f"({self.name}.{fuName}) 正在添加到视频列表。")
             videosBox.append(video)
             waziLog.log("debug", f"({self.name}.{fuName}) 添加完成。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 提取页面中所有信息完成，图像信息： {galleriesBox}, 视频信息： {videosBox}。")
+        waziLog.log("info", f"({self.name}.{fuName}) 提取页面中所有信息完成，图像信息： {galleriesBox}, 视频信息： {videosBox}。")
         return galleriesBox, videosBox
 
     def getPage(self, page):
@@ -147,3 +153,19 @@ class waziAsianSister:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
         soup = waziAsianSister.returnSoup(self, url)
         return waziAsianSister.parseImagesAndVideos(self, soup)
+
+    def customSearch(self, content, type):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到补充 URL 和类型，正在生成 URL： {content}， {type}。")
+        url = "https://asiansister.com/" + content
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
+        soup = waziAsianSister.returnSoup(self, url)
+        if type == "main":
+            waziLog.log("debug", f"({self.name}.{fuName}) 解析主页，已提交至 parseImagesAndVideos。")
+            return waziAsianSister.parseImagesAndVideos(self, soup)
+        elif type == "person":
+            waziLog.log("debug", f"({self.name}.{fuName}) 解析角色主页，已提交至 parsePerson。")
+            return waziAsianSister.parsePerson(self, soup)
+        else:
+            waziLog.log("warn", f"({self.name}.{fuName}) 无法识别的类型，已返回空列表。")
+            return []
