@@ -58,12 +58,12 @@ class waziAsianSister:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取个人信息。")
         person["name"] = soup.find("center").find("h1").text
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取个人描述。")
-        person["descriptionHTML"] = str(soup.find("div", {"class": "detailBox"})).replace("<br>", "\n")
+        person["descriptionHTML"] = str(soup.find("div", {"id": "detailBox"})).replace("<br>", "\n").replace("<br/>", "\n")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取个人浏览量。")
-        person["views"] = int(soup.find("div", {"class": "detailBox"}).find("div").text.split(": ")[1].split("标签")[0])
+        person["views"] = int(soup.find("div", {"id": "detailBox"}).find("div").text.split(": ")[1].split("标签")[0].replace("Tag ", ""))
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取个人标签。")
         person["tags"] = []
-        for i in soup.find("div", {"class": "detailBox"}).find("div").find("h4").find_all("a"):
+        for i in soup.find("div", {"id": "detailBox"}).find("div").find("h4").find_all("a"):
             if i.attrs["href"] == "tag.php?tag=":
                 pass
             else:
@@ -85,7 +85,7 @@ class waziAsianSister:
         for i in soup.find_all("div", {"class": "recommentBox"}):
             gallery = {}
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取画廊地址。")
-            gallery["link"] = i.find("a").attrs["href"]
+            gallery["link"] = "https://asiansister.com/" + i.find("a").attrs["href"]
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取画廊封面。")
             gallery["cover"] = i.find("img", {"class": "lazyload"}).attrs["data-src"]
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取画廊封面缺省字符串。")
@@ -106,12 +106,12 @@ class waziAsianSister:
         for i in soup.find_all("div", {"class": "recommentBoxVideo"}):
             video = {}
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取视频是否存在 data 标签。")
-            if i.attrs["data"]:
+            if "data" in i.attrs:
                 video["data"] = i.attrs["data"]
             else:
                 video["data"] = ""
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取视频地址。")
-            video["link"] = i.find("a").attrs["href"]
+            video["link"] = "https://asiansister.com/" + i.find("a").attrs["href"]
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取视频标题。")
             video["title"] = i.find("a").attrs["title"]
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取视频封面。")
@@ -163,7 +163,7 @@ class waziAsianSister:
         for i in videos:
             video = {}
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取视频是否存在 data 标签。")
-            if i.attrs["data"]:
+            if "data" in i.attrs:
                 video["data"] = i.attrs["data"]
             else:
                 video["data"] = None
