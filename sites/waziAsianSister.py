@@ -1,4 +1,3 @@
-from pydantic import ClassError
 from mods import waziFun
 from bs4 import BeautifulSoup
 from mods.waziURL import waziURL
