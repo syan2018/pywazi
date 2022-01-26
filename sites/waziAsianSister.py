@@ -80,7 +80,7 @@ class waziAsianSister:
             gallery["alt"] = i.find("img", class_ = "lazyload").attrs["alt"]
             waziLog.log("debug", f"({self.name}.{fuName}) 画廊封面的顶替字符串为： {gallery['alt']}。")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取画廊标题。")
-            gallery["title"] = i.find("div", class_ = "titleName").text
+            gallery["title"] = i.find("div", class_ = "titleName").text.strip()
             waziLog.log("debug", f"({self.name}.{fuName}) 画廊标题为： {gallery['title']}。")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在添加到画廊列表。")
             galleriesBox.append(gallery)
@@ -116,7 +116,7 @@ class waziAsianSister:
                 video["cover"] = "https://asiansister.com/" + i.find("img", class_ = "lazyload").attrs["data-src"]
             waziLog.log("debug", f"({self.name}.{fuName}) 视频封面为： {video['cover']}。")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取视频标题。")
-            video["title"] = i.find("div", class_ = "titleName_video").text
+            video["title"] = i.find("div", class_ = "titleName_video").text.strip()
             waziLog.log("debug", f"({self.name}.{fuName}) 视频标题为： {video['title']}。")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在添加到视频列表。")
             videosBox.append(video)
