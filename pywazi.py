@@ -6,17 +6,20 @@ See Readme.md & doc.md for more details.
 详情请看 Readme.md & doc.md。
 """
 
+from itsdangerous import json
 from ins.waziInsLog import waziLog
 from ins.waziInsConfig import waziConfig
 from sites.waziJavBus import waziJavBus as Wjb
 from sites.waziPicAcg import waziPicAcg as Wpa
 from sites.waziDanbooru import waziDanbooru as Wdb
 from sites.waziExHentai import waziExHentai as Weh
+from sites.waziAsianSister import waziAsianSister as Was
 
 waziJavBus = Wjb()
 waziPicAcg = Wpa()
 waziDanbooru = Wdb()
 waziExHentai = Weh()
+waziAsianSister = Was()
 
 def globalParams(filePath):
     jsonData = waziConfig.readConfig(filePath)
@@ -24,6 +27,7 @@ def globalParams(filePath):
     waziPicAcg.giveParams(jsonData)
     waziDanbooru.giveParams(jsonData)
     waziExHentai.giveParams(jsonData)
+    waziAsianSister.giveParams(jsonData)
     return jsonData
 
 def defConfig(filePath):
@@ -65,6 +69,9 @@ def defConfig(filePath):
                 waziExHentai.changeMethod(i["method"])
             if "jump" in i:
                 waziExHentai.setJump(i["jump"])
+        elif i["name"] == "AsianSister":
+            if "params" in i:
+                waziAsianSister.giveParams(i["params"])
         elif i["name"] == "Config":
             if "save" in i:
                 waziLog.needSave(i["save"])
