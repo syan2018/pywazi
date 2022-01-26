@@ -11,10 +11,10 @@ class waziLog:
         self.min = -1
         self.save = False
         self.saveName = ""
-        self.creatLogsFolder()
+        self.createLogsFolder()
         self.setSaveName()
 
-    def creatLogsFolder(self):
+    def createLogsFolder(self):
         os.makedirs("logs", exist_ok = True)
 
     def setSaveName(self):
