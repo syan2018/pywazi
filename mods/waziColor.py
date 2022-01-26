@@ -5,7 +5,7 @@ class waziColor:
         super(waziColor, self).__init__()
 
     @staticmethod
-    def RGBToHex(R, G, B):
+    def HexToRGB(R, G, B):
         tr = R / 0xff * 255
         tg = G / 0xff * 255
         tb = B / 0xff * 255

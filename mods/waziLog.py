@@ -41,7 +41,7 @@ class waziLog:
         if level == "debug":
             printText = "[调试 \t" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())) + "] " + text
             if self.min >= 3:
-                color = self.color.RGBToHex(0xff, 0xe9, 0x00)
+                color = self.color.HexToRGB(0xff, 0xe9, 0x00)
                 self.color.print({
                     "color": color,
                     "text": printText
@@ -50,7 +50,7 @@ class waziLog:
         if level == "info":
             printText = "[信息 \t" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())) + "] " + text
             if self.min >= 2:
-                color = self.color.RGBToHex(0x00, 0xaa, 0xda)
+                color = self.color.HexToRGB(0x00, 0xaa, 0xda)
                 self.color.print({
                     "color": color,
                     "text": printText
@@ -59,7 +59,7 @@ class waziLog:
         if level == "warn":
             printText = "[警告 \t" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())) + "] " + text
             if self.min >= 1:
-                color = self.color.RGBToHex(0xff, 0xaa, 0x4d)
+                color = self.color.HexToRGB(0xff, 0xaa, 0x4d)
                 self.color.print({
                     "color": color,
                     "text": printText
@@ -68,7 +68,7 @@ class waziLog:
         if level == "error":
             printText = "[错误 \t" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())) + "] " + text
             if self.min >= 0:
-                color = self.color.RGBToHex(0xff, 0x72, 0x76)
+                color = self.color.HexToRGB(0xff, 0x72, 0x76)
                 self.color.print({
                     "color": color,
                     "text": printText
