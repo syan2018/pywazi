@@ -52,5 +52,7 @@ PyWazi 是一个针对 ExHentai, JavBus, Danbooru, PicAcg 的数据采集、处�
 
 感谢 [cloudwindy (github.com)](https://github.com/cloudwindy) 提供的 ExHentai 账号，得以我进行开发测试；感谢我的朋友 **The Galaxy~ Of Dick** 给我整的 Banner。
 
+感谢 GitHub 的 Copilot 提供的智能自动代码补全功能，让我的代码更加简洁，更加美观（大嘘，这句话是 Copilot 打出来的）。
+
 ## Non-simplified Chinese users?
 Sorrrrrrrrrrrrrry, But I don't want to translate it.
