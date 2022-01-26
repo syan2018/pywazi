@@ -509,15 +509,23 @@ RGB 是一个三位数，每一位代表一个颜色，比如：0，0，0 是黑
 		"R": 255,
 		"G": 233,
 		"B": 0
-	},
+	},				// 字典，前景颜色
 	"bgColor": {
 		"R": 255,
 		"G": 233,
 		"B": 0
-	},
+	},				// 字典，背景颜色
 	"effects": {
-		"normal": True,
-		"highLight": True,
-	}
+		"normal": True,		// 普通打印 *就像你看到的那样*
+		"highLight": True,	// 高亮打印 *亮得刺眼*
+		"lowLight": True,	// 浅色打印 *柔和*
+		"itail": True,		// 斜体打印 *倾斜但花里胡哨*
+		"underLine": True,	// 下划线打印 *总是使我感到急躁*
+		"slowShine": True,	// 闪烁打印 *在提醒什么*
+		"revWhite": True,	// 反白打印 *从来不会使用它*
+		"hide": True,		// 隐藏打印 *不建议打印重要信息*
+		"delLine": True		// 删除线打印 *从未发生一样*
+	},
+	"text": "Text"			// 字符串，打印的文字
 }
 ```
