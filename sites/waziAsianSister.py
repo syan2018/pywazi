@@ -131,3 +131,19 @@ class waziAsianSister:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
         soup = waziAsianSister.returnSoup(self, url)
         return waziAsianSister.parseImagesAndVideos(self, soup)
+
+    def search(self, keyword, page):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到关键字和页码，正在生成 URL： {keyword}， {page}。")
+        url = "https://asiansister.com/search.php?q=" + keyword + "&page=" + str(page)
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
+        soup = waziAsianSister.returnSoup(self, url)
+        return waziAsianSister.parseImagesAndVideos(self, soup)
+
+    def tagSearch(self, tag, page):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到标签和页码，正在生成 URL： {tag}， {page}。")
+        url = "https://asiansister.com/tag.php?tag=" + tag + "&page=" + str(page)
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
+        soup = waziAsianSister.returnSoup(self, url)
+        return waziAsianSister.parseImagesAndVideos(self, soup)
