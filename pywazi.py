@@ -6,7 +6,6 @@ See Readme.md & doc.md for more details.
 详情请看 Readme.md & doc.md。
 """
 
-from itsdangerous import json
 from ins.waziInsLog import waziLog
 from ins.waziInsConfig import waziConfig
 from sites.waziJavBus import waziJavBus as Wjb
