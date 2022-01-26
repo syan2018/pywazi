@@ -121,8 +121,8 @@ class waziAsianSister:
             waziLog.log("debug", f"({self.name}.{fuName}) 正在添加到视频列表。")
             videosBox.append(video)
             waziLog.log("debug", f"({self.name}.{fuName}) 添加完成。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 提取页面中所有信息完成，图像信息： {galleries}, 视频信息： {videos}。")
-        return galleries, videos
+        waziLog.log("debug", f"({self.name}.{fuName}) 提取页面中所有信息完成，图像信息： {galleriesBox}, 视频信息： {videosBox}。")
+        return galleriesBox, videosBox
 
     def getPage(self, page):
         fuName = waziFun.getFuncName()
