@@ -3,23 +3,30 @@
 </p>
 
 <p align="center">
-PyWazi 是一个针对 ExHentai, JavBus, Danbooru, PicAcg 的数据采集、处理和操作模块，使用 Python 语言。目前版本为 1.2，如果你有想法或在使用中出现问题了，欢迎提出 issue。
+PyWazi 是一个针对一些网站的数据采集、处理和操作模块，使用 Python3 语言。目前版本为 1.3，如果你有想法或在使用中出现问题了，欢迎提出 issue。
 </p>
 
 <p align="center">
 <a href="https://www.python.org/"><img src="https://shields.io/badge/Python-3-green?style=flat-square" /></a>
-<a href="https://github.com/Yazawazi/pywazi"><img src="https://shields.io/badge/Version-1.2-yellow?style=flat-square" /></a>
+<a href="https://github.com/Yazawazi/pywazi"><img src="https://shields.io/badge/Version-1.3-green?style=flat-square" /></a>
 </p>
 
-> 作者休眠 暂时停止更新
+> 睡眠不足后精神崩溃的产物，没有什么参考价值。*哈哈哈哈哈哈哈哈*
 
 ## 声明
-本模块完全开放源代码，仅供大家学习参考使用，不鼓励一切在中国大陆境内的使用该模块的商业行为。
+依 GPL-3.0 许可协议开源，随意 Fork，请不要使用本项目的代码进行商业用途（*当然，谁知道呢？*）。
 
-## 配置
-如果你是 Windows 用户请前往 Python 官网下载 Python 3 代的安装包或通过 Microsoft Store 下载 Python 3 代，然后可以再下载一个 Git 使用 clone 指令将该模块下载到本地，或者直接 Download ZIP 本项目。
+## 支持网站或应用列表
 
-如果你是非 Windows 用户，请检查你的系统是否自带 Python 3 代和 Git，否则请使用 apt yum pacman 等包管理器安装，并使用 Git 克隆本项目或直接 Download ZIP 本项目。
++ [AsianSister](https://asiansister.com/)
++ [Danbooru](https://danbooru.donmai.us/) *等一系列基于 Danbooru 的网站 (API 相近)*
++ [ExHentai](https://exhentai.org/)
++ [JavBus](https://javbus.com/)
++ [PicAcg](https://picacomic.xyz/)
+
+更多信息请阅读 `doc.md` 文档以获取帮助。
+
+## 前置库
 
 需要安装：
 - beautifulsoup4
