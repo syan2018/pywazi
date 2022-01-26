@@ -1,4 +1,3 @@
-from markupsafe import re
 from mods import waziFun
 from bs4 import BeautifulSoup
 from mods.waziURL import waziURL
@@ -195,6 +194,7 @@ class waziAsianSister:
         url = "https://asiansister.com/_page" + str(page)
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
         soup = waziAsianSister.returnSoup(self, url)
+        waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，递交至 parseImagesAndVideos。")
         return waziAsianSister.parseImagesAndVideos(self, soup)
 
     def search(self, keyword, page):
@@ -203,6 +203,7 @@ class waziAsianSister:
         url = "https://asiansister.com/search.php?q=" + keyword + "&page=" + str(page)
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
         soup = waziAsianSister.returnSoup(self, url)
+        waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，递交至 parseImagesAndVideos。")
         return waziAsianSister.parseImagesAndVideos(self, soup)
 
     def tagSearch(self, tag, page):
@@ -211,7 +212,17 @@ class waziAsianSister:
         url = "https://asiansister.com/tag.php?tag=" + tag + "&page=" + str(page)
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
         soup = waziAsianSister.returnSoup(self, url)
+        waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，递交至 parseImagesAndVideos。")
         return waziAsianSister.parseImagesAndVideos(self, soup)
+    
+    def personSearch(self, person):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到人物信息，正在生成 URL： {person}。")
+        url = "https://asiansister.com/" + person
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
+        soup = waziAsianSister.returnSoup(self, url)
+        waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，递交至 parsePerson。")
+        return waziAsianSister.parsePerson(self, soup)
 
     def customParse(self, content, type):
         fuName = waziFun.getFuncName()
