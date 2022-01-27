@@ -621,3 +621,27 @@ RGB 是一个三位数，每一位代表一个颜色，比如：0，0，0 是黑
 
 *突然想起之前打 CS:GO 的时候，一位十连跪的路人。*
 
+提供两个参数：`self` 和 `levelNumber`，前者是 `waziLog` 的实例化，后者是整数，表示最小日志屏幕输出等级。
+
+```python
+# 相关对应
+{
+	-1: "不打印",
+	0: "错误信息",
+	1: "警告信息",
+	2: "普通信息",
+	3: "调试信息"
+}
+```
+
+#### outputLog
+
+*What kind of milk were you? What kind of life did you live through? -- Jack Stauber's Micropop - Milk*
+
+一个用于写入文件的函数，接受两个参数：`self` 和 `text`，前者是 `waziLog` 的实例化，后者是字符串，表示日志内容。
+
+#### log
+
+*官方媒体*
+
+
