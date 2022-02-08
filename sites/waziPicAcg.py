@@ -790,6 +790,23 @@ class waziPicAcg:
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
         return waziPicAcg.up(self, self.urls["apps"], True, None, "GET", True)
+    
+    def getComicImageURLs(self, pageDict):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到分 P 分页字典，正在获取漫画图片地址: {pageDict}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 准备进入遍历。")
+        urls = []
+        for i in pageDict["data"]["pages"]["docs"]:
+            if "fileServer" in i["media"]:
+                waziLog.log("debug", f"({self.name}.{fuName}) 存在 fileServer，使用返回值。")
+                fileServer = i["media"]["fileServer"]
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 不存在 fileServer，已填入默认值。")
+                fileServer = "https://storage1.picacomic.com"
+            waziLog.log("debug", f"({self.name}.{fuName}) fileServer 为 {fileServer}")
+            url = waziPicAcg.getSinglePage(self, fileServer, i["media"]["path"])
+            urls.append(url)
+        return urls
 
     def singleDownloadComicImage(self, pageDict, path, comicName, docTitle):
         fuName = waziFun.getFuncName()
@@ -813,6 +830,39 @@ class waziPicAcg:
                                    self.fileName.toRight(i["media"]["originalName"])), "wb") as f:
                 f.write(temp.data)
             waziLog.log("debug", f"({self.name}.{fuName}) 写入完成。")
+    
+    def getComicFilesList(self, comicId):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID，正在发起请求。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 getThumbImage 获取封面。")
+        thumbs = waziPicAcg.getThumbImageLink(self, comicId)
+        yield thumbs
+        waziLog.log("debug", f"({self.name}.{fuName}) 下载完成，正在获取漫画信息。")
+        comicInfo = waziPicAcg.getComic(self, comicId)
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在获取分页。")
+        comicName = comicInfo["data"]["comic"]["title"]
+        eps = int(comicInfo["data"]["comic"]["epsCount"])
+        waziLog.log("debug", f"({self.name}.{fuName}) 漫画吗： {comicName}， 分页数： {eps}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 进入 for in range。")
+        for i in range(1, eps + 1):
+            waziLog.log("debug", f"({self.name}.{fuName}) 正在获取分 P 内容。")
+            newEps = waziPicAcg.getComicEps(self, comicId, str(i))
+            waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在进入遍历。")
+            for j in newEps["data"]["eps"]["docs"]:
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在获取分 P 的分页。")
+                newPage = waziPicAcg.getComicPages(self, comicId, str(i), str(j["order"]))
+                waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在检查是否为单页。")
+                if newPage["data"]["pages"]["pages"] == 1:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 单页，通过 getComicImageURLs 获取。")
+                    yield waziPicAcg.getComicImageURLs(self, newPage)
+                else:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 多页，正在进入 for in range。")
+                    for q in range(1, newPage["data"]["pages"]["pages"] + 1):
+                        waziLog.log("debug", f"({self.name}.{fuName}) 正在请求 {str(q)} 页。")
+                        newPage = waziPicAcg.getComicPages(self, comicId, str(i), str(q))
+                        waziLog.log("debug", f"({self.name}.{fuName}) 请求完成，正在通过 getComicImageURLs 获取。")
+                        yield waziPicAcg.getComicImageURLs(self, newPage)
 
     def downloadComic(self, comicId, path):
         fuName = waziFun.getFuncName()
