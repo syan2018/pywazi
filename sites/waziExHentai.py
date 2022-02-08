@@ -1,6 +1,7 @@
 import os
 import re
 import json
+from unittest import mock
 import urllib.parse
 import urllib.request
 from mods import waziFun
@@ -1095,6 +1096,33 @@ class waziExHentai:
             waziLog.log("debug", f"({self.name}.{fuName}) 数据已追加。")
         waziLog.log("info", f"({self.name}.{fuName}) 大尺寸缩略图获取完毕： {thumbnails}")
         return thumbnails
+    
+    def yieldGetLargeThumbnails(self, link):
+        # Still need to be tested
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其页码信息： {link}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
+        soup = waziExHentai.returnSoup(self, link)
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，进入分析。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getPages 获取页码数据。")
+        page = waziExHentai.getPages(self, link)
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {page}，开始获取大尺寸缩略图。")
+        if page == 0:
+            waziLog.log("debug", f"({self.name}.{fuName}) 单页模式。")
+            data = waziExHentai.parseSoupForLargeThumbnails(self, soup)
+            waziLog.log("debug", f"({self.name}.{fuName}) 数据已取得： {data}")
+            yield data
+        else:
+            waziLog.log("debug", f"({self.name}.{fuName}) 多页模式。")
+            for i in range(1, page + 1):
+                url = link + "?p=" + str(i)
+                waziLog.log("debug", f"({self.name}.{fuName}) 已进入循环，URL 已创建完毕： {url}，"
+                                     f"通过 returnSoup 获取 Soup 数据。")
+                soup = waziExHentai.returnSoup(self, url)
+                waziLog.log("debug", f"({self.name}.{fuName}) 已取得 Soup 数据，进入大尺寸缩略图解析器。")
+                data = waziExHentai.parseSoupForLargeThumbnails(self, soup)
+                waziLog.log("debug", f"({self.name}.{fuName}) 单页大尺寸缩略图缩略图数据： {data}")
+                yield data
 
     def getLargeThumbnails(self, link):
         fuName = waziFun.getFuncName()
@@ -1149,7 +1177,32 @@ class waziExHentai:
         waziLog.log("debug", f"({self.name}.{fuName}) 数据已追加。")
         waziLog.log("info", f"({self.name}.{fuName}) 正常尺寸缩略图获取完毕： {thumbnails}")
         return thumbnails
-
+    
+    def yieldGetNormalThumbnails(self, link):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其页码信息： {link}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
+        soup = waziExHentai.returnSoup(self, link)
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在通过 getPages 获取页码数据。")
+        page = waziExHentai.getPages(self, link)
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {page}，开始获取正常尺寸缩略图。")
+        if page == 0:
+            waziLog.log("debug", f"({self.name}.{fuName}) 单页模式。")
+            data = waziExHentai.parseSoupForNormalThumbnails(self, soup)
+            waziLog.log("info", f"({self.name}.{fuName}) 数据已取得： {data}")
+            yield data
+        else:
+            waziLog.log("debug", f"({self.name}.{fuName}) 多页模式。")
+            for i in range(page):
+                url = link + "?p=" + str(i)
+                waziLog.log("debug", f"({self.name}.{fuName}) 已进入循环，URL 已创建完毕： {url}，"
+                                     f"通过 returnSoup 获取 Soup 数据。")
+                soup = waziExHentai.returnSoup(self, url)
+                waziLog.log("debug", f"({self.name}.{fuName}) 已取得 Soup 数据，进入正常尺寸缩略图解析器。")
+                data = waziExHentai.parseSoupForNormalThumbnails(self, soup)
+                waziLog.log("debug", f"({self.name}.{fuName}) 单页正常尺寸缩略图数据： {data}")
+                yield data
+        
     def getNormalThumbnails(self, link):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其页码信息： {link}")
@@ -1205,6 +1258,63 @@ class waziExHentai:
         if not isExists:
             os.makedirs(os.path.join(params["path"], self.fileName.toRight(title)))
         waziLog.log("info", f"({self.name}.{fuName}) 文件夹创建完成。")
+    
+    def yieldGetMPVImages(self, link, params):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL 和参数，正在获取 MPV 图像列表。")
+        waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}， 参数： {params}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在组合 URL。")
+        mpvUrl = self.urls["mpv"] + link.split("/")[4] + "/" + link.split("/")[5]
+        waziLog.log("debug", f"({self.name}.{fuName}) 组合完成： {mpvUrl}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在组合 POST 请求参数。")
+        post = {
+            "method": "imagedispatch",
+            "gid": int(link.split("/")[4]),
+            "page": "",
+            "imgkey": "",
+            "mpvkey": ""
+        }
+        waziLog.log("debug", f"({self.name}.{fuName}) 组合完成： {post}，正在通过 returnSoup 发起请求。")
+        soup = waziExHentai.returnSoup(self, mpvUrl)
+        waziLog.log("debug", f"({self.name}.{fuName}) 页面信息获取完成。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取页面中的 JavaScript 脚本。")
+        scripts = str(soup.find_all("script")[1]).split("<script type=\"text/javascript\">")[1].split("</script>")[0]
+        waziLog.log("debug", f"({self.name}.{fuName}) JS 脚本获取完成： {scripts}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取 Image List 数据。")
+        imgLists = eval(scripts.split("var imagelist = ")[1].split(";")[0])
+        waziLog.log("debug", f"({self.name}.{fuName}) Image List 数据获取完毕： {imgLists}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取 MPV Key 信息。")
+        mpvkey = scripts.split("mpvkey = \"")[1].split("\"")[0]
+        waziLog.log("debug", f"({self.name}.{fuName}) MPV Key 信息获取完毕： {mpvkey}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在修改请求参数和 Header。")
+        tempParams = self.params
+        tempParams["useHeaders"] = True
+        tempHeaders = self.headers
+        tempHeaders["Content-Type"] = "application/json"
+        waziLog.log("debug", f"({self.name}.{fuName}) 请求参数和 Header 修改完毕。")
+        i = 0
+        waziLog.log("debug", f"({self.name}.{fuName}) 进入循环遍历。")
+        for dic in imgLists:
+            print(imgLists)
+            waziLog.log("debug", f"({self.name}.{fuName}) 正在修改 POST 请求参数。")
+            i += 1
+            post["page"] = i
+            post["imgkey"] = dic["k"]
+            post["mpvkey"] = mpvkey
+            waziLog.log("debug", f"({self.name}.{fuName}) 修改完成： {post}")
+            waziLog.log("debug", f"({self.name}.{fuName}) 正在处理请求参数。")
+            requestParams = self.request.handleParams(tempParams, "post", self.urls["api"], tempHeaders, self.proxies)
+            requestParams["data"] = json.dumps(post).encode()
+            waziLog.log("debug", f"({self.name}.{fuName}) 请求参数处理完毕： {requestParams}， 准备发起请求。")
+            lists = json.loads(self.request.do(requestParams).data.decode("utf-8"))
+            waziLog.log("debug", f"({self.name}.{fuName}) 请求发起完毕，数据： {lists}")
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到获取模式，正在合成图像数据。")
+            mpvList = {
+                "name": dic["n"],
+                "url": lists["i"]
+            }
+            waziLog.log("debug", f"({self.name}.{fuName}) 图像数据： {mpvList}")
+            yield mpvList
 
     def getMPVImages(self, link, method, params):
         fuName = waziFun.getFuncName()
@@ -1321,6 +1431,36 @@ class waziExHentai:
                 waziLog.log("debug", f"({self.name}.{fuName}) 文件路径已追加。")
         waziLog.log("info", f"({self.name}.{fuName}) 数据： {images}，结果返回。")
         return images
+    
+    def yieldGetNormalImages(self, link, params):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和参数，正在获取图像列表。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 参数： {params}，URL： {link}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取标题。")
+        title = waziExHentai.getTitle(self, link, params)
+        waziLog.log("debug", f"({self.name}.{fuName}) 标题获取成功： {title}")
+        normalImages = []
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取页码信息。")
+        page = waziExHentai.getPages(self, link)
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码信息获取完成： {page}。")
+        if page == 0:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到无需翻页，正在通过 returnSoup 获取页面 Soup 信息。")
+            soup = waziExHentai.returnSoup(self, link)
+            waziLog.log("debug", f"({self.name}.{fuName}) Soup 信息获取完成，正在通过 getImages 获取。")
+            data = waziExHentai.getImages(self, soup, "get", title, params)
+            waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {data}")
+            yield data
+        else:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到多页，进入 range 循环。")
+            for i in range(page):
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在合成 URL。")
+                url = link + "?p=" + str(i)
+                waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕： {url}，正在通过 returnSoup 获取 Soup。")
+                soup = waziExHentai.returnSoup(self, url)
+                waziLog.log("debug", f"({self.name}.{fuName}) Soup 信息获取完成，正在通过 getImages 获取。")
+                data = waziExHentai.getImages(self, soup, "get", title, params)
+                waziLog.log("debug", f"({self.name}.{fuName}) 数据获取完成： {data}")
+                yield data
 
     def getNormalImages(self, link, method, params):
         fuName = waziFun.getFuncName()
