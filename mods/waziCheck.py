@@ -7,9 +7,162 @@ from ins.waziInsLog import waziLog
 class waziCheck:
     # Separate checksum and crypto system for ExHentai search and PicAcg encryption and decryption processing.
     # 单独的校验和密码系统，针对 ExHentai 的搜索和 PicAcg 的加解密处理。
+
+    # 2022.02.10: Nyaa too.
     def __init__(self):
         super(waziCheck, self).__init__()
         self.sha1 = hashlib.sha1()
+        # Nyaa Translation
+        self.nyaaTranslations = {
+            "success": "Trusted",
+            "danger": "Remake / Reencode / Remux / Reupload"
+            # Orange / Grey | I cannot find.
+        }
+        # Nyaa Categories
+        self.nyaaCategories = {
+            "safe": 
+            [
+                {
+                    "name": "Anime",
+                    "value": [
+                        {
+                            "src": "/static/img/icons/nyaa/1_1.png",
+                            "name": "Anime - Anime Music Video"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/1_2.png",
+                            "name": "Anime - English-translated"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/1_3.png",
+                            "name": "Anime - Non-English-translated"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/1_4.png",
+                            "name": "Anime - Raw"
+                        },
+                    ]
+                },
+                {
+                    "name": "Audio",
+                    "value": [
+                        {
+                            "src": "/static/img/icons/nyaa/2_1.png",
+                            "name": "Audio - Lossless"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/2_2.png",
+                            "name": "Audio - Lossy"
+                        }
+                    ]
+                },
+                {
+                    "name": "Literature",
+                    "value": [
+                        {
+                            "src": "/static/img/icons/nyaa/3_1.png",
+                            "name": "Literature - English-translated"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/3_2.png",
+                            "name": "Literature - Non-English-translated"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/3_3.png",
+                            "name": "Literature - Raw"
+                        }
+                    ]
+                },
+                {
+                    "name": "Live Action",
+                    "value": [
+                        {
+                            "src": "/static/img/icons/nyaa/4_1.png",
+                            "name": "Live Action - English-translated"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/4_2.png",
+                            "name": "Live Action - Idol/Promotional Video"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/4_3.png",
+                            "name": "Live Action - Non-English-translated"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/4_4.png",
+                            "name": "Live Action - Raw"
+                        }
+                    ]
+                },
+                {
+                    "name": "Pictures",
+                    "value": [
+                        {
+                            "src": "/static/img/icons/nyaa/5_1.png",
+                            "name": "Pictures - Graphics"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/5_2.png",
+                            "name": "Pictures - Photos"
+                        }
+                    ]
+                },
+                {
+                    "name": "Software",
+                    "value": [
+                        {
+                            "src": "/static/img/icons/nyaa/6_1.png",
+                            "name": "Software - Applications"
+                        },
+                        {
+                            "src": "/static/img/icons/nyaa/6_2.png",
+                            "name": "Software - Games"
+                        }
+                    ]
+                }
+            ],
+            "unsafe":
+            [
+                {
+                    "name": "Art",
+                    "value": [
+                        {
+                            "src": "/static/img/icons/sukebei/1_1.png",
+                            "name": "Art - Anime"
+                        },
+                        {
+                            "src": "/static/img/icons/sukebei/1_2.png",
+                            "name": "Art - Doujinshi"
+                        },
+                        {
+                            "src": "/static/img/icons/sukebei/1_3.png",
+                            "name": "Art - Games"
+                        },
+                        {
+                            "src": "/static/img/icons/sukebei/1_4.png",
+                            "name": "Art - Manga"
+                        },
+                        {
+                            "src": "/static/img/icons/sukebei/1_5.png",
+                            "name": "Art - Pictures"
+                        }
+                    ]
+                },
+                {
+                    "name": "Real Life",
+                    "value": [
+                        {
+                            "src": "/static/img/icons/sukebei/2_1.png",
+                            "name": "Real Life - Photobooks / Pictures"
+                        },
+                        {
+                            "src": "/static/img/icons/sukebei/2_2.png",
+                            "name": "Real Life - Videos"
+                        }
+                    ]
+                }
+            ]
+        }
         # These are ExHentai's tags.
         # 这些是 ExHentai 的标签。
         self.tags = [
