@@ -29,6 +29,9 @@ class waziNyaa:
     def parseRSS(self, rss):
         pass
 
+    def parseSearch(self, soup):
+        pass
+
     def search(self, params):
         pass
 
