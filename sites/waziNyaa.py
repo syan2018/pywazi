@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from mods.waziURL import waziURL
 from ins.waziInsLog import waziLog
 from mods.waziCheck import waziCheck
+from mods.waziRequest import waziRequest
 
 class waziNyaa:
     # TODO: Support sukebei.nyaa.si and nyaa.si
@@ -20,6 +21,7 @@ class waziNyaa:
         self.urls = ["https://nyaa.si/", "https://sukebei.nyaa.si/"]
         self.URL = waziURL()
         self.check = waziCheck()
+        self.request = waziRequest()
         self.name = self.__class__.__name__
     
     def returnSoup(self, link):
@@ -58,23 +60,37 @@ class waziNyaa:
         pass
 
     def search(self, params):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到搜索请求，正在获取 Soup。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 用户搜索请求： {params}")
         searchParams = {
             "f": "0",
             "c": "0_0",
             "q": ""
         }
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在检查搜索参数。")
         if "page" in params:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到页码参数，正在设置页码。")
             searchParams["p"] = str(params["page"])
         if "keyword" in params:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到搜索内容参数，正在设置搜索内容。")
             searchParams["q"] = params["keyword"]
         if "category" in params:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到分类参数，正在设置分类。")
             searchParams["c"] = self.check.nyaaSearch["catgroies"][params["category"]]
         if "filter" in params:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到过滤参数，正在设置过滤。")
             searchParams["f"] = self.check.nyaaSearch["filters"][params["filter"]]
         if "order" in params:
+            waziLog.log("debug", f"({self.name}.{fuName}) 检测到排序参数，正在设置排序。")
             searchParams.update(self.check.nyaaSearch["orders"][params["order"]])
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在合成 URL。")
         url = self.URL.getFullURL(self.urls[int(params["site"])], searchParams)
+        waziLog.log("debug", f"({self.name}.{fuName}) 合成完成，正在解析： {url}")
         return waziNyaa.parseSearch(self, waziNyaa.returnSoup(self, url))
         
     def searchRSS(self, params):
+        pass
+    
+    def getViewFromId(self, site, id):
         pass
