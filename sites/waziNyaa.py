@@ -57,7 +57,16 @@ class waziNyaa:
         pass
 
     def parseSearch(self, soup):
-        pass
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
+        table = soup.find("tbody")
+        if table is None:
+            waziLog.log("warn", f"({self.name}.{fuName}) 无法获取到表格，返回空列表。")
+            return []
+        else:
+            waziLog.log("info", f"({self.name}.{fuName}) 获取到表格，开始解析。")
+            rows = table.find_all("tr")
+            waziLog.log("info", f"({self.name}.{fuName}) 表格解析完成，共 {len(rows)} 行。")
 
     def search(self, params):
         fuName = waziFun.getFuncName()
