@@ -56,8 +56,53 @@ class waziNyaa:
     def parsePage(self, soup):
         pass
 
-    def parseRSS(self, rss, site):
-        pass
+    def parseRSS(self, rss):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 RSS 数据，正在解析。")
+        items = rss.find_all("item")
+        if items is None:
+            waziLog.log("warn", f"({self.name}.{fuName}) 无法解析 RSS 中的 item 内容，返回空列表。")
+            return []
+        else:
+            waziLog.log("info", f"({self.name}.{fuName}) 获取列表成功，正在分析。")
+            result = []
+            for item in items:
+                itemInfo = {}
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在解析种子类型。")
+                if item.find("nyaa:trusted").text == "Yes":
+                    itemInfo["type"] = self.check.nyaaTranslations["success"]
+                elif item.find("nyaa:remake").text == "Yes":
+                    itemInfo["type"] = self.check.nyaaTranslations["danger"]
+                else:
+                    itemInfo["type"] = self.check.nyaaTranslations["default"]
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子分类。")
+                itemInfo["category"] = item.find("nyaa:category").text
+                itemInfo["categoryId"] = item.find("nyaa:categoryId").text
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子评论数量。")
+                itemInfo["comments"] = int(item.find("nyaa:comments").text)
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子标题。")
+                itemInfo["title"] = item.find("title").text
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子链接。")
+                itemInfo["link"] = item.find("guid").text
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子 ID。")
+                itemInfo["id"] = int(item.find("guid").text.split("/")[-1])
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件下载地址。")
+                itemInfo["torrent"] = item.find("link").text
+                itemInfo["magnet"] = "magnet:?xt=urn:btih:" + item.find("nyaa:infoHash").text
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件大小。")
+                itemInfo["size"] = item.find("nyaa:size").text
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件时间。")
+                itemInfo["time"] = item.find("pubDate").text
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件做种人数。")
+                itemInfo["seeders"] = int(item.find("nyaa:seeders").text)
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件吸血鬼数量。")
+                itemInfo["leechers"] = int(item.find("nyaa:leechers").text)
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件完全下载数量。")
+                itemInfo["completes"] = int(item.find("nyaa:downloads").text)
+                waziLog.log("debug", f"({self.name}.{fuName}) 单个解析完成： {itemInfo}")
+                result.append(itemInfo)
+                waziLog.log("debug", f"({self.name}.{fuName}) 已追加。")
+            return result
 
     def parseSearch(self, soup, site):
         fuName = waziFun.getFuncName()
@@ -175,7 +220,7 @@ class waziNyaa:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在合成 URL。")
         url = self.URL.getFullURL(self.urls[int(params["site"])], searchParams)
         waziLog.log("debug", f"({self.name}.{fuName}) 合成完成，正在解析： {url}")
-        return waziNyaa.parseRSS(self, waziNyaa.returnSoup(self, url, True), int(params["site"]))
+        return waziNyaa.parseRSS(self, waziNyaa.returnSoup(self, url, True))
     
     def getViewFromId(self, site, id):
         pass
