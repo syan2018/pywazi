@@ -54,7 +54,7 @@ class waziNyaa:
         waziLog.log("info", f"({self.name}.{fuName}) 写入完成，目前配置为： {self.params}")
         return self.params
 
-    def parsePage(self, soup):
+    def parsePage(self, soup, site):
         pass
 
     def parseRSS(self, rss):
@@ -224,4 +224,9 @@ class waziNyaa:
         return waziNyaa.parseRSS(self, waziNyaa.returnSoup(self, url, True))
     
     def getViewFromId(self, id, site):
-        pass
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 ID 和 site 参数，正在获取 Soup。")
+        waziLog.log("debug", f"({self.name}.{fuName}) ID： {id}， 站点： {site}")
+        url = self.urls[int(site)] + "view/" + str(id)
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取 Soup： {url}")
+        return waziNyaa.parsePage(self, waziNyaa.returnSoup(self, url, False), int(site))
