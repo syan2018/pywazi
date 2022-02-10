@@ -34,6 +34,7 @@ class waziAsianSister:
         return self.params
 
     def returnSoup(self, link):
+        # TODO: Put this function in waziRequest
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得 Soup： {link}")
         tempParams = self.params

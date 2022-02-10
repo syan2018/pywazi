@@ -57,12 +57,12 @@ class waziCheck:
                 "Real Life Photobooks and Pictures": "2_1",
                 "Real Life Videos": "2_2",
             },
-            "filter": {
+            "filters": {
                 "No": "0",
                 "No Remakes": "1",
                 "Trusted Only": "2",
             },
-            "order": {
+            "orders": {
                 "Comments": {
                     "s": "comments",
                     "o": "desc"
