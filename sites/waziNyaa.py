@@ -26,6 +26,7 @@ class waziNyaa:
     
     def returnSoup(self, link, xml):
         # TODO: Put this function in waziRequest
+        #       Emmm... I cannot.
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得 Soup： {link}")
         tempParams = self.params
