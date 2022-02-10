@@ -18,6 +18,51 @@ class waziCheck:
             "danger": "Remake / Reencode / Remux / Reupload"
             # Orange / Grey | I cannot find.
         }
+        # Nyaa Search
+        self.nyaaSearch = {
+            "catgroies": {
+                # Safe
+                "All": "0_0",
+                "Anime": "1_0",
+                "Anime Music Video": "1_1",
+                "Anime English-translated": "1_2",
+                "Anime Non-English-translated": "1_3",
+                "Anime Raw": "1_4",
+                "Audio": "2_0",
+                "Audio Lossless": "2_1",
+                "Audio Lossy": "2_2",
+                "Literature": "3_0",
+                "Literature English-translated": "3_1",
+                "Literature Non-English-translated": "3_2",
+                "Literature Raw": "3_3",
+                "Live Action": "4_0",
+                "Live Action English-translated": "4_1",
+                "Live Action Idol/Promotional": "4_2",
+                "Live Action Non-English-translated": "4_3",
+                "Live Action Raw": "4_4",
+                "Pictures": "5_0",
+                "Pictures Graphics": "5_1",
+                "Pictures Photos": "5_2",
+                "Software": "6_0",
+                "Software Applications": "6_1",
+                "Software Games": "6_2",
+                # Unsafe
+                "Art": "1_0",
+                "Art Anime": "1_1",
+                "Art Doujinshi": "1_2",
+                "Art Games": "1_3",
+                "Art Manga": "1_4",
+                "Art Pictures": "1_5",
+                "Real Life": "2_0",
+                "Real Life Photobooks and Pictures": "2_1",
+                "Real Life Videos": "2_2",
+            },
+            "filter": {
+                "No": "0",
+                "No Remakes": "1",
+                "Trusted Only": "2",
+            }
+        }
         # Nyaa Categories
         self.nyaaCategories = {
             "safe": 
