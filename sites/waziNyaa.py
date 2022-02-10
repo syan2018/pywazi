@@ -222,5 +222,5 @@ class waziNyaa:
         waziLog.log("debug", f"({self.name}.{fuName}) 合成完成，正在解析： {url}")
         return waziNyaa.parseRSS(self, waziNyaa.returnSoup(self, url, True))
     
-    def getViewFromId(self, site, id):
+    def getViewFromId(self, id, site):
         pass
