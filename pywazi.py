@@ -8,6 +8,7 @@ See Readme.md & doc.md for more details.
 
 from ins.waziInsLog import waziLog
 from ins.waziInsConfig import waziConfig
+from sites.waziNyaa import waziNyaa as Wn
 from sites.waziJavBus import waziJavBus as Wjb
 from sites.waziPicAcg import waziPicAcg as Wpa
 from sites.waziDanbooru import waziDanbooru as Wdb
@@ -17,6 +18,7 @@ from sites.waziAsianSister import waziAsianSister as Was
 __VERSION__ = "1.3"
 __AUTHOR__ = "Yazawazi"
 
+waziNyaa = Wn()
 waziJavBus = Wjb()
 waziPicAcg = Wpa()
 waziDanbooru = Wdb()
@@ -74,6 +76,9 @@ def defConfig(filePath):
         elif i["name"] == "AsianSister":
             if "params" in i:
                 waziAsianSister.giveParams(i["params"])
+        elif i["name"] == "Nyaa":
+            if "params" in i:
+                waziNyaa.giveParams(i["params"])
         elif i["name"] == "Config":
             if "save" in i:
                 waziLog.needSave(i["save"])
