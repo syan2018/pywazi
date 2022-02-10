@@ -73,7 +73,7 @@ class waziNyaa:
             searchParams["f"] = self.check.nyaaSearch["filters"][params["filter"]]
         if "order" in params:
             searchParams.update(self.check.nyaaSearch["orders"][params["order"]])
-        url = self.URL.getFullURL(self.urls[params["site"]], searchParams)
+        url = self.URL.getFullURL(self.urls[int(params["site"])], searchParams)
         return waziNyaa.parseSearch(self, waziNyaa.returnSoup(self, url))
         
     def searchRSS(self, params):
