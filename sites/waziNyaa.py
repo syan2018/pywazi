@@ -66,7 +66,52 @@ class waziNyaa:
         else:
             waziLog.log("info", f"({self.name}.{fuName}) 获取到表格，开始解析。")
             rows = table.find_all("tr")
-            waziLog.log("info", f"({self.name}.{fuName}) 表格解析完成，共 {len(rows)} 行。")
+            waziLog.log("info", f"({self.name}.{fuName}) 获取 tr 完成，共 {len(rows)} 行。")
+            waziLog.log("debug", f"({self.name}.{fuName}) 开始解析 tr。")
+            result = []
+            for row in rows:
+                rowInfo = {}
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子类型。")
+                try:
+                    rowInfo["type"] = self.check.nyaaTranslations[row.attrs["class"][0]]
+                except:
+                    waziLog.log("warn", f"({self.name}.{fuName}) 解析种子类型失败，写入 class。")
+                    rowInfo["type"] = row.attrs["class"][0]
+                    rowInfo["typeExtra"] = "class"
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子分类。")
+                rowInfo["category"] = row.find("td").find("a").attrs["title"]
+                rowInfo["categoryId"] = row.find("td").find("a").find("img").attrs["src"].split("/")[-1].split(".")[0]
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子评论数量。")
+                comment = row.find("a", class_ = "comments")
+                if comment:
+                    rowInfo["comments"] = int(comment.text)
+                else:
+                    rowInfo["comments"] = 0
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子标题。")
+                href = row.find_all("td")[1].find_all("a")[-1]
+                rowInfo["title"] = href.attrs["title"]
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子链接。")
+                rowInfo["link"] = href.attrs["href"]
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子 ID。")
+                rowInfo["id"] = int(href.attrs["href"].split("/")[-1])
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件下载地址。")
+                rowInfo["torrent"] = row.find_all("td")[2].find("a").attrs["href"]
+                rowInfo["magnet"] = row.find_all("td")[2].find_all("a")[-1].attrs["href"]
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件大小。")
+                rowInfo["size"] = row.find_all("td")[3].text
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件时间。")
+                rowInfo["time"] = row.find_all("td")[4].text
+                rowInfo["timeStamp"] = row.find_all("td")[4].attrs["data-timestamp"]
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件做种人数。")
+                rowInfo["seeders"] = int(row.find_all("td")[5].text)
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件吸血鬼数量。")
+                rowInfo["leechers"] = int(row.find_all("td")[6].text)
+                waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件完全下载人数。")
+                rowInfo["completes"] = int(row.find_all("td")[7].text)
+                waziLog.log("debug", f"({self.name}.{fuName}) 单个解析完成： {rowInfo}")
+                result.append(rowInfo)
+                waziLog.log("debug", f"({self.name}.{fuName}) 已追加。")
+            return result
 
     def search(self, params):
         fuName = waziFun.getFuncName()
