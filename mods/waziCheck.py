@@ -61,6 +61,32 @@ class waziCheck:
                 "No": "0",
                 "No Remakes": "1",
                 "Trusted Only": "2",
+            },
+            "order": {
+                "Comments": {
+                    "s": "comments",
+                    "o": "desc"
+                },
+                "Size": {
+                    "s": "size",
+                    "o": "desc"
+                },
+                "Date": {
+                    "s": "id",
+                    "o": "asc"
+                },
+                "Seeders": {
+                    "s": "seeders",
+                    "o": "desc"
+                },
+                "Leechers": {
+                    "s": "leechers",
+                    "o": "desc"
+                },
+                "Completed Downloads": {
+                    "s": "downloads",
+                    "o": "desc"
+                }
             }
         }
         # Nyaa Categories
