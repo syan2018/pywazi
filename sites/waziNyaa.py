@@ -56,7 +56,7 @@ class waziNyaa:
     def parseRSS(self, rss):
         pass
 
-    def parseSearch(self, soup):
+    def parseSearch(self, soup, site):
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
         table = soup.find("tbody")
@@ -91,11 +91,11 @@ class waziNyaa:
                 href = row.find_all("td")[1].find_all("a")[-1]
                 rowInfo["title"] = href.attrs["title"]
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子链接。")
-                rowInfo["link"] = href.attrs["href"]
+                rowInfo["link"] = self.urls[site] + "view/" + href.attrs["href"].split("/")[-1]
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子 ID。")
                 rowInfo["id"] = int(href.attrs["href"].split("/")[-1])
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件下载地址。")
-                rowInfo["torrent"] = row.find_all("td")[2].find("a").attrs["href"]
+                rowInfo["torrent"] = self.urls[site] + "download/" + row.find_all("td")[2].find("a").attrs["href"].split("/")[-1]
                 rowInfo["magnet"] = row.find_all("td")[2].find_all("a")[-1].attrs["href"]
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件大小。")
                 rowInfo["size"] = row.find_all("td")[3].text
@@ -141,7 +141,7 @@ class waziNyaa:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在合成 URL。")
         url = self.URL.getFullURL(self.urls[int(params["site"])], searchParams)
         waziLog.log("debug", f"({self.name}.{fuName}) 合成完成，正在解析： {url}")
-        return waziNyaa.parseSearch(self, waziNyaa.returnSoup(self, url))
+        return waziNyaa.parseSearch(self, waziNyaa.returnSoup(self, url), int(params["site"]))
         
     def searchRSS(self, params):
         pass
