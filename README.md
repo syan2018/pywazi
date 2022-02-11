@@ -11,7 +11,7 @@ PyWazi 是一个针对一些网站的数据采集、处理和操作模块，使�
 <a href="https://github.com/Yazawazi/pywazi"><img src="https://shields.io/badge/Version-1.3-green?style=flat-square" /></a>
 </p>
 
-> 睡眠不足后精神崩溃的产物，没有什么参考价值。*哈哈哈哈哈哈哈哈*
+> 睡眠不足后精神崩溃的产物，没有什么参考价值。*哈哈哈哈哈哈哈哈* 别用了，别用了，真的，我快疯了。
 
 ## 声明
 依 GPL-3.0 许可协议开源，随意 Fork，请不要使用本项目的代码进行商业用途（*当然，谁知道呢？*）。
@@ -20,8 +20,9 @@ PyWazi 是一个针对一些网站的数据采集、处理和操作模块，使�
 
 + [AsianSister](https://asiansister.com/)
 + [Danbooru](https://danbooru.donmai.us/) *等一系列基于 Danbooru 的网站 (API 相近)*
-+ [ExHentai](https://exhentai.org/)
++ [ExHentai](https://exhentai.org/) *没有 E-Hentai 的支持*
 + [JavBus](https://javbus.com/)
++ [Nyaa](https://nyaa.si/) *当然也有 sukebei 的支持*
 + [PicAcg](https://picacomic.xyz/)
 
 更多信息请阅读 `doc.md` 文档以获取帮助。
