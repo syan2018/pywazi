@@ -87,9 +87,18 @@ class waziNyaa:
         itemInfo["size"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[3].find_all(class_ = "col-md-5")[0].text
         itemInfo["completes"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[3].find_all(class_ = "col-md-5")[1].text)
         itemInfo["hash"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[4].find_all(class_ = "col-md-5")[0].text
-        itemInfo["torrent"] = self.urls[site] + "download/" + soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"].split("/")[-1]
-        itemInfo["magnet"] = soup.find(class_ = "panel-footer").find_all("a")[1].attrs["href"]
+        if "magnet:?xt=" in soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"]:
+            itemInfo["torrent"] = None
+        else:
+            itemInfo["torrent"] = self.urls[site] + "download/" + soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"].split("/")[-1]
+        itemInfo["magnet"] = soup.find(class_ = "panel-footer").find_all("a")[-1].attrs["href"]
         itemInfo["description"] = soup.find(id = "torrent-description").text
+        try:
+            fileList = soup.find(class_ = "torrent-file-list").find("ul").find("li")
+        except:
+            itemInfo["files"] = "File list is not available for this torrent."
+        else:
+            pass
 
     def parseRSS(self, rss):
         fuName = waziFun.getFuncName()
@@ -122,7 +131,10 @@ class waziNyaa:
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子 ID。")
                 itemInfo["id"] = int(item.find("guid").text.split("/")[-1])
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件下载地址。")
-                itemInfo["torrent"] = item.find("link").text
+                try:
+                    itemInfo["torrent"] = item.find("link").text
+                except:
+                    itemInfo["torrent"] = None
                 itemInfo["magnet"] = "magnet:?xt=urn:btih:" + item.find("nyaa:infoHash").text
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件大小。")
                 itemInfo["size"] = item.find("nyaa:size").text
@@ -178,7 +190,10 @@ class waziNyaa:
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子 ID。")
                 rowInfo["id"] = int(href.attrs["href"].split("/")[-1])
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件下载地址。")
-                rowInfo["torrent"] = self.urls[site] + "download/" + row.find_all("td")[2].find("a").attrs["href"].split("/")[-1]
+                if "magnet:?xt=" in row.find_all("td")[2].find("a").attrs["href"]:
+                    rowInfo["torrent"] = None
+                else:
+                    rowInfo["torrent"] = self.urls[site] + "download/" + row.find_all("td")[2].find("a").attrs["href"].split("/")[-1]
                 rowInfo["magnet"] = row.find_all("td")[2].find_all("a")[-1].attrs["href"]
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件大小。")
                 rowInfo["size"] = row.find_all("td")[3].text
