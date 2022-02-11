@@ -19,11 +19,25 @@ class waziNyaa:
             "proxyPort": "7890"
         }
         self.params = {}
+        self.tempFiles = {}
         self.urls = ["https://nyaa.si/", "https://sukebei.nyaa.si/"]
         self.URL = waziURL()
         self.check = waziCheck()
         self.request = waziRequest()
         self.name = self.__class__.__name__
+    
+    def ulGet(self, ul, level):
+        if self.tempFiles[level] is None:
+            self.tempFiles[level] = []
+        for i in ul.contents:
+            if i != "\n":
+                if i.find("a"):
+                    self.tempFiles[level].append(i.find("a").text)
+                    waziNyaa.ulGet(self, i.find("ul"), level + 1)
+                elif i.find("li"):
+                    waziNyaa.ulGet(self, i, level + 1)
+                else:
+                    self.tempFiles[level].append(iter.text)
     
     def returnSoup(self, link, xml):
         # TODO: Put this function in waziRequest
@@ -94,11 +108,14 @@ class waziNyaa:
         itemInfo["magnet"] = soup.find(class_ = "panel-footer").find_all("a")[-1].attrs["href"]
         itemInfo["description"] = soup.find(id = "torrent-description").text
         try:
-            fileList = soup.find(class_ = "torrent-file-list").find("ul").find("li")
+            fileList = soup.find(class_ = "torrent-file-list").find("ul")
         except:
             itemInfo["files"] = "File list is not available for this torrent."
         else:
-            pass
+            self.tempFiles = {}
+            self.tempFiles = waziNyaa.ulGet(self, fileList, 0)
+            itemInfo["files"] = self.tempFiles
+        return itemInfo
 
     def parseRSS(self, rss):
         fuName = waziFun.getFuncName()
