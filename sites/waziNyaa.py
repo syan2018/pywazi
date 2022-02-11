@@ -27,7 +27,9 @@ class waziNyaa:
         self.name = self.__class__.__name__
     
     def ulGet(self, ul, level):
-        if self.tempFiles[str(level)] is None:
+        if str(level) in self.tempFiles:
+            pass
+        else:
             self.tempFiles[str(level)] = []
         for i in ul.contents:
             if i != "\n":
