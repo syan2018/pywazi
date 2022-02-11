@@ -115,6 +115,27 @@ class waziNyaa:
             self.tempFiles = {}
             self.tempFiles = waziNyaa.ulGet(self, fileList, 0)
             itemInfo["files"] = self.tempFiles
+        if soup.find(id = "comments").h3.text.strip() == "Comments - 0":
+            itemInfo["comments"] = []
+        else:
+            comments = []
+            for comment in soup.find_all(class_ = "comment-panel"):
+                commentInfo = {}
+                commentInfo["name"] = comment.find("p").find("a").text
+                commentInfo["link"] = self.urls[site] + "user/" + comment.find_all(class_ = "comment-panel")[0].find("p").find("a").attrs["href"].split("/")[-1]
+                commentInfo["extra"] = comment.find("p").text.strip().replace(commentInfo["name"], "").strip().replace("(", "").replace(")", "")
+                commentInfo["avatar"] = comment.find("img").attrs["src"]
+                commentInfo["time"] = comment.find(class_ = "comment-details").find("a").text
+                commentInfo["timeStamp"] = int(comment.find(class_ = "comment-details").find("a").find("small").attrs["data-timestamp"])
+                if len(comment.find(class_ = "comment-details").find_all("small") == 2):
+                    commentInfo["editTime"] = comment.find(class_ = "comment-details").find_all("small")[1].attrs["title"]
+                    commentInfo["editTimeStamp"] = int(comment.find(class_ = "comment-details").find_all("small")[1].attrs["data-timestamp"])
+                else:
+                    commentInfo["editTime"] = None
+                    commentInfo["editTimeStamp"] = None
+                commentInfo["comment"] = comment.find(class_ = "comment-content").text
+                comments.append(commentInfo)
+            itemInfo["comments"] = comments
         return itemInfo
 
     def parseRSS(self, rss):
