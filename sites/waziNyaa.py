@@ -27,6 +27,7 @@ class waziNyaa:
         self.name = self.__class__.__name__
     
     def getFiles(self, ul):
+        # No Log Here
         for i in ul.contents:
             if i != "\n":
                 if i.find("a"):
@@ -72,7 +73,9 @@ class waziNyaa:
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 和 site 参数，正在解析。")
         waziLog.log("debug", f"({self.name}.{fuName}) 站点： {site}")
         itemInfo = {}
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取 container。")
         container = soup.find_all("div", class_ = "container")[1]
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子类型。")
         classNamesList = container.find(class_ = "panel").attrs["class"]
         if "panel-danger" in classNamesList:
             itemInfo["type"] = self.check.nyaaTranslations["panel-danger"]
@@ -80,7 +83,9 @@ class waziNyaa:
             itemInfo["type"] = self.check.nyaaTranslations["panel-success"]
         else:
             itemInfo["type"] = self.check.nyaaTranslations["panel-default"]
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子标题。")
         itemInfo["title"] = soup.find(class_ = "panel-title").text.strip()
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子分类。")
         itemInfo["category"] = {
             "fatherCategory": soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[0].find_all("a")[0].text,
             "fatherCategoryId": soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[0].find_all("a")[0].attrs["href"].split("=")[-1],
@@ -88,23 +93,34 @@ class waziNyaa:
             "subCategoryId": soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[0].find_all("a")[1].attrs["href"].split("=")[-1],
         }
         itemInfo["category"]["category"] = itemInfo["category"]["fatherCategory"] + " - " + itemInfo["category"]["subCategory"]
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子时间。")
         itemInfo["time"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[1].text
         itemInfo["timeStamp"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[1].attrs["data-timestamp"])
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子上传者。")
         itemInfo["uploader"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].text
         itemInfo["uploaderLink"] = self.urls[site] + "user/" + soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].attrs["href"].split("/")[-1]
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子做种人数。")
         itemInfo["seeders"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[1].text)
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子信息。")
         itemInfo["information"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[0].text.strip()
         itemInfo["informationLink"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[0].find("a").attrs["href"]
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子吸血鬼数量")
         itemInfo["leechers"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[1].text)
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子大小。")
         itemInfo["size"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[3].find_all(class_ = "col-md-5")[0].text
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子完全下载人数。")
         itemInfo["completes"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[3].find_all(class_ = "col-md-5")[1].text)
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子哈希。")
         itemInfo["hash"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[4].find_all(class_ = "col-md-5")[0].text
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子下载信息。")
         if "magnet:?xt=" in soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"]:
             itemInfo["torrent"] = None
         else:
             itemInfo["torrent"] = self.urls[site] + "download/" + soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"].split("/")[-1]
         itemInfo["magnet"] = soup.find(class_ = "panel-footer").find_all("a")[-1].attrs["href"]
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子描述信息。")
         itemInfo["description"] = soup.find(id = "torrent-description").text
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子文件内容。（可能需要较长时间，并且格式比较乱）")
         try:
             fileList = soup.find(class_ = "torrent-file-list").find("ul")
         except:
@@ -113,6 +129,7 @@ class waziNyaa:
             self.tempFiles = []
             waziNyaa.getFiles(self, fileList)
             itemInfo["files"] = self.tempFiles
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子评论信息。")
         if soup.find(id = "comments").h3.text.strip() == "Comments - 0":
             itemInfo["comments"] = []
         else:
@@ -134,6 +151,7 @@ class waziNyaa:
                 commentInfo["comment"] = comment.find(class_ = "comment-content").text
                 comments.append(commentInfo)
             itemInfo["comments"] = comments
+        waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {itemInfo}")
         return itemInfo
 
     def parseRSS(self, rss):
