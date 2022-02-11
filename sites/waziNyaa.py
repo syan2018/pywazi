@@ -1,3 +1,4 @@
+from cgitb import text
 from mods import waziFun
 from bs4 import BeautifulSoup
 from mods.waziURL import waziURL
@@ -55,7 +56,40 @@ class waziNyaa:
         return self.params
 
     def parsePage(self, soup, site):
-        pass
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 和 site 参数，正在解析。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 站点： {site}")
+        itemInfo = {}
+        container = soup.find_all("div", class_ = "container")[1]
+        classNamesList = container.find(class_ = "panel").attrs["class"]
+        if "panel-danger" in classNamesList:
+            itemInfo["type"] = self.check.nyaaTranslations["panel-danger"]
+        elif "panel-success" in classNamesList:
+            itemInfo["type"] = self.check.nyaaTranslations["panel-success"]
+        else:
+            itemInfo["type"] = self.check.nyaaTranslations["panel-default"]
+        itemInfo["title"] = soup.find(class_ = "panel-title").text.strip()
+        itemInfo["category"] = {
+            "fatherCategory": soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[0].find_all("a")[0].text,
+            "fatherCategoryId": soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[0].find_all("a")[0].attrs["href"].split("=")[-1],
+            "subCategory": soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[0].find_all("a")[1].text,
+            "subCategoryId": soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[0].find_all("a")[1].attrs["href"].split("=")[-1],
+        }
+        itemInfo["category"]["category"] = itemInfo["category"]["fatherCategory"] + " - " + itemInfo["category"]["subCategory"]
+        itemInfo["time"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[1].text
+        itemInfo["timeStamp"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[1].attrs["data-timestamp"])
+        itemInfo["uploader"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].text
+        itemInfo["uploaderLink"] = self.urls[site] + "user/" + soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].attrs["href"].split("/")[-1]
+        itemInfo["seeders"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[1].text)
+        itemInfo["information"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[0].text
+        itemInfo["informationLink"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[0].find("a").attrs["href"]
+        itemInfo["leechers"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[1].text)
+        itemInfo["size"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[3].find_all(class_ = "col-md-5")[0].text
+        itemInfo["completes"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[3].find_all(class_ = "col-md-5")[1].text)
+        itemInfo["hash"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[4].find_all(class_ = "col-md-5")[0].text
+        itemInfo["torrent"] = self.urls[site] + "download/" + soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"].split("/")[-1]
+        itemInfo["magnet"] = soup.find(class_ = "panel-footer").find_all("a")[1].attrs["href"]
+        itemInfo["description"] = soup.find(id = "torrent-description").text
 
     def parseRSS(self, rss):
         fuName = waziFun.getFuncName()

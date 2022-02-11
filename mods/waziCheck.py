@@ -16,7 +16,10 @@ class waziCheck:
         self.nyaaTranslations = {
             "success": "Trusted",
             "danger": "Remake / Reencode / Remux / Reupload",
-            "default": "Normal"
+            "default": "Normal",
+            "panel-success": "Trusted",
+            "panel-danger": "Remake / Reencode / Remux / Reupload",
+            "panel-default": "Normal"
             # Orange / Grey | I cannot find.
         }
         # Nyaa Search
