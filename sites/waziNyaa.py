@@ -19,27 +19,23 @@ class waziNyaa:
             "proxyPort": "7890"
         }
         self.params = {}
-        self.tempFiles = {}
+        self.tempFiles = []
         self.urls = ["https://nyaa.si/", "https://sukebei.nyaa.si/"]
         self.URL = waziURL()
         self.check = waziCheck()
         self.request = waziRequest()
         self.name = self.__class__.__name__
     
-    def ulGet(self, ul, level):
-        if str(level) in self.tempFiles:
-            pass
-        else:
-            self.tempFiles[str(level)] = []
+    def getFiles(self, ul):
         for i in ul.contents:
             if i != "\n":
                 if i.find("a"):
-                    self.tempFiles[str(level)].append(i.find("a").text)
-                    waziNyaa.ulGet(self, i.find("ul"), level + 1)
+                    self.tempFiles.append(i.find("a").text.strip())
+                    waziNyaa.getFiles(self, i.find("ul"))
                 elif i.find("li"):
-                    waziNyaa.ulGet(self, i, level + 1)
+                    waziNyaa.getFiles(self, i)
                 else:
-                    self.tempFiles[str(level)].append(iter.text)
+                    self.tempFiles.append(i.text.strip())
     
     def returnSoup(self, link, xml):
         # TODO: Put this function in waziRequest
@@ -97,7 +93,7 @@ class waziNyaa:
         itemInfo["uploader"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].text
         itemInfo["uploaderLink"] = self.urls[site] + "user/" + soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].attrs["href"].split("/")[-1]
         itemInfo["seeders"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[1].text)
-        itemInfo["information"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[0].text
+        itemInfo["information"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[0].text.strip()
         itemInfo["informationLink"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[0].find("a").attrs["href"]
         itemInfo["leechers"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[2].find_all(class_ = "col-md-5")[1].text)
         itemInfo["size"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[3].find_all(class_ = "col-md-5")[0].text
@@ -114,8 +110,8 @@ class waziNyaa:
         except:
             itemInfo["files"] = "File list is not available for this torrent."
         else:
-            self.tempFiles = {}
-            self.tempFiles = waziNyaa.ulGet(self, fileList, 0)
+            self.tempFiles = []
+            waziNyaa.getFiles(self, fileList)
             itemInfo["files"] = self.tempFiles
         if soup.find(id = "comments").h3.text.strip() == "Comments - 0":
             itemInfo["comments"] = []
@@ -124,14 +120,14 @@ class waziNyaa:
             for comment in soup.find_all(class_ = "comment-panel"):
                 commentInfo = {}
                 commentInfo["name"] = comment.find("p").find("a").text
-                commentInfo["link"] = self.urls[site] + "user/" + comment.find_all(class_ = "comment-panel")[0].find("p").find("a").attrs["href"].split("/")[-1]
+                commentInfo["link"] = self.urls[site] + "user/" + comment.find("p").find("a").attrs["href"].split("/")[-1]
                 commentInfo["extra"] = comment.find("p").text.strip().replace(commentInfo["name"], "").strip().replace("(", "").replace(")", "")
                 commentInfo["avatar"] = comment.find("img").attrs["src"]
                 commentInfo["time"] = comment.find(class_ = "comment-details").find("a").text
                 commentInfo["timeStamp"] = int(comment.find(class_ = "comment-details").find("a").find("small").attrs["data-timestamp"])
-                if len(comment.find(class_ = "comment-details").find_all("small") == 2):
+                if len(comment.find(class_ = "comment-details").find_all("small")) == 2:
                     commentInfo["editTime"] = comment.find(class_ = "comment-details").find_all("small")[1].attrs["title"]
-                    commentInfo["editTimeStamp"] = int(comment.find(class_ = "comment-details").find_all("small")[1].attrs["data-timestamp"])
+                    commentInfo["editTimeStamp"] = float(comment.find(class_ = "comment-details").find_all("small")[1].attrs["data-timestamp"])
                 else:
                     commentInfo["editTime"] = None
                     commentInfo["editTimeStamp"] = None
