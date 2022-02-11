@@ -27,17 +27,17 @@ class waziNyaa:
         self.name = self.__class__.__name__
     
     def ulGet(self, ul, level):
-        if self.tempFiles[level] is None:
-            self.tempFiles[level] = []
+        if self.tempFiles[str(level)] is None:
+            self.tempFiles[str(level)] = []
         for i in ul.contents:
             if i != "\n":
                 if i.find("a"):
-                    self.tempFiles[level].append(i.find("a").text)
+                    self.tempFiles[str(level)].append(i.find("a").text)
                     waziNyaa.ulGet(self, i.find("ul"), level + 1)
                 elif i.find("li"):
                     waziNyaa.ulGet(self, i, level + 1)
                 else:
-                    self.tempFiles[level].append(iter.text)
+                    self.tempFiles[str(level)].append(iter.text)
     
     def returnSoup(self, link, xml):
         # TODO: Put this function in waziRequest
