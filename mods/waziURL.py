@@ -1,16 +1,62 @@
+"""
+mods/waziURL.py
+
+class: waziURL
+"""
+
 import urllib.parse
 from mods import waziFun
 from urllib import parse
 from ins.waziInsLog import waziLog
 
 class waziURL:
-    # A class for URL encoding.
-    # 一个进行 URL 编码的类。
+    """
+    waziURL
+    *URL encoding.*
+
+    A class for URL encoding.
+
+    Attributes:
+        name: str
+            The name of the class.
+    
+    Methods:
+        - Please use help()
+    """
     def __init__(self):
+        """
+        waziURL.__init__(self)
+        *Fatigue.*
+
+        Initialize the class.
+
+        Parameters:
+            None
+        """
         super(waziURL, self).__init__()
         self.name = self.__class__.__name__
 
     def getFullURL(self, url, params):
+        """
+        waziURL.getFullURL(self, url, params)
+        *Lord.*
+
+        Splices the parameters after the URL.
+
+        Parameters:
+            url: str
+                The URL.
+            
+            params: dict
+                The parameters to be spliced.
+            
+        Return:
+            Type: str
+            The full URL.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和 Params 信息，准备合成。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， params： {params}")
@@ -25,6 +71,27 @@ class waziURL:
         return newURL
 
     def getExHentaiAllURL(self, url, params):
+        """
+        waziURL.getExHentaiAllURL(self, url, params)
+        *Customization.*
+
+        [ExHentai]
+        Splices the parameters after the URL.
+
+        Parameters:
+            url: str
+                The URL.
+        
+            params: dict
+                The parameters to be spliced.
+        
+        Return:
+            Type: str
+            The full URL.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和 Params 信息，准备递交 getFullURL 合成。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， params： {params}")
