@@ -1,6 +1,7 @@
 """
 mods/waziFun.py
 """
+
 import inspect
 
 def getFuncName():
@@ -20,5 +21,5 @@ def getFuncName():
         Errors:
             Python:
                 + Sometimes may cause IndexError.
-        """
+    """
     return inspect.stack()[1][3]

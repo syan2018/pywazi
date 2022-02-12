@@ -1,11 +1,50 @@
+"""
+mods/waziRequest.py
+
+class: waziRequest
+"""
+
 import urllib3
 from mods import waziFun
 from ins.waziInsLog import waziLog
 
 class waziRequest:
-    # Network request class.
-    # 网络请求类
+    """
+    waziRequest
+    *Bitter lemon juice, no sugar.*
+
+    A class for requesting web pages.
+
+    Attributes:
+        isUseProxies: bool
+            If True, use proxies.
+            default: True
+        
+        proxies: str
+            The proxy address like: http://ip:port
+            default: ""
+        
+        isUseHeaders: bool
+            If True, use custom headers.
+            default: False
+        
+        headers: dict
+            The custom headers.
+            default: A chrome user-agent header.
+    
+    Methods:
+        - Please use help()
+    """
     def __init__(self):
+        """
+        waziRequest.__init__(self)
+        *Bittersweet*
+
+        Initialize the class.
+
+        Parameters:
+            None
+        """
         super(waziRequest, self).__init__()
         self.isUseProxies = True
         self.proxies = ""
@@ -17,6 +56,23 @@ class waziRequest:
         self.name = self.__class__.__name__
 
     def useProxies(self, isUse):
+        """
+        waziRequest.useProxies(self, isUse)
+        *It will probably always be like this.*
+
+        Set the use of proxies.
+
+        Parameters:
+            isUse: bool
+                If True, use proxies.
+        
+        Return:
+            Type: bool
+            Current proxies status.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到代理使用信息，正在写入配置。")
         self.isUseProxies = isUse
@@ -24,6 +80,26 @@ class waziRequest:
         return self.isUseProxies
 
     def editProxies(self, http, port):
+        """
+        waziRequest.editProxies(self, http, port)
+        *Scavenging for supplies in a post-apocalyptic world.*
+
+        Set the proxy Address.
+
+        Parameters:
+            http: str or None
+                The http proxy address.
+            
+            port: str or int or None
+                The http proxy port.
+        
+        Return:
+            Type: str or None
+            Current proxy address.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到代理信息，正在写入配置。")
         if http is None or port is None:

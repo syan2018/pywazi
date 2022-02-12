@@ -1,6 +1,7 @@
 """
 Instantiated logging system
 """
+
 from mods.waziLog import waziLog as Wl
 
 """

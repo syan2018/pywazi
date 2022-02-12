@@ -19,7 +19,7 @@ class waziCheck:
     But now also support Nyaa.si.
 
     Attributes:
-        sha1: hashlib.sha1()
+        sha1: hashlib.sha1
             Just a hashlib.sha1(), eee.
 
         nyaaTranslations: dict

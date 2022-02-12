@@ -1,6 +1,7 @@
 """
 Instantiated config system
 """
+
 from mods.waziConfig import waziConfig as Wc
 
 """

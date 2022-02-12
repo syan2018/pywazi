@@ -1,11 +1,53 @@
+"""
+mods/waziLog.py
+
+class: waziLog
+"""
+
 import os
 import time
 from mods.waziColor import waziColor
 
 class waziLog:
-    # A class for log printing and exporting.
-    # 用于日志打印和导出的一个类。
+    """
+    waziLog
+    *Log and print.*
+
+    A class for log printing and exporting without logging module.
+
+    Attributes:
+        color: waziColor
+            For color printing.
+        
+        min: int
+            The minimum level of log display.
+            Default: -1
+        
+        save: bool
+            Whether to save the log.
+            Default: False
+        
+        saveName: str
+            The name of the log file.
+            Default: ""
+
+    Methods:
+        - Please use help()
+    """
     def __init__(self):
+        """
+        waziLog.__init__(self)
+        *Clean.*
+
+        Initialize the class.
+
+        Parameters:
+            None
+        
+        Actions:
+            + Create logs folder: waziLog.createLogsFolder(self)
+            + Set save name: waziLog.setSaveName(self)
+        """
         super(waziLog, self).__init__()
         self.color = waziColor()
         self.min = -1
@@ -15,25 +57,135 @@ class waziLog:
         self.setSaveName()
 
     def createLogsFolder(self):
+        """
+        waziLog.createLogsFolder(self)
+        *Give them a home.*
+
+        Create the logs folder if it doesn't exist.
+        Called in __init__.
+
+        Parameters:
+            None
+
+        Return:
+            None
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         os.makedirs("logs", exist_ok = True)
 
     def setSaveName(self):
+        """
+        waziLog.setSaveName(self)
+        *T I M E*
+
+        Set the save name of the log file.
+        Called in __init__.
+
+        Parameters:
+            None
+        
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         self.saveName = "LOG_" + time.strftime("%Y-%m-%d %H.%M.%S", time.localtime(time.time())) + ".log"
 
     def needSave(self, boolean):
+        """
+        waziLog.needSave(self, boolean)
+        *Save or not.*
+
+        Set whether to save the log.
+
+        Parameters:
+            boolean: bool
+                Whether to save the log.
+        
+        Return:
+            Type: bool
+            Whether to save the log.
+        
+        Errors:
+            None
+        """
         self.save = boolean
         return self.save
 
     def setMinDisplayLevel(self, levelNumber):
+        """
+        waziLog.setMinDisplayLevel(self, levelNumber)
+        *You can't see me.*
+
+        Set the minimum level of log display.
+
+        Parameters:
+            levelNumber: int
+                The minimum level of log display.
+                -1: None
+                0: Error
+                1: Warn
+                2: Info
+                3: Debug
+        
+        Return:
+            Type: int
+            The minimum level of log display.
+        
+        Errors:
+            None
+        """
         self.min = levelNumber
         return self.min
 
     def outputLog(self, text):
+        """
+        waziLog.outputLog(self, text)
+        *Got?*
+
+        Output one log message to the log file.
+
+        Parameters:
+            text: str
+                The log message.
+        
+        Return:
+            None
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         if self.save:
             with open("./logs/" + self.saveName, "a", encoding = "utf-8") as f:
                 f.write(text + "\n")
 
     def log(self, level, text):
+        """
+        waziLog.log(self, level, text)
+        *Work for myself, that without you.*
+
+        Print and call the outputLog method.
+
+        Parameters:
+            level: str
+                The level of the log.
+                Debug, Info, Warn, Error
+            
+            text: str
+                The log message.
+        
+        Return:
+            None
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         if level == "debug":
             printText = "[DEBUG \t" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())) + "] " + text
             if self.min >= 3:

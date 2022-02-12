@@ -22,6 +22,15 @@ class waziFileName:
         - Please use help()
     """
     def __init__(self):
+        """
+        waziFileName.__init__(self)
+        *Let the name be known.*
+
+        Initialize the class.
+
+        Parameters:
+            None
+        """
         super(waziFileName, self).__init__()
         self.name = self.__class__.__name__
 
