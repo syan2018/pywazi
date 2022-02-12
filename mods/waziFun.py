@@ -1,6 +1,24 @@
-# A Function for get function name.
-# 一个获取函数名的函数。
+"""
+mods/waziFun.py
+"""
 import inspect
 
 def getFuncName():
+    """
+        waziFun.getFuncName()
+        *Get his name.*
+
+        Get a function name.
+
+        Parameters:
+            None
+
+        Return:
+            Type: str
+            The function name.
+
+        Errors:
+            Python:
+                + Sometimes may cause IndexError.
+        """
     return inspect.stack()[1][3]

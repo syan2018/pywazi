@@ -1,5 +1,6 @@
-# Instantiated logging system
-# 实例化的日志系统
+"""
+Instantiated logging system
+"""
 from mods.waziLog import waziLog as Wl
 
 """

@@ -1,5 +1,6 @@
-# Instantiated config system
-# 实例化的配置系统
+"""
+Instantiated config system
+"""
 from mods.waziConfig import waziConfig as Wc
 
 """

@@ -1,3 +1,9 @@
+"""
+mods/waziCheck.py
+
+class: waziCheck
+"""
+
 import hmac
 import time
 import hashlib
