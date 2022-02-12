@@ -110,6 +110,23 @@ class waziRequest:
         return self.proxies
 
     def useHeaders(self, isUse):
+        """
+        waziRequest.useHeaders(self, isUse)
+        *Change the world.*
+
+        Set the use of custom headers.
+
+        Parameters:
+            isUse: bool
+                If True, use custom headers.
+        
+        Return:
+            Type: bool
+            Current custom headers status.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到自定义 Header 使用信息，正在写入配置。")
         self.isUseHeaders = isUse
@@ -117,6 +134,26 @@ class waziRequest:
         return self.isUseHeaders
 
     def editHeaders(self, key, value):
+        """
+        waziRequest.editHeaders(self, key, value)
+        *Honey, I'm a bee.*
+
+        Set the custom headers.
+
+        Parameters:
+            key: str
+                The key of the custom headers.
+            
+            value: object
+                The value of the custom headers. All mosrly be str.
+        
+        Return:
+            Type: dict
+            Current custom headers.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到自定义 Header 字段定义信息，正在写入配置。")
         waziLog.log("debug", f"({self.name}.{fuName}) 字段： {key}， 数值： {value}")
@@ -125,6 +162,23 @@ class waziRequest:
         return self.headers
 
     def overWriteHeaders(self, headers):
+        """
+        waziRequest.overWriteHeaders(self, headers)
+        *Horny now.*
+
+        Overwrite the custom headers.
+
+        Parameters:
+            headers: dict
+                The custom headers.
+        
+        Return:
+            Type: dict
+            Current custom headers.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到自定义 Header 信息，正在覆盖写入配置。")
         self.headers = headers
@@ -132,6 +186,25 @@ class waziRequest:
         return self.headers
 
     def delHeaders(self, key):
+        """
+        waziRequest.delHeaders(self, key)
+        *I'm a little teapot.*
+
+        Delete the custom headers.
+
+        Parameters:
+            key: str
+                The key of the custom headers.
+        
+        Return:
+            Type: dict
+            Current custom headers.
+        
+        Errors:
+            Log:
+                Error:
+                    + Cannot find the key.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到删除 Header 字段定义信息，正在写入配置。")
         waziLog.log("debug", f"({self.name}.{fuName}) 需求删除字段： {key}")
@@ -144,6 +217,23 @@ class waziRequest:
         return self.headers
 
     def get(self, url):
+        """
+        waziRequest.get(self, url)
+        *Get the moon.*
+
+        Use the GET method to request the url.
+
+        Parameters:
+            url: str
+                The url to request.
+        
+        Return:
+            Type: urllib3.response.HTTPResponse
+            The response of the request.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 信息，准备发起 GET 请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL 信息为： {url}")
@@ -153,6 +243,26 @@ class waziRequest:
         return temp
 
     def post(self, url, data):
+        """
+        waziRequest.post(self, url, data)
+        *Posting the message.*
+
+        Use the POST method to request the url.
+
+        Parameters:
+            url: str
+                The url to request.
+            
+            data: dict
+                The data to send.
+        
+        Return:
+            Type: urllib3.response.HTTPResponse
+            The response of the request.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和 Data 信息，准备发起 POST 请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL 信息为： {url}， Data 信息为： {data}")
@@ -162,6 +272,26 @@ class waziRequest:
         return temp
 
     def fieldsPost(self, url, data):
+        """
+        waziRequest.fieldsPost(self, url, data)
+        *Posting the message, but fields.*
+
+        Use the POST method with fields to request the url.
+
+        Parameters:
+            url: str
+                The url to request.
+            
+            data: dict
+                The data to send.
+        
+        Return:
+            Type: urllib3.response.HTTPResponse
+            The response of the request.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和 Data 信息，准备通过 collectRequest 发起 fieldsPost 请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL 信息为： {url}， Data 信息为： {data}")
@@ -171,6 +301,26 @@ class waziRequest:
         return temp
 
     def put(self, url, data):
+        """
+        waziRequest.put(self, url, data)
+        *Put the message to the moon.*
+
+        Use the PUT method to request the url.
+
+        Parameters:
+            url: str
+                The url to request.
+            
+            data: dict
+                The data to send.
+        
+        Return:
+            Type: urllib3.response.HTTPResponse
+            The response of the request.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和 Data 信息，准备通过 collectRequest 发起 PUT 请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL 信息为： {url}， Data 信息为： {data}")
@@ -180,6 +330,34 @@ class waziRequest:
         return temp
 
     def collectRequest(self, url, method, data):
+        """
+        waziRequest.collectRequest(self, url, method, data)
+        *Request in one.*
+
+        Request in one.
+
+        Parameters:
+            url: str
+                The url to request.
+            
+            method: str
+                The method to request.
+            
+            data: dict
+                The data to send.
+        
+        Return:
+            Type: urllib3.response.HTTPResponse or None
+            The response of the request. If the request failed, return None.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot get the response.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL， METHOD 和 DATA 信息，准备发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL 信息为： {url}， 请求方式为： {method}， 数据为： {data}")
@@ -230,6 +408,42 @@ class waziRequest:
         return temp
 
     def do(self, params):
+        """
+        waziRequest.do(self, params)
+        *a me ga tsu zu ku to shi go to mo se zu ni*
+
+        Analyze the parameters and assign them to the corresponding functions.
+
+        Parameters:
+            params: dict
+                The parameters to analyze.
+                Format like:
+                {
+                    "useProxies": bool,
+                    "proxyAddress": str or None,
+                    "proxyPort": int, str or None,
+                    "useHeaders": bool,
+                    "headers": dict,
+                    "method": str,
+                    "url": str
+                }
+        
+        Return:
+            Type: urllib3.response.HTTPResponse or None
+            The result of the request.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + No method.
+                
+                Warn:
+                    + No proxy.
+                    + No headers.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数信息，准备分析后分配到对应函数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 参数信息： {params}")
@@ -285,6 +499,41 @@ class waziRequest:
             return "Sorry, please input method. / 对不起，请填写请求模式。"
 
     def handleParams(self, params, method, url, deHeaders, deProxies):
+        """
+        waziRequest.handleParams(params, method, url, deHeaders, deProxies)
+        *Woohoo!*
+
+        The format converts parameter information into a dictionary.
+
+        Parameters:
+            params: dict
+                The params that user input.
+            
+            method: str
+                The method to request.
+            
+            url: str
+                The url to request.
+            
+            deHeaders: dict
+                The headers to request.
+            
+            deProxies: dict
+                The proxies to request.
+        
+        Return:
+            Type: dict
+            The params in dictionary format that can be used in waziRequest.do().
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + No proxy.
+                    + No headers.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到信息，准备合成 Params。")
         waziLog.log("debug", f"({self.name}.{fuName}) 基础参数： {params}， 请求方式： {method}， 访问地址： {url}， "
