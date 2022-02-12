@@ -5,11 +5,49 @@ from mods import waziFun
 from ins.waziInsLog import waziLog
 
 class waziCheck:
-    # Separate checksum and crypto system for ExHentai search and PicAcg encryption and decryption processing.
-    # 单独的校验和密码系统，针对 ExHentai 的搜索和 PicAcg 的加解密处理。
+    """
+    waziCheck
+    *Try to understand the world.*
 
-    # 2022.02.10: Nyaa too.
+    Separate checksum and crypto system for ExHentai search and PicAcg encryption and decryption processing.
+    But now also support Nyaa.si.
+
+    Attributes:
+        sha1: hashlib.sha1()
+            Just a hashlib.sha1(), eee.
+
+        nyaaTranslations: dict
+            A dictionary for translating Nyaa's class to the meaning of the class.
+
+        nyaaSearch: dict
+            A dictionary for get Nyaa's categroy id.
+
+        tags: list
+            A list that contains all the categories of ExHentai.
+            (Why I call it tags? Cause I am a bad programmer.)
+
+        tagsNumber: dict
+            A dictionary for get ExHentai's categroy number.
+
+        ratingPos: dict
+            A dictionary for translating ExHentai's rating position to the number.
+
+        name: str
+            The name of the class.
+
+    Methods:
+        - Please use help()
+    """
     def __init__(self):
+        """
+        waziCheck.__init__(self)
+        *God bless you.*
+
+        Initialize the class.
+
+        Parameters:
+            None
+        """
         super(waziCheck, self).__init__()
         self.sha1 = hashlib.sha1()
         # Nyaa Translation
@@ -143,6 +181,31 @@ class waziCheck:
         self.name = self.__class__.__name__
 
     def returnHasTorrents(self, soup):
+        """
+        waziCheck.returnHasTorrents(self, soup)
+        *That's all I understand about it.*
+
+        [ExHentai]
+        If the page has torrents, return True, else return False.
+        Why do I need to write a separate function out?
+        Cause I do not know. *^____^*
+
+        Parameters:
+            soup: BeautifulSoup
+                The soup of the img.
+                Just like:
+                <img src="https://exhentai.org/img/td.png" alt="T" title="No torrents available">
+
+        Return:
+            Type: bool
+            True if the page has torrents, else False.
+            If it cannot find the src, it will return False.
+
+        Errors:
+            Log:
+                Error:
+                    + Cannot find the src.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，正在分析。")
         try:
@@ -168,6 +231,28 @@ class waziCheck:
         return hasTorrents
 
     def returnRatingNum(self, pos):
+        """
+        waziCheck.returnRatingNum(self, pos)
+        *Knowing all her status.*
+
+        [ExHentai]
+        Get the rating number from the position.
+
+        Parameters:
+            pos: str
+                The position in:
+                <div class="ir" style="background-position:-16px -1px;opacity:1"></div>
+                "-16px -1px" is the position.
+
+        Return:
+            Type: int or float
+            The number of the rating.
+
+        Errors:
+            Log:
+                Error:
+                    + Cannot find the rating from the position.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到位移信息，正在分析： {pos}")
         if pos in self.ratingPos:
@@ -178,6 +263,30 @@ class waziCheck:
             return "I can't get it, check your codes. / 我无法获取该评分，检查你的代码。"
 
     def getFileSHA1(self, path):
+        """
+        waziCheck.getFileSHA1(self, path)
+        *A unique ID card. Theoretically, er, it doesn't feel unique.*
+
+        Get the SHA-1 of the file.
+
+        Parameters:
+            path: str
+                The file path.
+                support relative and absolute.
+
+        Return:
+            Type: str
+            The SHA-1 string of the file.
+            If the file does not exist or cannot be read, it will return "".
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+
+            Log:
+                Error:
+                    + Cannot not read the file.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到路径信息，正在完成 SHA1 计算： {path}")
         self.sha1 = hashlib.sha1()
@@ -199,10 +308,41 @@ class waziCheck:
         return self.sha1.hexdigest()
 
     def getSources(self, params):
-        # You can see the values corresponding to all tags in table.itc of ExHentai,
-        # and the calculation method in ehg_index.c.js.
-        # 在 ExHentai 的 table.itc 中可以看到所有标签对应的数值，
-        # 在 ehg_index.c.js 中可以看到计算方法。
+        """
+        waziCheck.getSources(self, params)
+        *Bit is wise.*
+
+        [ExHentai]
+        Calculate the sources of the categories in params.
+        You can see the values corresponding to all tags in table.itc of ExHentai,
+        and the calculation method in ehg_index.c.js.
+
+        function toggle_category(b) {
+            var a = document.getElementById("f_cats");
+            var c = document.getElementById("cat_" + b);
+            if (a.getAttribute("disabled")) {
+                a.removeAttribute("disabled")
+            }
+            if (c.getAttribute("data-disabled")) {
+                c.removeAttribute("data-disabled");
+                a.value = parseInt(a.value) & (1023 ^ b)
+            } else {
+                c.setAttribute("data-disabled", 1);
+                a.value = parseInt(a.value) | b
+            }
+        }
+
+        Parameters:
+            params: dict
+                Must have the key "cats" and the value is a list.
+
+        Return:
+            Type: int
+            The number of the sources.
+
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在完成计算： {params}")
         giveTags = [item for item in self.tags if item not in set(params["cats"])]
@@ -218,6 +358,43 @@ class waziCheck:
         return sources
 
     def signature(self, url, times, method, baseURL, uuids, apiKey, secretKey):
+        """
+        waziCheck.signature(self, url, times, method, baseURL, uuids, apiKey, secretKey)
+        *The signature is the key to the future.*
+
+        [PicAcg]
+        Calculate the signature of the request.
+
+        Parameters:
+            url: str
+                The url of the request.
+
+            times: int
+                The time stamp of the request.
+
+            method: str
+                The method of the request.
+
+            baseURL: str
+                The base url of the request, usually it is "https://picaapi.picacomic.com/".
+
+            uuids: str
+                The uuid of the request.
+
+            apiKey: str
+                The api key of the request, usually it is "C69BAF41DA5ABD1FFEDC6D2FEA56B".
+
+            secretKey: str
+                The secret key of the request, usually it is "~d}$Q7$eIni=V)9\RK/P.RM4;9[7|@/CA}b~OW!3?EV`:<>M7pddUBL5n|0/*Cn".
+
+        Return:
+            Type: str
+            The signature of the request.
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在计算签名。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 时间： {times}， 方法： {method}， 基准 URL： {baseURL}，"
@@ -230,6 +407,40 @@ class waziCheck:
         return hc.hexdigest()
 
     def construct(self, url, method, baseURL, uuids, apiKey, secretKey):
+        """
+        waziCheck.construct(self, url, method, baseURL, uuids, apiKey, secretKey)
+        *Now we are ready to go.*
+
+        [PicAcg]
+        Calculate the signature of the request without the time stamp.
+
+        Parameters:
+            url: str
+                The url of the request.
+
+            method: str
+                The method of the request.
+
+            baseURL: str
+                The base url of the request, usually it is "https://picaapi.picacomic.com/".
+
+            uuids: str
+                The uuid of the request.
+
+            apiKey: str
+                The api key of the request, usually it is "C69BAF41DA5ABD1FFEDC6D2FEA56B".
+
+            secretKey: str
+                The secret key of the request, usually it is "~d}$Q7$eIni=V)9\RK/P.RM4;9[7|@/CA}b~OW!3?EV`:<>M7pddUBL5n|0/*Cn".
+
+        Return:
+            Type: list
+            Index 0 is the signature of the request, and index 1 is the time stamp of the request.
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在计算签名和时间。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 方法： {method}， 基准 URL： {baseURL}，"
@@ -241,6 +452,28 @@ class waziCheck:
         return [sig, times]
 
     def needFilterIt(self, backJson, filters):
+        """
+        waziCheck.needFilterIt(self, backJson, filters)
+        *The censorship is abysmal.*
+
+        [PicAcg]
+        Filters the content specified by the filters.
+
+        Parameters:
+            backJson: list
+                The content of the response.
+
+            filters: list
+                The filters.
+
+        Return:
+            Type: list
+            The filtered content.
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到需要过滤的数据和过滤标签。")
         waziLog.log("debug", f"({self.name}.{fuName}) 需要过滤的数据： {backJson}， 过滤标签： {filters}")
