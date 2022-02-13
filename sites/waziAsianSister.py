@@ -634,7 +634,7 @@ class waziAsianSister:
                     "vip": bool,                                    # Whether the gallery is VIP.
                     "cover": str,                                   # The cover of the gallery.
                     "alt": str,                                     # The alt of the cover.
-                    "title": str,                                   # The title of the gallery.
+                    "title": str                                    # The title of the gallery.
                 }],
                 list[dict{                                          # Video information.
                     "data": str or None,                            # The data of the video.
@@ -642,7 +642,7 @@ class waziAsianSister:
                     "link": str,                                    # The link of the video.
                     "vip": bool,                                    # Whether the video is VIP.
                     "cover": str,                                   # The cover of the video.
-                    "title": str,                                   # The title of the video.
+                    "title": str                                    # The title of the video.
                 }]
             )
 
@@ -731,7 +731,7 @@ class waziAsianSister:
                     "vip": bool,                                    # Whether the gallery is VIP.
                     "cover": str,                                   # The cover of the gallery.
                     "alt": str,                                     # The alt of the cover.
-                    "title": str,                                   # The title of the gallery.
+                    "title": str                                    # The title of the gallery.
                 }],
                 list[dict{                                          # Video information.
                     "data": str or None,                            # The data of the video.
@@ -739,7 +739,7 @@ class waziAsianSister:
                     "link": str,                                    # The link of the video.
                     "vip": bool,                                    # Whether the video is VIP.
                     "cover": str,                                   # The cover of the video.
-                    "title": str,                                   # The title of the video.
+                    "title": str                                    # The title of the video.
                 }]
             )
         
@@ -780,7 +780,7 @@ class waziAsianSister:
                     "vip": bool,                                    # Whether the gallery is VIP.
                     "cover": str,                                   # The cover of the gallery.
                     "alt": str,                                     # The alt of the cover.
-                    "title": str,                                   # The title of the gallery.
+                    "title": str                                    # The title of the gallery.
                 }],
                 list[dict{                                          # Video information.
                     "data": str or None,                            # The data of the video.
@@ -788,7 +788,7 @@ class waziAsianSister:
                     "link": str,                                    # The link of the video.
                     "vip": bool,                                    # Whether the video is VIP.
                     "cover": str,                                   # The cover of the video.
-                    "title": str,                                   # The title of the video.
+                    "title": str                                    # The title of the video.
                 }]
             )
         
@@ -806,7 +806,44 @@ class waziAsianSister:
 
     def tagSearch(self, tag, page):
         """
+        waziAsianSister.tagSearch(self, tag, page)
+        *Ascension.*
+
+        Input a tag and page number and get the page information.
+
+        Parameters:
+            tag: str
+                The tag.
+            
+            page: int
+                The page number. The first page is 1.
         
+        Return:
+            Type: tuple
+            The information of the images and videos.
+            Like this:
+            (
+                list[dict{                                          # Gallery information.
+                    "views": int,                                   # The views of the gallery.
+                    "link": str,                                    # The link of the gallery.
+                    "vip": bool,                                    # Whether the gallery is VIP.
+                    "cover": str,                                   # The cover of the gallery.
+                    "alt": str,                                     # The alt of the cover.
+                    "title": str                                    # The title of the gallery.
+                }],
+                list[dict{                                          # Video information.
+                    "data": str or None,                            # The data of the video.
+                    "views": int,                                   # The views of the video.
+                    "link": str,                                    # The link of the video.
+                    "vip": bool,                                    # Whether the video is VIP.
+                    "cover": str,                                   # The cover of the video.
+                    "title": str                                    # The title of the video.
+                }]
+            )
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到标签和页码，正在生成 URL： {tag}， {page}。")
@@ -817,6 +854,50 @@ class waziAsianSister:
         return waziAsianSister.parseImagesAndVideos(self, soup)
     
     def personSearch(self, person):
+        """
+        waziAsianSister.personSearch(self, person)
+        *Passion.*
+
+        Person search.
+
+        Parameters:
+            person: str
+                The person.
+        
+        Return:
+            Type: tuple
+            The information of the images and videos.
+            {
+                "name": str,                                    # The name of the person.
+                "descriptionHTML": str,                         # The description of the person, but in HTML format.
+                "views": int,                                   # The number of views of the person.
+                "tags": list[dict{                              # The tags of the person.
+                    "name": str,                                # The name of the tag.
+                    "link": str                                 # The link of the tag.
+                }],
+                "galleries": list[dict{                         # The related galleries of the person.
+                    "link": str,                                # The link of the recommend gallery.
+                    "cover": str,                               # The cover of the recommend gallery.
+                    "alt": str,                                 # The alt of the recommend gallery.
+                    "title": str,                               # The title of the recommend gallery.
+                    "stars": str,                               # The stars of the recommend gallery.
+                    "VIP": bool                                 # The VIP status of the recommend gallery.
+                }],
+                "videos": list[dict{                            # The related videos of the person.
+                    "data": str or None,                        # The data of the video, None if not found.
+                                                                # data: The moved cover of the video.
+                                                                # I am not sure about this.
+                    "link": str,                                # The link of the video.
+                    "title": str,                               # The title of the video.
+                    "cover": str,                               # The cover of the video.
+                    "VIP": bool                                 # The VIP status of the video.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到人物信息，正在生成 URL： {person}。")
         url = "https://asiansister.com/" + person
@@ -826,6 +907,60 @@ class waziAsianSister:
         return waziAsianSister.parsePerson(self, soup)
     
     def getGallery(self, gallery):
+        """
+        waziAsianSister.getGallery(self, gallery)
+        *Darkness.*
+
+        Get the gallery information.
+
+        Parameters:
+            gallery: str
+                The gallery.
+        
+        Return:
+            Type: dict
+            The information of the gallery.
+            {
+                "title": str,                                       # The title of the gallery.
+                "stars": str,                                       # The stars of the gallery, X/Y.
+                "category": dict{"name": str, "link": str},         # The category of the gallery.
+                "tags": list[dict{"name": str, "link": str}],       # The tags of the gallery.
+                "description": str,                                 # The description of the gallery.
+                "model": dict{"name": str, "link": str},            # The model of the gallery.
+                "covers": list[dict{"link": str, "alt": str}],      # The covers of the gallery.
+                "pictures": list[dict{"link": str, "org": str}],    # The pictures of the gallery.
+                                                                    # org: The original picture.
+                "pageNum": int,                                     # The number of the pictures.
+                "comments": list[dict{                              # The comments of the video.
+                    "user": str,                                    # The user group.
+                    "avatar": str,                                  # The avatar link.
+                    "name": str,                                    # The name of the user.
+                    "time": str,                                    # The time of the comment.
+                    "content": str                                  # The content of the comment.
+                }],                                                 
+                "galleries": list[dict{                            # The recommend galleries.
+                    "link": str,                                    # The link of the recommend gallery.
+                    "cover": str,                                   # The cover of the recommend gallery.
+                    "alt": str,                                     # The alt of the recommend gallery.
+                    "title": str,                                   # The title of the recommend gallery.
+                    "stars": str,                                   # The stars of the recommend gallery.
+                    "VIP": bool                                     # The VIP status of the recommend gallery.
+                }],
+                "videos": list[dict{                               # The recommend videos.
+                    "data": str or None,                            # The data of the video, None if not found.
+                                                                    # data: The moved cover of the video.
+                                                                    # I am not sure about this.
+                    "link": str,                                    # The link of the video.
+                    "title": str,                                   # The title of the video.
+                    "cover": str,                                   # The cover of the video.
+                    "VIP": bool                                     # The VIP status of the video.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到图集信息，正在生成 URL： {gallery}。")
         url = "https://asiansister.com/" + gallery
@@ -835,6 +970,44 @@ class waziAsianSister:
         return waziAsianSister.parseGallery(self, soup)
     
     def getVideo(self, video):
+        """
+        waziAsianSister.getVideo(self, video)
+        *Live Love.*
+
+        Get the video information.
+
+        Parameters:
+            video: str
+                The video.
+        
+        Return:
+            Type: dict
+            The information of the video.
+            {
+                "title": str,                                   # The title of the video.
+                "views": int,                                   # The views of the video.
+                "tags": list[dict{"name": str, "link": str}],   # The tags of the video.
+                "cover": str,                                   # The cover link of the video.
+                "url": str,                                     # The url of the video file.
+                "comments": list[dict{                          # The comments of the video.
+                    "user": str,                                # The user group.
+                    "avatar": str,                              # The avatar link.
+                    "name": str,                                # The name of the user.
+                    "time": str,                                # The time of the comment.
+                    "content": str                              # The content of the comment.
+                }],                                             
+                "recommends": list[dict{                        # The recommends of the video.
+                    "title": str,                               # The title of the video.
+                    "link": str,                                # The link of the video.
+                    "cover": str,                               # The cover link of the video.
+                    "views": int                                # The views of the video.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到视频信息，正在生成 URL： {video}。")
         url = "https://asiansister.com/" + video
@@ -844,6 +1017,38 @@ class waziAsianSister:
         return waziAsianSister.parseVideo(self, soup)
 
     def customParse(self, content, type):
+        """
+        waziAsianSister.customParse(self, content, type)
+        *Center.*
+
+        Custom parse the content.
+
+        Parameters:
+            content: str
+                The second half of the URL
+            
+            type: str
+                The type of the content.
+                main: The main page.
+                person: The person page.
+                search: The search page.
+                gallery: The gallery page.
+                video: The video page.
+            
+        Return:
+            main / tag / search -> parseImagesAndVideos()
+            person -> parsePerson()
+            gallery -> parseGallery()
+            video -> parseVideo()
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + The type of the content is not supported.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到补充 URL 和类型，正在生成 URL： {content}， {type}。")
         url = "https://asiansister.com/" + content
