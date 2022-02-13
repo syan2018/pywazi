@@ -226,14 +226,14 @@ class waziAsianSister:
                 "tags": list[dict{"name": str, "link": str}],   # The tags of the video.
                 "cover": str,                                   # The cover link of the video.
                 "url": str,                                     # The url of the video file.
-                "comments": list[dict{
+                "comments": list[dict{                          # The comments of the video.
                     "user": str,                                # The user group.
                     "avatar": str,                              # The avatar link.
                     "name": str,                                # The name of the user.
                     "time": str,                                # The time of the comment.
                     "content": str                              # The content of the comment.
-                }],                                             # The comments of the video.
-                "recommends": list[dict{
+                }],                                             
+                "recommends": list[dict{                        # The recommends of the video.
                     "title": str,                               # The title of the video.
                     "link": str,                                # The link of the video.
                     "cover": str,                               # The cover link of the video.
@@ -312,8 +312,61 @@ class waziAsianSister:
 
     def parseGallery(self, soup):
         """
-        waziAsianSister.parseGallery(soup)
+        waziAsianSister.parseGallery(self, soup)
+        *Love.*
+
+        Parse the gallery page.
+
+        Parameters:
+            soup: BeautifulSoup
+                The soup of the gallery page.
+                Like: https://asiansister.com/view_2096_Belle_Delphine__OnlyFans_Friendly_Neighborhoodn
         
+        Return:
+            Type: dict
+            The gallery information.
+            May like:
+            {
+                "title": str,                                       # The title of the gallery.
+                "stars": str,                                       # The stars of the gallery, X/Y.
+                "category": dict{"name": str, "link": str},         # The category of the gallery.
+                "tags": list[dict{"name": str, "link": str}],       # The tags of the gallery.
+                "description": str,                                 # The description of the gallery.
+                "model": dict{"name": str, "link": str},            # The model of the gallery.
+                "covers": list[dict{"link": str, "alt": str}],      # The covers of the gallery.
+                "pictures": list[dict{"link": str, "org": str}],    # The pictures of the gallery.
+                                                                    # org: The original picture.
+                "pageNum": int,                                     # The number of the pictures.
+                "comments": list[dict{                              # The comments of the video.
+                    "user": str,                                    # The user group.
+                    "avatar": str,                                  # The avatar link.
+                    "name": str,                                    # The name of the user.
+                    "time": str,                                    # The time of the comment.
+                    "content": str                                  # The content of the comment.
+                }],                                                 
+                "galleries": lists[dict{                            # The recommend galleries.
+                    "link": str,                                    # The link of the recommend gallery.
+                    "cover": str,                                   # The cover of the recommend gallery.
+                    "alt": str,                                     # The alt of the recommend gallery.
+                    "title": str,                                   # The title of the recommend gallery.
+                    "stars": str,                                   # The stars of the recommend gallery.
+                    "VIP": bool                                     # The VIP status of the recommend gallery.
+                }],
+                "videos": lists[dict{                               # The recommend videos.
+                    "data": str or None,                            # The data of the video, None if not found.
+                                                                    # data: The moved cover of the video.
+                                                                    # I am not sure about this.
+                    "link": str,                                    # The link of the video.
+                    "title": str,                                   # The title of the video.
+                    "cover": str,                                   # The cover of the video.
+                    "VIP": bool                                     # The VIP status of the video.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+                (Parsing the soup that is not from asiansister gallery may cause the program to crash.)
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
@@ -385,8 +438,9 @@ class waziAsianSister:
                 comment["content"] = i.find("div", class_ = "commentText").find_all("div")[2].text.strip()
                 gallery["comments"].append(comment)
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取画廊推荐。")
-        gallery["galleries"] = waziAsianSister.parseRecommendImagesAndVideos(self, soup)[0]
-        gallery["videos"] = waziAsianSister.parseRecommendImagesAndVideos(self, soup)[1]
+        recommend = waziAsianSister.parseRecommendImagesAndVideos(self, soup)
+        gallery["galleries"] = recommend[0]
+        gallery["videos"] = recommend[1]
         waziLog.log("info", f"({self.name}.{fuName}) 画廊解析完毕，数据返回： {gallery}。")
         return gallery
     
