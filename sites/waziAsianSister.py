@@ -1,3 +1,9 @@
+"""
+sites/waziAsianSister.py
+
+class: waziAsianSister
+"""
+
 import os
 from mods import waziFun
 from bs4 import BeautifulSoup
@@ -7,14 +13,53 @@ from mods.waziRequest import waziRequest
 from mods.waziFileName import waziFileName
 
 class waziAsianSister:
-    # AsianSister is a website that full of Asian Porn
-    # AsianSister: https://asiansister.com/
+    """
+    waziAsianSister
+    *Skin.*
+
+    A class for crawling AsianSister.
+
+    Attributes:
+        request: waziRequest
+            waziRequest()
+        
+        URL: waziURL
+            waziURL()
+        
+        fileName: waziFileName
+            waziFileName()
+        
+        headers: dict
+            A dict of headers for requests.
+            Default: Chrome on Windows 10
+        
+        proxies: dict
+            A dict of proxies for requests.
+            Default: {'proxyAddress': '127.0.0.1', 'proxyPort': '7890'}
+        
+        params: dict
+            A dict of user params for requests. User can set the params in config.json.
+        
+        name: str
+            The name of this class.
+    
+    Methods:
+        - Please use help()
+    """
     def __init__(self):
+        """
+        waziAsianSister.__init__(self)
+        *Milk.*
+
+        Initialize the class.
+
+        Parameters:
+            None
+        """
         super(waziAsianSister, self).__init__()
         self.request = waziRequest()
         self.URL = waziURL()
         self.fileName = waziFileName()
-        self.api = ""
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                           "Chrome/91.0.4472.164 Safari/537.36"
@@ -27,6 +72,23 @@ class waziAsianSister:
         self.name = self.__class__.__name__
 
     def giveParams(self, params):
+        """
+        waziAsianSister.giveParams(self, params)
+        *Abandonment.*
+
+        Give params to this class. Controled by user.
+        Proxy and headers are controlled by self.params.
+
+        Parameters:
+            params: dict
+                A dict of params, user given.
+        
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到配置信息，正在写入。")
         self.params = params
@@ -34,7 +96,29 @@ class waziAsianSister:
         return self.params
 
     def returnSoup(self, link):
-        # TODO: Put this function in waziRequest
+        """
+        waziAsianSister.returnSoup(self, link)
+        *Dry.*
+
+        Request a link and return a BeautifulSoup.
+
+        Parameters:
+            link: str
+                A link to request.
+        
+        Return:
+            soup: BeautifulSoup
+                A BeautifulSoup of the requested link.
+                If the request failed, return BeautifulSoup("<html></html>", "lxml")
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Logs:
+                Error:
+                    + Cannot get the response.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得 Soup： {link}")
         tempParams = self.params
@@ -53,6 +137,36 @@ class waziAsianSister:
             return soup
     
     def downloadFile(self, url, name, path):
+        """
+        waziAsianSister.downloadFile(self, url, name, path)
+        *Sweet Trouble.*
+
+        Download a file from a link for asiansister.com.
+
+        Parameters:
+            url: str
+                A link to download.
+            
+            name: str
+                The name of the file.
+            
+            path: str
+                The path to save the file.
+            
+        Return:
+            Type: bool
+            If the download is successful, return True, else return False.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+                (Cannot save the file may cause the program to crash.)
+            
+            Logs:
+                Error:
+                    + Cannot get the response.
+                    + Cannot create the path.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，文件名和路径，正在准备下载。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 文件名： {name}， 路径： {path}")
@@ -92,6 +206,46 @@ class waziAsianSister:
         return True
     
     def parseVideo(self, soup):
+        """
+        waziAsianSister.parseVideo(self, soup)
+        *Like a flower.*
+
+        Parse the video information from the soup.
+
+        Parameters:
+            soup: BeautifulSoup
+                The soup to parse.
+                Like: https://asiansister.com/v_vide_247_XXXXXXXXXX
+
+        Return:
+            Type: dict
+            The video information.
+            {
+                "title": str,                                   # The title of the video.
+                "views": int,                                   # The views of the video.
+                "tags": list[dict{"name": str, "link": str}],   # The tags of the video.
+                "cover": str,                                   # The cover link of the video.
+                "url": str,                                     # The url of the video file.
+                "comments": list[dict{
+                    "user": str,                                # The user group.
+                    "avatar": str,                              # The avatar link.
+                    "name": str,                                # The name of the user.
+                    "time": str,                                # The time of the comment.
+                    "content": str                              # The content of the comment.
+                }],                                             # The comments of the video.
+                "recommends": list[dict{
+                    "title": str,                               # The title of the video.
+                    "link": str,                                # The link of the video.
+                    "cover": str,                               # The cover link of the video.
+                    "views": int                                # The views of the video.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+                (Parsing the soup that is not from asiansister video may cause the program to crash.)
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
         video = {}
@@ -157,6 +311,10 @@ class waziAsianSister:
         return video
 
     def parseGallery(self, soup):
+        """
+        waziAsianSister.parseGallery(soup)
+        
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
         gallery = {}
