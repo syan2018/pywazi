@@ -938,7 +938,7 @@ class waziAsianSister:
                     "time": str,                                    # The time of the comment.
                     "content": str                                  # The content of the comment.
                 }],                                                 
-                "galleries": list[dict{                            # The recommend galleries.
+                "galleries": list[dict{                             # The recommend galleries.
                     "link": str,                                    # The link of the recommend gallery.
                     "cover": str,                                   # The cover of the recommend gallery.
                     "alt": str,                                     # The alt of the recommend gallery.
@@ -946,7 +946,7 @@ class waziAsianSister:
                     "stars": str,                                   # The stars of the recommend gallery.
                     "VIP": bool                                     # The VIP status of the recommend gallery.
                 }],
-                "videos": list[dict{                               # The recommend videos.
+                "videos": list[dict{                                # The recommend videos.
                     "data": str or None,                            # The data of the video, None if not found.
                                                                     # data: The moved cover of the video.
                                                                     # I am not sure about this.
