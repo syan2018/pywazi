@@ -531,6 +531,31 @@ class waziAsianSister:
         Return:
             Type: tuple
             The parsed recommend images and videos.
+            Like:
+            (
+                list[dict{                                      # The recommend galleries.
+                    "link": str,                                # The link of the recommend gallery.
+                    "cover": str,                               # The cover of the recommend gallery.
+                    "alt": str,                                 # The alt of the recommend gallery.
+                    "title": str,                               # The title of the recommend gallery.
+                    "stars": str,                               # The stars of the recommend gallery.
+                    "VIP": bool                                 # The VIP status of the recommend gallery.
+                }],
+                list[dict{                                      # The recommend videos.
+                    "data": str or None,                        # The data of the video, None if not found.
+                                                                # data: The moved cover of the video.
+                                                                # I am not sure about this.
+                    "link": str,                                # The link of the video.
+                    "title": str,                               # The title of the video.
+                    "cover": str,                               # The cover of the video.
+                    "VIP": bool                                 # The VIP status of the video.
+                }]
+            )
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+                (Parsing the soup that is not from asiansister person page may cause the program to crash.)
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
@@ -587,6 +612,45 @@ class waziAsianSister:
         return recommendGalleries, recommendVideos
 
     def parseImagesAndVideos(self, soup):
+        """
+        waziAsianSister.parseImagesAndVideos(self, soup)
+        *Variable.*
+
+        From the page of the search result, get the information of the images and videos.
+
+        Parameters:
+            soup: BeautifulSoup
+                The page of the search result or just page.
+                https://asiansiter.com/
+        
+        Return:
+            Type: tuple
+            The information of the images and videos.
+            Like this:
+            (
+                list[dict{                                          # Gallery information.
+                    "views": int,                                   # The views of the gallery.
+                    "link": str,                                    # The link of the gallery.
+                    "vip": bool,                                    # Whether the gallery is VIP.
+                    "cover": str,                                   # The cover of the gallery.
+                    "alt": str,                                     # The alt of the cover.
+                    "title": str,                                   # The title of the gallery.
+                }],
+                list[dict{                                          # Video information.
+                    "data": str or None,                            # The data of the video.
+                    "views": int,                                   # The views of the video.
+                    "link": str,                                    # The link of the video.
+                    "vip": bool,                                    # Whether the video is VIP.
+                    "cover": str,                                   # The cover of the video.
+                    "title": str,                                   # The title of the video.
+                }]
+            )
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+                (Parsing the soup that is not from asiansister person page may cause the program to crash.)
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
         waziLog.log("debug", f"({self.name}.{fuName}) 提取页面中所有画廊信息。")
@@ -646,6 +710,43 @@ class waziAsianSister:
         return galleriesBox, videosBox
 
     def getPage(self, page):
+        """
+        waziAsianSister.getPage(self, page)
+        *Keep.*
+
+        Input a page number and get the page information.
+
+        Parameters:
+            page: int
+                The page number. The first page is 1.
+        
+        Return:
+            Type: tuple
+            The information of the images and videos.
+            Like this:
+            (
+                list[dict{                                          # Gallery information.
+                    "views": int,                                   # The views of the gallery.
+                    "link": str,                                    # The link of the gallery.
+                    "vip": bool,                                    # Whether the gallery is VIP.
+                    "cover": str,                                   # The cover of the gallery.
+                    "alt": str,                                     # The alt of the cover.
+                    "title": str,                                   # The title of the gallery.
+                }],
+                list[dict{                                          # Video information.
+                    "data": str or None,                            # The data of the video.
+                    "views": int,                                   # The views of the video.
+                    "link": str,                                    # The link of the video.
+                    "vip": bool,                                    # Whether the video is VIP.
+                    "cover": str,                                   # The cover of the video.
+                    "title": str,                                   # The title of the video.
+                }]
+            )
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，正在生成 URL： {page}。")
         url = "https://asiansister.com/_page" + str(page)
@@ -655,6 +756,46 @@ class waziAsianSister:
         return waziAsianSister.parseImagesAndVideos(self, soup)
 
     def search(self, keyword, page):
+        """
+        waziAsianSister.search(self, keyword, page)
+        *Find and hide.*
+
+        Input a keyword and page number and get the page information.
+
+        Parameters:
+            keyword: str
+                The keyword.
+            
+            page: int
+                The page number. The first page is 1.
+        
+        Return:
+            Type: tuple
+            The information of the images and videos.
+            Like this:
+            (
+                list[dict{                                          # Gallery information.
+                    "views": int,                                   # The views of the gallery.
+                    "link": str,                                    # The link of the gallery.
+                    "vip": bool,                                    # Whether the gallery is VIP.
+                    "cover": str,                                   # The cover of the gallery.
+                    "alt": str,                                     # The alt of the cover.
+                    "title": str,                                   # The title of the gallery.
+                }],
+                list[dict{                                          # Video information.
+                    "data": str or None,                            # The data of the video.
+                    "views": int,                                   # The views of the video.
+                    "link": str,                                    # The link of the video.
+                    "vip": bool,                                    # Whether the video is VIP.
+                    "cover": str,                                   # The cover of the video.
+                    "title": str,                                   # The title of the video.
+                }]
+            )
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到关键字和页码，正在生成 URL： {keyword}， {page}。")
         url = "https://asiansister.com/search.php?q=" + keyword + "&page=" + str(page)
@@ -664,6 +805,9 @@ class waziAsianSister:
         return waziAsianSister.parseImagesAndVideos(self, soup)
 
     def tagSearch(self, tag, page):
+        """
+        
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到标签和页码，正在生成 URL： {tag}， {page}。")
         url = "https://asiansister.com/tag.php?tag=" + tag + "&page=" + str(page)
