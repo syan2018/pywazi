@@ -1,7 +1,6 @@
 import os
 import re
 import json
-from unittest import mock
 import urllib.parse
 import urllib.request
 from mods import waziFun
