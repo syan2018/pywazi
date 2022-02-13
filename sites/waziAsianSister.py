@@ -344,7 +344,7 @@ class waziAsianSister:
                     "time": str,                                    # The time of the comment.
                     "content": str                                  # The content of the comment.
                 }],                                                 
-                "galleries": lists[dict{                            # The recommend galleries.
+                "galleries": list[dict{                            # The recommend galleries.
                     "link": str,                                    # The link of the recommend gallery.
                     "cover": str,                                   # The cover of the recommend gallery.
                     "alt": str,                                     # The alt of the recommend gallery.
@@ -352,7 +352,7 @@ class waziAsianSister:
                     "stars": str,                                   # The stars of the recommend gallery.
                     "VIP": bool                                     # The VIP status of the recommend gallery.
                 }],
-                "videos": lists[dict{                               # The recommend videos.
+                "videos": list[dict{                               # The recommend videos.
                     "data": str or None,                            # The data of the video, None if not found.
                                                                     # data: The moved cover of the video.
                                                                     # I am not sure about this.
@@ -445,6 +445,53 @@ class waziAsianSister:
         return gallery
     
     def parsePerson(self, soup):
+        """
+        waziAsianSister.parsePerson(self, soup)
+        *Virgin.*
+
+        Parse the person page.
+
+        Parameters:
+            soup: BeautifulSoup
+                The BeautifulSoup object of the page.
+                Like: https://asiansister.com/m_6__YUZUKIn
+        
+        Return:
+            Type: dict
+            The parsed person data.
+            May be:
+            {
+                "name": str,                                    # The name of the person.
+                "descriptionHTML": str,                         # The description of the person, but in HTML format.
+                "views": int,                                   # The number of views of the person.
+                "tags": list[dict{                              # The tags of the person.
+                    "name": str,                                # The name of the tag.
+                    "link": str                                 # The link of the tag.
+                }],
+                "galleries": list[dict{                         # The related galleries of the person.
+                    "link": str,                                # The link of the recommend gallery.
+                    "cover": str,                               # The cover of the recommend gallery.
+                    "alt": str,                                 # The alt of the recommend gallery.
+                    "title": str,                               # The title of the recommend gallery.
+                    "stars": str,                               # The stars of the recommend gallery.
+                    "VIP": bool                                 # The VIP status of the recommend gallery.
+                }],
+                "videos": list[dict{                            # The related videos of the person.
+                    "data": str or None,                        # The data of the video, None if not found.
+                                                                # data: The moved cover of the video.
+                                                                # I am not sure about this.
+                    "link": str,                                # The link of the video.
+                    "title": str,                               # The title of the video.
+                    "cover": str,                               # The cover of the video.
+                    "VIP": bool                                 # The VIP status of the video.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+                (Parsing the soup that is not from asiansister person page may cause the program to crash.)
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
         person = {}
@@ -463,12 +510,28 @@ class waziAsianSister:
                 waziLog.log("debug", f"({self.name}.{fuName}) 个人标签： {i.text}。")
                 person["tags"].append({"name": i.text, "link": i.attrs["href"]})
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取相关推荐。")
-        person["galleries"] = waziAsianSister.parseRecommendImagesAndVideos(self, soup)[0]
-        person["videos"] = waziAsianSister.parseRecommendImagesAndVideos(self, soup)[1]
+        recommend = waziAsianSister.parseRecommendImagesAndVideos(self, soup)
+        person["galleries"] = recommend[0]
+        person["videos"] = recommend[1]
         waziLog.log("info", f"({self.name}.{fuName}) 解析完成，个人信息返回中。")
         return person
     
     def parseRecommendImagesAndVideos(self, soup):
+        """
+        waziAsianSister.parseRecommendImagesAndVideos(self, soup)
+        *Emotion.*
+
+        Parse the recommend images and videos in the page.
+
+        Parameters:
+            soup: BeautifulSoup
+                The BeautifulSoup object of the page.
+                Must have <div class="recommentBox"></div> and <div class="recommentBoxVideo"></div>.
+        
+        Return:
+            Type: tuple
+            The parsed recommend images and videos.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取推荐画廊和视频。")
