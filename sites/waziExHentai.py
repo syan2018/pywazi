@@ -1,3 +1,9 @@
+"""
+sites/waziExHentai.py
+
+class: waziExHentai
+"""
+
 import os
 import re
 import json
@@ -11,12 +17,73 @@ from mods.waziCheck import waziCheck
 from mods.waziRequest import waziRequest
 from mods.waziFileName import waziFileName
 
-# 流程太臃肿了，不过我就是不改，嘻嘻。
-
 class waziExHentai:
-    # ExHentai is the world's largest erotic homoerotic manga site.
-    # ExHentai 是全世界最大的色情同人志漫画网站。
+    """
+    waziExHentai
+    *Skin.*
+
+    A class for crawling exhentai.org only,
+    may can be used for e-hentai.org, but not tested.
+
+    Attributes:
+        headers: dict
+            Headers for request.
+            Default: A chrome user-agent.
+        
+        proxies: dict
+            Proxies for request.
+            Default: {'proxyAddress': '127.0.0.1', 'proxyPort': '7890'}
+        
+        request: waziRequest
+            A waziRequest object.
+        
+        check: waziCheck
+            A waziCheck object.
+        
+        URL: waziURL
+            A waziURL object.
+        
+        fileName: waziFileName
+            A waziFileName object.
+        
+        urls: dict
+            URLs for request.
+            main: https://exhentai.org/
+            galleryTorrent: https://exhentai.org/gallerytorrents.php?gid=
+            api: https://exhentai.org/api.php
+            mpv: https://exhentai.org/mpv/
+        
+        params: dict
+            A dict of user params for requests. User can set the params in config.json.
+        
+        needParse: bool
+            A bool to decide whether to use custom parser.
+            Default: True
+        
+        jumpWarn: bool
+            A bool to decide whether to jump warnings.
+            Default: False
+        
+        fullComments: bool
+            A bool to decide whether to get full comments.
+            Default: True
+        
+        name: str
+            The name of this class.
+    
+    Methods:
+        - Please use help()
+    """
     def __init__(self):
+        """
+        waziExHentai.__init__(self)
+        *Some people are in love, some drive at night to see the sea, and some are dying to write development documents.*
+
+        Initialize this class.
+
+        Attributes:
+            None
+        """
         super(waziExHentai, self).__init__()
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -45,6 +112,23 @@ class waziExHentai:
         self.name = self.__class__.__name__
 
     def giveParams(self, params):
+        """
+        waziExHentai.giveParams(self, params)
+        *Obituary.*
+
+        Give params to this class. Controled by user.
+        Proxy and headers are controlled by self.params.
+
+        Parameters:
+            params: dict
+                A dict of params, user given.
+        
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到配置信息，正在写入。")
         self.params = params
@@ -52,6 +136,25 @@ class waziExHentai:
         return self.params
 
     def setParse(self, boolean):
+        """
+        waziExHentai.setParse(self, boolean)
+        *Like lovers.*
+
+        Set whether to use custom parser.
+        If True, use custom parser. If False, use extended parser and change the view method to "extended".
+
+        Parameters:
+            boolean: bool
+                A bool to decide whether to use custom parser.
+        
+        Return:
+            Type: bool
+            Current parse status.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到解析器参数，正在写入。")
         self.needParse = boolean
@@ -61,6 +164,25 @@ class waziExHentai:
         return self.needParse
 
     def setCookies(self, cookies):
+        """
+        waziExHentai.setCookies(self, cookies)
+        *At what point of separation and at what point of evolution.*
+
+        Set cookies for request.
+        Please use this method before any work.
+
+        Parameters:
+            cookies: str
+                A string of cookies.
+                Use document.cookie to get cookies in browser.
+        
+        Return:
+            Type: str
+            Current cookies.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Cookies 账号信息，正在写入。")
         self.headers["Cookie"] = cookies
@@ -68,6 +190,23 @@ class waziExHentai:
         return self.headers["Cookie"]
 
     def needFullComments(self, boolean):
+        """
+        waziExHentai.needFullComments(self, boolean)
+        *Rain and Lo-fi.*
+
+        Set whether to get full comments.
+
+        Parameters:
+            boolean: bool
+                A bool to decide whether to get full comments.
+        
+        Return:
+            Type: bool
+            Current full comments status.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在写入。")
         self.fullComments = boolean
@@ -75,6 +214,30 @@ class waziExHentai:
         return self.fullComments
 
     def changeThumbnailMode(self, method):
+        """
+        waziExHentai.changeThumbnailMode(self, method)
+        *Kiss and smile.*
+
+        Change thumbnail mode.
+        Large or normal.
+
+        Parameters:
+            method: str
+                A string of thumbnail mode.
+                normal or large else will keep the current mode.
+        
+        Return:
+            Type: str
+            Current thumbnail mode.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + If the method is not normal or large.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到缩略图显示模式，准备对比并发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 显示模式： {method}")
@@ -98,6 +261,30 @@ class waziExHentai:
         return method
 
     def changeMethod(self, method):
+        """
+        waziExHentai.changeMethod(self, method)
+        *Shall we sleep?.*
+
+        Change view mode.
+        Minimal, Minimal+, Compact, Extended, Thumbnail.
+
+        Parameters:
+            method: str
+                A string of view mode.
+                Minimal, Minimal+, Compact, Extended, Thumbnail else will keep the current mode.
+            
+        Return:
+            Type: str
+            Current view mode.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + If the method is not supported.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到显示模式，准备比对并发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 显示模式： {method}")
@@ -130,6 +317,25 @@ class waziExHentai:
         return method
 
     def setJump(self, jumpNeed):
+        """
+        waziExHentai.setJump(self, jumpNeed)
+        *Keyboard?.*
+
+        Whether to skip the warning display. If you want to skip the warning, set jumpNeed to True.
+        If you want to display the warning, set jumpNeed to False, and the warning will crash the program.
+        :)
+
+        Parameters:
+            jumpNeed: bool
+                Whether to skip the warning display.
+        
+        Return:
+            Type: bool
+            Current jump status.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到画廊警告是否跳过参数，正在写入。")
         self.jumpWarn = jumpNeed
@@ -137,6 +343,32 @@ class waziExHentai:
         return self.jumpWarn
 
     def getDisplayMode(self, soup):
+        """
+        waziExHentai.getDisplayMode(self, soup)
+        *Sky is falling.*
+
+        Get the current display mode.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object.
+                Must have a element with id "dms" and can't be None.
+                "dms" element must have a element named "select" and can't be None.
+                "select" element must have a element named "option" and can't be None.
+                The one of options must have a attribute named "selected".
+        
+        Return:
+            Type: str
+            Current display mode. If cannot get, return "".
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot get the current display mode.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到首页 Soup 信息，正在分析。")
         try:
@@ -151,6 +383,37 @@ class waziExHentai:
                     return i.get_text()
 
     def getMainInfo(self, soup, parserType):
+        """
+        waziExHentai.getMainInfo(self, soup, parserType)
+        *Burning the building.*
+
+        Parse the index page or search page with one of the following parser types:
+        Extended, Minimal, Minimal+, Compact, Thumbnail.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object to parse.
+            
+            parserType: str
+                The parser type.
+        
+        Return:
+            You need to check:
+            + Extended -> waziExHentai.getExtendedMain
+            + Minimal -> waziExHentai.getMinimalMain
+            + Minimal+ -> waziExHentai.getMinimalPlusMain
+            + Compact -> waziExHentai.getCompactMain
+            + Thumbnail -> waziExHentai.getThumbnailMain
+            May return None or call other methods.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Parser type is not supported.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到首页 Soup 信息和解析器显示模式，正在分配至对应函数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 解析器显示模式： {parserType}")
@@ -173,20 +436,35 @@ class waziExHentai:
             waziLog.log("error", f"({self.name}.{fuName}) 无法找到对应解析器，默认返回为空列表。")
             return []
 
-    # These parsers are fragile, and as soon as an update or a slight change in the style of the site is made,
-    # these conditions may render them inoperable.
-    #
-    # I recommend that you use Extended display mode because it is the most comprehensive (relatively) way to get
-    # information and I have the most confidence in this mode.
-    #
-    # 这些解析器都很脆弱，只要一更新或者网站的样式稍微修改，
-    # 这些情况都有可能使他们无法运行。
-    #
-    # 我建议你使用 Extended 显示模式，因为该模式下获取的信息最全面（相对），并且这个模式我最有把握。
+    """
+    I have to say, these parser functions are not very good.
 
-    # 任何异常优先考虑 ExHentai 改版；额外情况；代码错误
+    They are fragile, and as soon as an update or a slight change in the style of the site is made,
+    These conditions may render the program invalid.
+
+    I recommend you to use the Extended display mode and Extended parser type.
+    Because I use it.
+    """
 
     def getRatingNum(self, soup):
+        """
+        waziExHentai.getRatingNum(self, soup)
+        *Roleplay so hard, even in life.*
+
+        Get the number of ratings.
+
+        Parameters:
+            soup: BeautifulSoup
+            Like <div class="ir" style="background-position:-16px -1px;opacity:1"></div>
+        
+        Return:
+            Type: int or float
+            Number of ratings.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到首页或搜索结果 Soup，正在获取评分。")
         ratingNum = self.check.returnRatingNum(
@@ -196,6 +474,65 @@ class waziExHentai:
         return ratingNum
 
     def getMinimalJSON(self, soup, parseType):
+        """
+        waziExHentai.getMinimalJSON(self, soup, parseType)
+        *Like a god, know the meaning of the world.*
+
+        Parse the index page or search page with Minimal parser type.
+        (Support Minimal, Minimal+)
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object to parse.
+            
+            parseType: str
+                The parser type.
+                normal: Normal
+                plus: Minimal+
+        
+        Return:
+            Type: dict
+            A dictionary contains the information.
+            Normal:
+            {
+                "title": str,                               # The gallery title.
+                "URL": str,                                 # The gallery URL.
+                "cat": str,                                 # The gallery category.
+                "cover": str,                               # The gallery cover URL.
+                "uploader": str,                            # The gallery uploader.
+                "uploaderURL": str,                         # The gallery uploader URL.
+                "time": str,                                # The gallery upload time.
+                "hasTorrents": bool,                        # Whether the gallery has torrents.
+                "rating": int or float,                     # The gallery rating.
+                "pages": str                                # The gallery pages.
+            }
+            Plus:
+            {
+                "title": str,                               # The gallery title.
+                "URL": str,                                 # The gallery URL.
+                "cat": str,                                 # The gallery category.
+                "cover": str,                               # The gallery cover URL.
+                "uploader": str,                            # The gallery uploader.
+                "uploaderURL": str,                         # The gallery uploader URL.
+                "time": str,                                # The gallery upload time.
+                "hasTorrents": bool,                        # Whether the gallery has torrents.
+                "rating": int or float,                     # The gallery rating.
+                "pages": int,                               # The gallery pages.
+                "others": {                                 # Other information.
+                    "type": "Minimal+ Own Information",     # The type of the information.
+                    "has": ["markedTags"],                  # The tags the gallery has.
+                    "markedTags": [{                        # The tags the gallery marked.
+                        "title": str,                       # The tag title.
+                        "className": str,                   # The tag class name.
+                        "style": str,                       # The tag style.
+                    }]
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息和 Minimal 解析器模式，正在解析。")
         waziLog.log("debug", f"({self.name}.{fuName}) Minimal 解析器模式： {parseType}")
@@ -231,7 +568,7 @@ class waziExHentai:
             "time": soup.find(class_ = "gl2m").find_all("div")[-1].get_text(),
             "hasTorrents": self.check.returnHasTorrents(soup.find(class_ = "gl6m").find("img")),
             "rating": ratingNum,
-            "pages": soup.find_all("div")[2].find_all("div")[-1].get_text().split(" ")[0]
+            "pages": int(soup.find_all("div")[2].find_all("div")[-1].get_text().split(" ")[0])
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 组合完毕，内容： {tempBooks}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在检查解析器模式来确定是否存在附加内容。")
@@ -273,6 +610,28 @@ class waziExHentai:
         return tempBooks
 
     def itgGltmDel(self, soup, className):
+        """
+        waziExHentai.itgGltmDel(self, soup, className)
+        *Sleep.*
+
+        Find all tr with className and delete first.
+        Usually, className is "itg gltm".
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object.
+            
+            className: str
+                The className, usually "itg gltm".
+        
+        Return:
+            Type: list[BeautifulSoup]
+            A list of BeautifulSoup objects. All search results.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到首页 Soup 信息和 class 名，正在获取 tr 所有内容。")
         bigBody = soup.find_all(class_ = className)[0].find_all("tr")
@@ -282,6 +641,24 @@ class waziExHentai:
         return bigBody
 
     def getMinimalMain(self, soup):
+        """
+        waziExHentai.getMinimalMain(soup)
+        *Forgive me.*
+
+        Parse the index page or search page with Minimal parser type to get the full contents.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object to parse.
+        
+        Return:
+            Type: list[waziExHentai.getMinimalJSON("normal")]
+            A list of waziExHentai.getMinimalJSON results with Minimal parser type.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到首页 Soup 信息，正在以普通模式进行分析。")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建内容列表。")
@@ -297,6 +674,24 @@ class waziExHentai:
         return booksList
 
     def getMinimalPlusMain(self, soup):
+        """
+        waziExHentai.getMinimalPlusMain(self, soup)
+        *Know thyself.*
+
+        Parse the index page or search page with Minimal+ parser type to get the full contents.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object to parse.
+        
+        Return:
+            Type: list[waziExHentai.getMinimalJSON("plus")]
+            A list of waziExHentai.getMinimalJSON results with Minimal+ parser type.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到首页 Soup 信息，正在以扩展模式进行分析。")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建内容列表。")
@@ -313,6 +708,46 @@ class waziExHentai:
         return booksList
 
     def getCompactMain(self, soup):
+        """
+        waziExHentai.getCompactMain(self, soup)
+        *Dawn to dusk.*
+
+        Parse the index page or search page with Compact parser type to get the full contents.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object to parse.
+        
+        Return:
+            Type: list[dict{key: value}]
+            A list of parse results.
+            Be like:
+            [{
+                "title": str,                               # The gallery title.
+                "URL": str,                                 # The gallery URL.
+                "cat": str,                                 # The gallery category.
+                "cover": str,                               # The gallery cover URL.
+                "uploader": str,                            # The gallery uploader.
+                "uploaderURL": str,                         # The gallery uploader URL.
+                "time": str,                                # The gallery upload time.
+                "hasTorrents": bool,                        # The gallery has torrents or not.
+                "rating": int or float,                     # The gallery rating.
+                "pages": int,                               # The gallery pages.
+                "others": {                                 # Other information.
+                    "type": "Compact Own Information",      # The information type.
+                    "has": ["tags"],                        # The information has.
+                    "tags": [{                              # The information tags.
+                        "title": str,                       # The tag title.
+                        "className": str,                   # The tag class name.
+                        "style": str                        # The tag style.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，正在解析。")
         booksList = []
