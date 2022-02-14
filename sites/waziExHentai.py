@@ -1284,14 +1284,14 @@ class waziExHentai:
                 {
                     "cats": [str],                          # The category you want to search, like "Non-H".
                     "search": str,                          # The search text.
-                    "sgn": bool,                            # Whether to search for gallery names.
-                    "sgt": bool,                            # Whether to search for gallery tags.
-                    "sgd": bool,                            # Whether to search for gallery descriptions.
-                    "stf": bool,                            # Whether to search for torrent file names.
+                    "sgn": bool,                            # Whether to search with gallery names.
+                    "sgt": bool,                            # Whether to search with gallery tags.
+                    "sgd": bool,                            # Whether to search with gallery descriptions.
+                    "stf": bool,                            # Whether to search with torrent file names.
                     "osgwt": bool,                          # Whether to view only galleries with torrents.
-                    "slpt": bool,                           # Whether to search for low power tags.
-                    "sdt": bool,                            # Whether to search for downed tags.
-                    "seg": bool,                            # Whether to search for expunged galleries.
+                    "slpt": bool,                           # Whether to search with low power tags.
+                    "sdt": bool,                            # Whether to search with downed tags.
+                    "seg": bool,                            # Whether to search with expunged galleries.
                     "mr": bool,                             # Whether to search with low rating limit.
                     "mrs": int or str,                      # Low rating limit, from 2 to 5.
                     "b": bool,                              # Whether to search with range limit.
@@ -1378,7 +1378,40 @@ class waziExHentai:
         waziExHentai.imageSearch(self, params)
         *Beg.*
 
+        Search for images.
+
+        Parameters:
+            params: dict
+                The search parameters.
+
+                Type 1: Use the SHA-1 hash of the image:
+                {
+                    "type": "sha1",                         # SHA-1 Type.
+                    "sha1": str,                            # SHA-1 Hash.
+                    "similar": bool,                        # Similarity Search.
+                    "cover": bool,                          # Cover Search.
+                    "exp": bool,                            # Expunged Galleries Search.
+                }
+                
+                Type 2: Use the path of the image:
+                {
+                    "type": "path",                         # Path Type.
+                    "path": str,                            # Local Image Path.
+                    "similar": bool,                        # Similarity Search.
+                    "cover": bool,                          # Only Cover Search.
+                    "exp": bool,                            # Expunged Galleries Search.
+                }
         
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + No type information.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在合成请求参数。")
@@ -1415,6 +1448,67 @@ class waziExHentai:
         return waziExHentai.getBooks(self, url)
 
     def customSearch(self, params):
+        """
+        waziExHentai.customSearch(self, params)
+        *Tolerant and kind, always humble.*
+
+        Custom search. Highly recommended to use it.
+
+        Parameters:
+            params: dict
+                The search parameters.
+                waziExHentai.customSearch({
+                    "cats": ["Doujinshi", "Manga", "Artist CG", "Game CG"],
+                    # Search with the desired category, or search all if it does not exist
+                    "uploaders": ["Pokom", "NekoHime27"],
+                    # Search with the desired uploader, if it does not exist then it is not specified 
+                    "tags": ["female:lolicon"],
+                    # Search with the desired tags, if it does not exist then it is not specified 
+                    "text": "",
+                    # Search text, if it does not exist then it is not specified 
+                    "advanced": {  # Advanced search parameters
+                        "search": {
+                            "galleryName": True,  # Search with the gallery name
+                            "galleryTags": True,  # Search with the gallery tags
+                            "galleryDescription": False,  # Search with the gallery description
+                            "torrentFilenames": False,  # Search with the torrent filenames
+                            "low-powerTags": False,  # Search with the low-power tags
+                            "downvotedTags": False,  # Search with the downvoted tags
+                            "expungedGalleries": False,  # Search with the expunged galleries
+                        },
+                        "limit": {
+                            "onlyShowGalleriesWithTorrents": False,  # Only show galleries with torrents
+                            "minimumRating": False,  # Minimum rating
+                            "minimumRatingNumber": 2,  # Minimum rating number 2 - 5
+                            "between": False,  # Range
+                            "betweenPages": [0, 0]  # Start and end page
+                        },
+                        "disableFilters": {
+                            "language": False,  # Disable language filter
+                            "uploader": False,  # Disable uploader filter
+                            "tags": False  # Disable tags filter
+                        }
+                    },
+                    "file": {  # File search parameters, if you need.
+                        "main": {
+                            "type": "path",  # Type can be path or sha1
+                            "value": "./a.jpg"  # If type is path, then value is the path of the file If type is sha1, then value is the sha1 of the file
+                        },
+                        "options": {
+                            "useSimilarityScan": True,  # Use similarity scan
+                            "onlySearchCovers": False,  # Only search covers
+                            "showExpunged": False  # Show expunged galleries
+                        }
+                    }
+                })
+            
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在合成请求参数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 参数： {params}")
@@ -1611,6 +1705,29 @@ class waziExHentai:
         return [{"url": url}, waziExHentai.getBooks(self, url)]
 
     def returnSoup(self, link):
+        """
+        waziExHentai.returnSoup(self, link)
+        *Nosie Maker.*
+
+        Request a link and return a BeautifulSoup.
+
+        Parameters:
+            link: str
+                A link to request.
+        
+        Return:
+            soup: BeautifulSoup
+                A BeautifulSoup of the requested link.
+                If the request failed, return BeautifulSoup("<html></html>", "lxml")
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Logs:
+                Error:
+                    + Cannot get the response.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得 Soup： {link}")
         tempParams = self.params
@@ -1632,6 +1749,38 @@ class waziExHentai:
             return soup
 
     def getTorrent(self, link):
+        """
+        waziExHentai.getTorrent(self, link)
+        *Low fever.*
+
+        Request a link and return torrents information.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: list[dict{}]
+            The torrents information.
+            [{
+                "time": str,                            # Torrent upload time.
+                "size": str,                            # Torrent size.
+                "seeds": int,                           # Torrent seeds.
+                "peers": int,                           # Torrent peers.
+                "total": int,                           # Torrent total download.
+                "link": str,                            # Torrent download link.
+                "name": str                             # Torrent name.
+            }]
+            May return {}.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Logs:
+                Error:
+                    + Cannot get the torrents information.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其种子信息： {link}")
         url = self.urls["galleryTorrent"] + link.split("/")[4] + "&t=" + link.split("/")[5]
@@ -1643,8 +1792,8 @@ class waziExHentai:
         try:
             tempNum = len(soup.find_all("a")) - 1
         except:
-            waziLog.log("warn", f"({self.name}.{fuName}) 无法获取种子信息，请检查 URL 或账号信息等排除问题。")
-            return {"Error": "None"}
+            waziLog.log("error", f"({self.name}.{fuName}) 无法获取种子信息，请检查 URL 或账号信息等排除问题。")
+            return {}
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 获取成功，等待遍历： {tempNum}")
             for tempInfo in range(tempNum):
@@ -1652,9 +1801,9 @@ class waziExHentai:
                 tempList = {
                     "time": soup.find_all("table")[tempInfo].tr.find_all("td")[0].get_text().split("Posted: ")[1],
                     "size": soup.find_all("table")[tempInfo].tr.find_all("td")[1].get_text().split("Size: ")[1],
-                    "seeds": soup.find_all("table")[tempInfo].tr.find_all("td")[3].get_text().split("Seeds: ")[1],
-                    "peers": soup.find_all("table")[tempInfo].tr.find_all("td")[4].get_text().split("Peers: ")[1],
-                    "total": soup.find_all("table")[tempInfo].tr.find_all("td")[5].get_text().split("Downloads: ")[1],
+                    "seeds": int(soup.find_all("table")[tempInfo].tr.find_all("td")[3].get_text().split("Seeds: ")[1]),
+                    "peers": int(soup.find_all("table")[tempInfo].tr.find_all("td")[4].get_text().split("Peers: ")[1]),
+                    "total": int(soup.find_all("table")[tempInfo].tr.find_all("td")[5].get_text().split("Downloads: ")[1]),
                     "link": soup.find_all("table")[tempInfo].find_all("tr")[2].a.attrs["href"],
                     "name": soup.find_all("table")[tempInfo].find_all("tr")[2].a.get_text()
                 }
@@ -1665,6 +1814,43 @@ class waziExHentai:
             return torrents
 
     def getInfo(self, link):
+        """
+        waziExHentai.getInfo(self, link)
+        *Hana.*
+
+        Get gallery information.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: list[dict{}]
+            The gallery information.
+            [{
+                "title": str,                           # Gallery title.
+                "jTitle": str,                          # Gallery Japanese title. If have.
+                "cat": str,                             # Gallery category.
+                "tags": list[str],                      # Gallery tags.
+                "time": str,                            # Gallery upload time.
+                "father": str,                          # Gallery's father gallery.
+                "viewable": str,                        # Gallery is viewable.
+                "language": str,                        # Gallery language.
+                "tr": bool,                             # Gallery is translated.
+                "rw": bool,                             # Gallery is rewrited.
+                "size": str,                            # Gallery size.
+                "pages": int,                           # Gallery pages.
+                "favTimes": int,                        # Gallery favorite times.
+                "uploader": str,                        # Gallery uploader.
+                "uploaderURL": str,                     # Gallery uploader URL.
+                "rate": float,                          # Gallery rate.
+                "cover": str,                           # Gallery cover.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其画廊信息： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
@@ -1691,15 +1877,41 @@ class waziExHentai:
             "rw": True if "RW" in soup.find_all(class_ = "gdt2")[3].get_text() else False,
             "size": soup.find_all(class_ = "gdt2")[4].get_text(),
             "pages": int(soup.find_all(class_ = "gdt2")[5].get_text().split(" ")[0]),
-            "favTimes": soup.find_all(class_ = "gdt2")[6].get_text(),
+            "favTimes": int(soup.find_all(class_ = "gdt2")[6].get_text().split(" ")[0]),
             "uploader": soup.find_all(id = "gdn")[0].a.get_text(),
-            "rate": soup.find_all(id = "rating_label")[0].get_text().split("Average: ")[1],
+            "uploaderURL": soup.find_all(id = "gdn")[0].a.attrs["href"],
+            "rate": float(soup.find_all(id = "rating_label")[0].get_text().split("Average: ")[1]),
             "cover": soup.find_all(id = "gd1")[0].div.attrs["style"].split("(")[1].split(")")[0]
         }
         waziLog.log("info", f"({self.name}.{fuName}) 剩余信息和标签组合获取完毕： {info}")
         return info
 
     def getComments(self, link):
+        """
+        waziExHentai.getComments(self, link)
+        *Happy birthday, Love for you.*
+
+        Get gallery comments. If self.fullComments is True, get all comments.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: list[dict{}]
+            The gallery comments.
+            [{
+                "time": str,                            # Comment time.
+                "commenterURL": str,                    # Commenter URL.
+                "commenter": str,                       # Commenter Name.
+                "scores": str,                          # Comment scores.
+                "htmlComments": str,                    # Comment HTML.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其评论信息。")
         url = link
@@ -1735,8 +1947,8 @@ class waziExHentai:
             waziLog.log("debug", f"({self.name}.{fuName}) 正在组合剩余数据。")
             tempComments = {
                 "time": i.find(class_ = "c3").get_text().split(" by:")[0].split("Posted on ")[1],
-                "uploader": i.find(class_ = "c3").a.attrs["href"],
-                "uploaderName": i.find(class_ = "c3").a.get_text(),
+                "commenterURL": i.find(class_ = "c3").a.attrs["href"],
+                "commenter": i.find(class_ = "c3").a.get_text(),
                 "scores": scores,
                 "htmlComments": htmlComments
             }
@@ -1747,6 +1959,16 @@ class waziExHentai:
         return comments
 
     def apiInfo(self, link):
+        """
+        waziExHentai.apiInfo(self, link)
+        *Use weapons to defend my square.*
+
+        Get gallery info by API.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其 API 返回信息： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建 header。")
