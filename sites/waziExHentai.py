@@ -399,11 +399,11 @@ class waziExHentai:
         
         Return:
             You need to check:
-            + Extended -> waziExHentai.getExtendedMain
-            + Minimal -> waziExHentai.getMinimalMain
-            + Minimal+ -> waziExHentai.getMinimalPlusMain
-            + Compact -> waziExHentai.getCompactMain
-            + Thumbnail -> waziExHentai.getThumbnailMain
+                + Extended -> waziExHentai.getExtendedMain
+                + Minimal -> waziExHentai.getMinimalMain
+                + Minimal+ -> waziExHentai.getMinimalPlusMain
+                + Compact -> waziExHentai.getCompactMain
+                + Thumbnail -> waziExHentai.getThumbnailMain
             May return None or call other methods.
         
         Errors:
@@ -822,6 +822,46 @@ class waziExHentai:
         return booksList
 
     def getThumbnailMain(self, soup):
+        """
+        waziExHentai.getThumbnailMain(self, soup)
+        *AIWS.*
+
+        Parse the index page or search page with Thumbnail parser type to get the full contents.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object to parse.
+        
+        Return:
+            Type: list[dict{key: value}]
+            A list of parse results.
+            Be like:
+            [{
+                "title": str,                               # The gallery title.
+                "URL": str,                                 # The gallery URL.
+                "cat": str,                                 # The gallery category.
+                "cover": str,                               # The gallery cover URL.
+                "uploader": "Uploader information is not available in thumbnail mode. / 缩略模式下无法获取上传者信息。",
+                "uploaderURL": "Uploader information is not available in thumbnail mode. / 缩略模式下无法获取上传者信息。",
+                "time": str,                                # The gallery upload time.
+                "hasTorrents": bool,                        # The gallery has torrents or not.
+                "rating": int or float,                     # The gallery rating.
+                "pages": int,                               # The gallery pages.
+                "others": {                                 # Other information.
+                    "type": "Thumbnail Own Information",    # The information type.
+                    "has": ["markedTags"],                  # The information has.
+                    "markedTags": [{                        # The information tags.
+                        "title": str,                       # The tag title.
+                        "className": str,                   # The tag class name.
+                        "style": str                        # The tag style.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         booksList = []
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，正在解析。")
@@ -878,6 +918,46 @@ class waziExHentai:
         return booksList
 
     def getExtendedMain(self, soup):
+        """
+        waziExHentai.getExtendedMain(self, soup)
+        *Five tweets a day keeps depression away.*
+
+        Parse the index page or search page with Extended parser type to get the full contents.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object to parse.
+        
+        Return:
+            Type: list[dict{key: value}]
+            A list of parse results.
+            Be like:
+            [{
+                "title": str,                               # The gallery title.
+                "URL": str,                                 # The gallery URL.
+                "cat": str,                                 # The gallery category.
+                "cover": str,                               # The gallery cover URL.
+                "uploader": str,                            # The gallery uploader.
+                "uploaderURL": str,                         # The gallery uploader URL.
+                "time": str,                                # The gallery upload time.
+                "hasTorrents": bool,                        # The gallery has torrents or not.
+                "rating": int or float,                     # The gallery rating.
+                "pages": int,                               # The gallery pages.
+                "others": {                                 # Other information.
+                    "type": "Extended Own Information",     # The information type.
+                    "has": ["tags"],                        # The information has.
+                    "tags": [{                              # The information tags.
+                        "title": str,                       # The tag title.
+                        "className": str,                   # The tag class name.
+                        "style": str                        # The tag style.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         booksList = []
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，正在解析。")
@@ -939,6 +1019,30 @@ class waziExHentai:
         return booksList
 
     def getBooks(self, url):
+        """
+        waziExHentai.getBooks(self, url)
+        *Learn in living, to love, to die.*
+
+        Get the books list from index page or search page.
+        If need to use parser, will use getDisplayMode() first.
+
+        Parameters:
+            url: str
+                The url of the page.
+        
+        Return:
+            You need to check:
+                + Extended -> waziExHentai.getExtendedMain
+                + Minimal -> waziExHentai.getMinimalMain
+                + Minimal+ -> waziExHentai.getMinimalPlusMain
+                + Compact -> waziExHentai.getCompactMain
+                + Thumbnail -> waziExHentai.getThumbnailMain
+            May return None or call other methods.
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，正在通过 returnSoup 获取： {url}")
         soup = waziExHentai.returnSoup(self, url)
@@ -953,6 +1057,23 @@ class waziExHentai:
             return waziExHentai.getMainInfo(self, soup, "Extended")
 
     def browse(self, page):
+        """
+        waziExHentai.browse(self, page)
+        *Learn to accept your incompetence.*
+
+        Get the books list from browse page.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 0.
+        
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码参数，正在合成请求参数： {page}")
         params = {
@@ -964,6 +1085,23 @@ class waziExHentai:
         return waziExHentai.getBooks(self, url)
 
     def allBrowse(self, page):
+        """
+        waziExHentai.allBrowse(self, page)
+        *Imagine the world a million years from now.*
+
+        Get the books list from browse page, but it will ignore your filters and settings.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 0.
+        
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码参数，正在合成请求参数： {page}")
         params = {
@@ -977,6 +1115,26 @@ class waziExHentai:
         return waziExHentai.getBooks(self, url)
 
     def search(self, page, text):
+        """
+        waziExHentai.search(self, page, text)
+        *Direct your thoughts to the stars.*
+
+        Get the books list from search page.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 0.
+            
+            text: str
+                The text you want to search.
+
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和搜索内容参数，正在合成请求参数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 搜索内容： {text}")
@@ -990,6 +1148,26 @@ class waziExHentai:
         return waziExHentai.getBooks(self, url)
 
     def allSearch(self, page, text):
+        """
+        waziExHentai.allSearch(self, page, text)
+        *Wind, forest, mountain, and bamboo.*
+
+        Get the books list from search page, but it will ignore your filters and settings.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 0.
+            
+            text: str
+                The text you want to search.
+
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和搜索内容参数，正在合成请求参数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 搜索内容： {text}")
@@ -1003,22 +1181,82 @@ class waziExHentai:
         return waziExHentai.getBooks(self, url)
 
     def tagSearch(self, page, tag):
+        """
+        waziExHentai.tagSearch(self, page, tag)
+        *Watch your knees.*
+
+        Get the books list from tag search page.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 0.
+            
+            tag: str
+                The tag you want to search. Include ":" Previous content (if any)
+        
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和标签参数，正在合成 URL。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {tag}")
-        url = self.urls["main"] + "tag/" + tag + "/" + str(page) + "?empty=0"
+        url = self.urls["main"] + "tag/" + tag + "/" + str(page) + "?empty=0" # Why the empty=0?
         waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕，递交给 getBooks： {url}")
         return waziExHentai.getBooks(self, url)
 
     def uploaderSearch(self, page, uploader):
+        """
+        waziExHentai.uploaderSearch(self, page, uploader)
+        *Remember the rain.*
+
+        Get the books list from uploader search page.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 0.
+            
+            uploader: str
+                The uploader you want to search. No "uploader:" prefix.
+        
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和上传者参数，正在合成 URL。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {uploader}")
-        url = self.urls["main"] + "uploader/" + uploader + "/" + str(page) + "?empty=0"
+        url = self.urls["main"] + "uploader/" + uploader + "/" + str(page) + "?empty=0" # Why the empty=0?
         waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕，递交给 getBooks： {url}")
         return waziExHentai.getBooks(self, url)
 
     def uploaderAllSearch(self, page, uploader):
+        """
+        waziExHentai.uploaderAllSearch(self, page, uploader)
+        *Low frequency, gone.*
+
+        Get the books list from uploader search page, but it will ignore your filters and settings.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 0.
+            
+            uploader: str
+                The uploader you want to search. No "uploader:" prefix.
+        
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和上传者参数，正在合成请求参数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {uploader}")
@@ -1034,6 +1272,44 @@ class waziExHentai:
         return waziExHentai.getBooks(self, url)
 
     def advancedSearch(self, params):
+        """
+        waziExHentai.advancedSearch(self, params)
+        *Rebirth.*
+
+        Get the books list from advanced search page.
+
+        Parameters:
+            params: dict
+                The advanced search parameters.
+                {
+                    "cats": [str],                          # The category you want to search, like "Non-H".
+                    "search": str,                          # The search text.
+                    "sgn": bool,                            # Whether to search for gallery names.
+                    "sgt": bool,                            # Whether to search for gallery tags.
+                    "sgd": bool,                            # Whether to search for gallery descriptions.
+                    "stf": bool,                            # Whether to search for torrent file names.
+                    "osgwt": bool,                          # Whether to view only galleries with torrents.
+                    "slpt": bool,                           # Whether to search for low power tags.
+                    "sdt": bool,                            # Whether to search for downed tags.
+                    "seg": bool,                            # Whether to search for expunged galleries.
+                    "mr": bool,                             # Whether to search with low rating limit.
+                    "mrs": int or str,                      # Low rating limit, from 2 to 5.
+                    "b": bool,                              # Whether to search with range limit.
+                    "b1": int or str,                       # Start range limit.
+                    "b2": int or str,                       # End range limit.
+                    "dfl": bool,                            # Whether to search without language filters.
+                    "dfu": bool,                            # Whether to search without uploader filters.
+                    "dft": bool,                            # Whether to search without tag filters.
+                    "page": int or str,                     # The page number. Start from 0.
+                }
+            
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在合成请求参数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 参数： {params}")
@@ -1098,6 +1374,12 @@ class waziExHentai:
         return waziExHentai.getBooks(self, url)
 
     def imageSearch(self, params):
+        """
+        waziExHentai.imageSearch(self, params)
+        *Beg.*
+
+        
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到参数，正在合成请求参数。")
         waziLog.log("debug", f"({self.name}.{fuName}) 参数： {params}")
