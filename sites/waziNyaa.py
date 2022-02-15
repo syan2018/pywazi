@@ -252,7 +252,7 @@ class waziNyaa:
                 rowInfo["size"] = row.find_all("td")[3].text
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件时间。")
                 rowInfo["time"] = row.find_all("td")[4].text
-                rowInfo["timeStamp"] = row.find_all("td")[4].attrs["data-timestamp"]
+                rowInfo["timeStamp"] = int(row.find_all("td")[4].attrs["data-timestamp"])
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件做种人数。")
                 rowInfo["seeders"] = int(row.find_all("td")[5].text)
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件吸血鬼数量。")

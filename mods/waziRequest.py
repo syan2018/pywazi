@@ -5,8 +5,11 @@ class: waziRequest
 """
 
 import urllib3
+import certifi
 from mods import waziFun
 from ins.waziInsLog import waziLog
+
+urllib3.disable_warnings()
 
 class waziRequest:
     """
@@ -365,10 +368,10 @@ class waziRequest:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在检查是否需要代理。")
         if self.isUseProxies:
             waziLog.log("debug", f"({self.name}.{fuName}) 检查到需要代理，使用 ProxyManager。")
-            http = urllib3.ProxyManager(self.proxies)
+            http = urllib3.ProxyManager(self.proxies, cert_reqs = "CERT_NONE", ca_certs = certifi.where())
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 未检查到需要代理，使用 PoolManager。")
-            http = urllib3.PoolManager()
+            http = urllib3.PoolManager(cert_reqs = "CERT_NONE", ca_certs = certifi.where())
         waziLog.log("debug", f"({self.name}.{fuName}) 创建 HTTP 管理器完成，正在检查是否需要自定义 Header 并发起对应请求。")
         if self.isUseHeaders:
             waziLog.log("debug", f"({self.name}.{fuName}) 检查到需要自定义 Header，正在发起对应请求。")
