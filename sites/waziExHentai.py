@@ -2748,19 +2748,28 @@ class waziExHentai:
         waziLog.log("info", f"({self.name}.{fuName}) 数据： {images}，结果返回。")
         return images
     
-    def yieldGetNormalImages(self, link, params):
+    def yieldGetNormalImages(self, link):
         """
-        next(waziExHentai.yieldGetNormalImages(self, link, params))
+        next(waziExHentai.yieldGetNormalImages(self, link))
         *Powerless, depressed, angry.*
 
+        A generator to get normal images one page by one page.
+
+        Parameters:
+            link: str
+                Link of the page. Like https://exhentai.org/g/2011308/8263590d02/.
         
+        Each Yield:
+            Type: list[str]
+            List of images.
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
-        waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和参数，正在获取图像列表。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 参数： {params}，URL： {link}")
-        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取标题。")
-        title = waziExHentai.getTitle(self, link, params)
-        waziLog.log("debug", f"({self.name}.{fuName}) 标题获取成功： {title}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，正在获取图像列表。")
+        waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取页码信息。")
         page = waziExHentai.getPages(self, link)
         waziLog.log("debug", f"({self.name}.{fuName}) 页码信息获取完成： {page}。")
@@ -2768,7 +2777,7 @@ class waziExHentai:
             waziLog.log("debug", f"({self.name}.{fuName}) 检测到无需翻页，正在通过 returnSoup 获取页面 Soup 信息。")
             soup = waziExHentai.returnSoup(self, link)
             waziLog.log("debug", f"({self.name}.{fuName}) Soup 信息获取完成，正在通过 getImages 获取。")
-            data = waziExHentai.getImages(self, soup, "get", title, params)
+            data = waziExHentai.getImages(self, soup, "get", "", {})
             waziLog.log("info", f"({self.name}.{fuName}) 获取完成： {data}")
             yield data
         else:
@@ -2779,11 +2788,46 @@ class waziExHentai:
                 waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕： {url}，正在通过 returnSoup 获取 Soup。")
                 soup = waziExHentai.returnSoup(self, url)
                 waziLog.log("debug", f"({self.name}.{fuName}) Soup 信息获取完成，正在通过 getImages 获取。")
-                data = waziExHentai.getImages(self, soup, "get", title, params)
+                data = waziExHentai.getImages(self, soup, "get", "", {})
                 waziLog.log("debug", f"({self.name}.{fuName}) 数据获取完成： {data}")
                 yield data
 
     def getNormalImages(self, link, method, params):
+        """
+        waziExHentai.getNormalImages(self, link, method, params)
+        *Brave, optimistic, calm.*
+
+        Get normal images at once. May take a long time.
+        yieldGetNormalImages, plz. 
+
+        Parameters:
+            link: str
+                Link of the page. Like https://exhentai.org/g/2011308/8263590d02/.
+            
+            method: str
+                "get" or "download".
+            
+            params: dict
+                Parameters.
+                Like:
+                {
+                    "japanese": bool,               # Whether to get japanese title.
+                    "path": str,                    # Path to save.
+                }
+            
+        Return:
+            get:
+                Type: list[list[str]]
+                List of images.
+            
+            download:
+                Type: list[list[str]]
+                List of downloaded images path.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL， 方式和参数，正在获取图像列表。")
         waziLog.log("debug", f"({self.name}.{fuName}) 方式： {method}， 参数： {params}，URL： {link}")
@@ -2821,6 +2865,32 @@ class waziExHentai:
             return normalImages
 
     def getArchivesHATH(self, link):
+        """
+        waziExHentai.getArchivesHATH(self, link)
+        *Selling love, thirst.*
+
+        Get H@H archives.
+
+        Parameters:
+            link: str
+                Link of the page. Like https://exhentai.org/g/2011308/8263590d02/.
+        
+        Return:
+            Type: list[dict{}]
+            List of archives.
+            Like:
+            [{
+                "sample": str,                                  # The image resolution.
+                "size": str,                                    # The archive size.
+                "cost": str,                                    # The cost.
+                "code": str,                                    # The archive download code.
+                "url": str,                                     # The archive download url.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，正在 H@H 下载参数。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}")
@@ -2865,6 +2935,30 @@ class waziExHentai:
         return archiveLists
 
     def toHATH(self, link, code):
+        """
+        waziExHentai.toHATH(self, link, code)
+        *The place where the sun rises.*
+
+        Send a H@H download request.
+
+        Parameters:
+            link: str
+                Link of download URL.
+            
+            code: str
+                Download code.
+        
+        Return:
+            None
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot request.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和 H@H 下载代码，正在发起 H@H 下载请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}， H@H 下载代码： {code}")
@@ -2890,6 +2984,46 @@ class waziExHentai:
             return "Done! / 完成！"
 
     def parseArchives(self, form, action):
+        """
+        waziExHentai.parseArchives(self, form, action)
+        *Neeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeed some coffee.*
+
+        Get the download link of archive.
+
+        Parameters:
+            form: dict
+                Form data.
+                Like:
+                {
+                    "dltype": str,
+                    "dlcheck": str
+                }
+                Original:
+                {
+                    "dltype": "org",
+                    "dlcheck": "Download Original Archive"
+                }
+                Resample:
+                {
+                    "dltype": "res",
+                    "dlcheck": "Download Resample Archive"
+                }
+            
+            action: str
+                Action of download URL.
+
+        Return:
+            Type: str
+            Download link.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + Cannot get download link.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求参数和请求地址，正在获取下载链接。")
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数： {form}， 请求地址： {action}")
@@ -2907,7 +3041,7 @@ class waziExHentai:
         try:
             tempUrl = str(tempUrl).split("document.location = \"")[1].split("\";")[0]
         except:
-            waziLog.log("info", f"({self.name}.{fuName}) 无法提取任何转跳链接。")
+            waziLog.log("error", f"({self.name}.{fuName}) 无法提取任何转跳链接。")
             return "None / 无"
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 提取完成，准备处理请求参数。")
@@ -2921,6 +3055,28 @@ class waziExHentai:
             return downloadLink
 
     def getArchives(self, link):
+        """
+        waziExHentai.getArchives(self, link)
+        *More than life, more than death.*
+
+        Get the archive download links of gallery.
+
+        Parameters:
+            link: str
+                Gallery link. Like https://exhentai.org/g/2011308/8263590d02/.
+        
+        Return:
+            Type: list[dict{}]
+            Download links.
+            Like: [{
+                "type": str,                                    # Archive type.
+                "link": str,                                    # Archive download link.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到画廊地址，正在获取所有压缩包下载地址。")
         waziLog.log("debug", f"({self.name}.{fuName}) 画廊地址： {link}")
@@ -2973,6 +3129,47 @@ class waziExHentai:
         return twoLists
 
     def downloadArchives(self, link, params, sample):
+        """
+        waziExHentai.downloadArchives(self, link, params, sample)
+        *Bad bot.*
+
+        Download the archive.
+
+        Parameters:
+            link: str
+                Gallery link. Like https://exhentai.org/g/2011308/8263590d02/.
+            
+            params: dict
+                Parameters.
+                Like:
+                {
+                    "japanese": bool,               # Whether to get japanese title.
+                    "path": str,                    # Path to save.
+                }
+
+            sample: str
+                Need sample. If input "", it will download all archives.
+        
+        Return:
+            All Archives:
+                Type: list[str]
+                Download files.
+            
+            One Archive:
+                Type: str
+                Download file.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + Cannot find download links.
+                
+                Error:
+                    + Cannot download.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到画廊地址，参数和清晰度，正在获取压缩包下载。")
         waziLog.log("debug", f"({self.name}.{fuName}) 画廊地址： {link}")
@@ -2990,7 +3187,7 @@ class waziExHentai:
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，压缩包下载链接： {links}")
         files = []
         if not links:
-            waziLog.log("info", f"({self.name}.{fuName}) 没有返回任何压缩包下载地址。")
+            waziLog.log("warn", f"({self.name}.{fuName}) 没有返回任何压缩包下载地址。")
             return "No url return. / 没有返回 URL。"
         if sample != "":
             waziLog.log("debug", f"({self.name}.{fuName}) 存在指定分辨率。")
@@ -3063,6 +3260,36 @@ class waziExHentai:
         return files
 
     def downloadFile(self, url, orgName, path):
+        """
+        waziExHentai.downloadFile(self, url, orgName, path)
+        *In the end, it's actually not quite the end.*
+
+        Download one file just for my discord bot.
+
+        Parameters:
+            url: str
+                The url of the file.
+            
+            orgName: str
+                The original name of the file.
+            
+            path: str
+                The path of the file.
+        
+        Return:
+            Type: bool
+            If the download is successful, return True, else return False.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+                (Cannot save the file may cause the program to crash.)
+            
+            Logs:
+                Error:
+                    + Cannot get the response.
+                    + Cannot create the path.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，文件名和路径，正在准备下载。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 文件名： {orgName}， 路径： {path}")
