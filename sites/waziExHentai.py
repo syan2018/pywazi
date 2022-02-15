@@ -1968,6 +1968,46 @@ class waziExHentai:
         Parameters:
             link: str
                 A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: dict{}
+            The gallery info.
+            Like:
+            {
+                'gmetadata': [{
+                    'gid': int,
+                    'token': str,
+                    'archiver_key': str,
+                    'title': str,
+                    'title_jpn': str,
+                    'category': str,
+                    'thumb': str,
+                    'uploader': str,
+                    'posted': str,
+                    'filecount': str,
+                    'filesize': int,
+                    'expunged': bool,
+                    'rating': str,
+                    'torrentcount': str,
+                    'torrents': [{
+                        'hash': str,
+                        'added': str,
+                        'name': str,
+                        'tsize': str,
+                        'fsize': str
+                    }],
+                    'tags': [str]
+                }]
+            }
+        May return {}
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot get gallery info.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其 API 返回信息： {link}")
@@ -2002,6 +2042,24 @@ class waziExHentai:
             return returnJson
 
     def getPages(self, link):
+        """
+        waziExHentai.getPages(self, link)
+        *You are always so arrogant.*
+
+        Get the pages of a gallery.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: int
+            The number of pages.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其页码信息： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
@@ -2017,6 +2075,19 @@ class waziExHentai:
             return pages
 
     def parseSoupForLargeThumbnails(self, soup):
+        """
+        waziExHentai.parseSoupForLargeThumbnails(self, soup)
+        *I still love you my heart.*
+
+        Parse the soup for get large thumbnails.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: list[dict{}]
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，开始分析。")
         thumbnails = []
