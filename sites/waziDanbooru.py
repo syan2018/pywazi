@@ -58,7 +58,7 @@ class waziDanbooru:
 
         Initialize this class.
 
-        Attributes:
+        Parameters:
             None
         """
         super(waziDanbooru, self).__init__()

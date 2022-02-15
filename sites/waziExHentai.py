@@ -84,7 +84,7 @@ class waziExHentai:
 
         Initialize this class.
 
-        Attributes:
+        Parameters:
             None
         """
         super(waziExHentai, self).__init__()

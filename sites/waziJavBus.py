@@ -1,3 +1,9 @@
+"""
+sites/waziJavBus.py
+
+class: waziJavBus
+"""
+
 import os
 import re
 import random
@@ -16,10 +22,56 @@ from mods.waziFileName import waziFileName
 # 具体的副作用就是无法获得论坛热帖和女优列表获取失败（代理？）
 
 class waziJavBus:
-    # JavBus is a website that collects adult video's magnet url schemes. (Almost from Japan)
-    # JavBus 是一个收集成人视频的种子网站。（大部分来自日本）
-    # [1]
+    """
+    waziJavBus
+    *Greatness.*
+
+    A class for crawling the JavBus.com and JavBus.red
+    (include the mirror)
+
+    Attributes:
+        headers: dict
+            The headers for the request. A customized header is filled in.
+        
+        newHeaders: dict
+            The headers for the request too. A customized header is filled in.
+        
+        proxies: dict
+            The proxy for the request.
+            Default: {'proxyAddress': '127.0.0.1', 'proxyPort': '7890'}
+        
+        apiUrl: str
+            The url of the javbus.com. (support the mirror)
+        
+        eaApiUrl: str
+            The url of the javbus.red. (support the mirror)
+        
+        URL: waziURL
+            The waziURL().
+        
+        request: waziRequest
+            The waziRequest().
+        
+        fileName: waziFileName
+            The waziFileName().
+        
+        params: dict
+            A dict of user params for requests. User can set the params in config.json.
+        
+        name: str
+            The name of this class.
+    
+    Methods:
+        - Please use help()
+    """
     def __init__(self):
+        """
+        waziJavBus.__init__(self)
+        *Reason is, and ought only to be the slave of the passions, and can never pretend to any other office than to serve and obey them. -- A Treatise of Human Nature*
+
+        Parameters:
+            None
+        """
         super(waziJavBus, self).__init__()
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -46,6 +98,23 @@ class waziJavBus:
         self.name = self.__class__.__name__
 
     def giveParams(self, params):
+        """
+        waziJavBus.giveParams(self, params)
+        *The small philosopher who speaks to the ants.*
+
+        Give params to this class. Controled by user.
+        Proxy and headers are controlled by self.params.
+
+        Parameters:
+            params: dict
+                A dict of params, user given.
+        
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到配置信息，正在写入。")
         self.params = params
@@ -53,6 +122,26 @@ class waziJavBus:
         return self.params
 
     def changeType(self, magType):
+        """
+        waziJavBus.changeType(self, magType)
+        *Young people deconstruct at will.*
+
+        Change the type of the search result.
+        If magType is 0, search result will have the movies that are with magnets.
+        Else, search result will have all movies.
+
+        Parameters:
+            magType: int or str
+                The type of the search result.
+                0 - mag, 1 - all
+        
+        Return:
+            Type: str
+            Current existmag.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到磁力链接显示模式，正在写入 Header。")
         waziLog.log("debug", f"({self.name}.{fuName}) 显示模式： {magType}")
@@ -66,6 +155,23 @@ class waziJavBus:
         return self.newHeaders["existmag"]
 
     def setApiUrl(self, url):
+        """
+        waziJavBus.setApiUrl(self, url)
+        *Meaningless.*
+
+        Set the javbus.com mirror url, if you need.
+
+        Parameters:
+            url: str
+                The url of the javbus.com mirror.
+        
+        Return:
+            Type: str
+            Current url of the javbus.com mirror.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到镜像 URL，正在写入配置。")
         newUrl = url
@@ -77,6 +183,23 @@ class waziJavBus:
         return self.apiUrl
 
     def setEAApiUrl(self, url):
+        """
+        waziJavBus.setEAApiUrl(self, url)
+        *Symbolic Interactionism Theory.*
+
+        Set the javbus.red mirror url, if you need.
+
+        Parameters:
+            url: str
+                The url of the javbus.red mirror.
+        
+        Return:
+            Type: str
+            Current url of the javbus.red mirror.
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到欧美镜像 URL，正在写入配置。")
         newUrl = url
@@ -87,11 +210,42 @@ class waziJavBus:
         waziLog.log("info", f"({self.name}.{fuName}) 写入完成，目前配置为： {self.eaApiUrl}")
         return self.eaApiUrl
 
-    # What? urllib, fucking old stubborn, use requests please!
-    # But hey, look at this:
-    # https://stackoverflow.com/questions/62684468/pythons-requests-triggers-cloudflares-security-while-urllib-does-not
-    # I do not want to modify my request model, so just urllib!
     def getPage(self, url, headers, needOrg):
+        """
+        waziJavBus.getPage(self, url, headers, needOrg)
+        *Doubt about man-made.*
+
+        Use urllib to get page.
+        Why: https://stackoverflow.com/questions/62684468/pythons-requests-triggers-cloudflares-security-while-urllib-does-not
+
+        Parameters:
+            url: str
+                The request url.
+            
+            headers: dict
+                The request headers.
+            
+            needOrg: bool
+                Whether need to return the str .
+                Or just return BeautifulSoup object.
+        
+        Return:
+            needOrg: True
+                Return the str.
+                The result of the request.
+            
+            needOrg: False
+                Return the BeautifulSoup object.
+                The result of the request.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot request the url.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和请求头部，正在通过 urllib.request 获取。")
         newRequest = urllib.request
