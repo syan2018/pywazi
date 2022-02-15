@@ -5,6 +5,7 @@ class: waziExHentai
 """
 
 # HTTPSConnectionPool(host='exhentai.org', port=443): Max retries exceeded with url: https://exhentai.org/ (Caused by ResponseError('too many redirects'))
+# Fix, keep your cookies correct.
 
 import os
 import re
