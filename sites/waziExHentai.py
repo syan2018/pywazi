@@ -2409,7 +2409,7 @@ class waziExHentai:
             link: str
                 A link to request. Like https://exhentai.org/g/2011308/8263590d02/
             
-            params: dict{}
+            params: dict
                 A dict of parameters.
                 Like:
                 {
@@ -2448,7 +2448,7 @@ class waziExHentai:
             link: str
                 A link to request. Like https://exhentai.org/g/2011308/8263590d02/
             
-            params: dict{}
+            params: dict
                 A dict of parameters.
                 Like:
                 {
@@ -2485,9 +2485,17 @@ class waziExHentai:
             link: str
                 A link to request. Like https://exhentai.org/g/2011308/8263590d02/
         
-        Return:
+        Each Yield:
             Type: dict
-            
+            Like:
+            {
+                'name': str,                    # Name of the image.
+                'url': str                      # URL of the image.
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获取 MPV 图像列表。")
@@ -2546,6 +2554,48 @@ class waziExHentai:
             yield mpvList
 
     def getMPVImages(self, link, method, params):
+        """
+        waziExHentai.getMPVImages(self, link, method, params)
+        *Bliss.*
+
+        Get all images from MPV. May take a long time.
+        Shall we use yieldGetMPVImages? o ne ga i
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+            
+            method: str
+                The method to get images.
+                get - get the images url.
+                download - download the images.
+            
+            params: dict
+                The params to get images.
+                Like:
+                {
+                    "japanese": bool,               # Whether to get japanese title.
+                    "path": str,                    # Path to save.
+                }
+        
+        Return:
+            get:
+                Type: list[dict{}]
+                    The list of images.
+                    Like:
+                    [{
+                        'name': str,                    # Name of the image.
+                        'url': str                      # URL of the image.
+                    }]
+            
+            download:
+                Type: list[str]
+                    The list of downloaded images path.
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL, 方式和参数，正在获取 MPV 图像列表。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}， 方式： {method}， 参数： {params}")
@@ -2625,6 +2675,43 @@ class waziExHentai:
         return mpvLists
 
     def getImages(self, soup, method, title, params):
+        """
+        waziExHentai.getImages(soup, method, title, params)
+        *Fireworks.*
+
+        Get images from soup.
+
+        Parameters:
+            soup: BeautifulSoup
+                Soup of the page. Like https://exhentai.org/g/2011308/8263590d02/?p=0 beautifulsoup object.
+            
+            method: str
+                Method of getting images. get or download.
+            
+            title: str
+                Title of the page.
+            
+            params: dict
+                Parameters.
+                Like:
+                {
+                    "japanese": bool,               # Whether to get japanese title.
+                    "path": str,                    # Path to save.
+                }
+            
+        Return:
+            get:
+                Type: list[str]
+                List of images.
+            
+            download:
+                Type: list[str]
+                List of downloaded images path.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup， 方式和参数，标题，正在获取图像列表。")
         waziLog.log("debug", f"({self.name}.{fuName}) 方式： {method}， 参数： {params}，标题： {title}")
@@ -2662,13 +2749,18 @@ class waziExHentai:
         return images
     
     def yieldGetNormalImages(self, link, params):
+        """
+        next(waziExHentai.yieldGetNormalImages(self, link, params))
+        *Powerless, depressed, angry.*
+
+        
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和参数，正在获取图像列表。")
         waziLog.log("debug", f"({self.name}.{fuName}) 参数： {params}，URL： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取标题。")
         title = waziExHentai.getTitle(self, link, params)
         waziLog.log("debug", f"({self.name}.{fuName}) 标题获取成功： {title}")
-        normalImages = []
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取页码信息。")
         page = waziExHentai.getPages(self, link)
         waziLog.log("debug", f"({self.name}.{fuName}) 页码信息获取完成： {page}。")
