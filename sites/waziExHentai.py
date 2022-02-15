@@ -2087,6 +2087,18 @@ class waziExHentai:
         
         Return:
             Type: list[dict{}]
+            The list of thumbnails.
+            [{
+                "url": str,                             # Thumbnail url.
+                "style": str,                           # Thumbnail style.
+                "alt": str,                             # Thumbnail alt.
+                "title": str,                           # Thumbnail title.
+                "text": str,                            # Thumbnail text.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，开始分析。")
@@ -2107,7 +2119,31 @@ class waziExHentai:
         return thumbnails
     
     def yieldGetLargeThumbnails(self, link):
-        # Still need to be tested
+        """
+        next(waziExHentai.yieldGetLargeThumbnails(self, link))
+        *Figuring out my intentions.*
+
+        A generator to get large thumbnails one page by one page.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Each Yield:
+            Type: list[dict{}]
+            The list of thumbnails.
+            [{
+                "url": str,                             # Thumbnail url.
+                "style": str,                           # Thumbnail style.
+                "alt": str,                             # Thumbnail alt.
+                "title": str,                           # Thumbnail title.
+                "text": str,                            # Thumbnail text.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其页码信息： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
@@ -2134,6 +2170,33 @@ class waziExHentai:
                 yield data
 
     def getLargeThumbnails(self, link):
+        """
+        waziExHentai.getLargeThumbnails(self, link)
+        *Sophistry.*
+
+        Get large thumbnails at once. May take long time.
+        Recommended to use waziExHentai.yieldGetLargeThumbnails(self, link) this generator.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: list[list[dict{}]]
+            The list of all thumbnails.
+            Big list, page list, img list.
+            [[{
+                "url": str,                             # Thumbnail url.
+                "style": str,                           # Thumbnail style.
+                "alt": str,                             # Thumbnail alt.
+                "title": str,                           # Thumbnail title.
+                "text": str,                            # Thumbnail text.
+            }]]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其页码信息： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
@@ -2163,6 +2226,36 @@ class waziExHentai:
             return thumbnails
 
     def parseSoupForNormalThumbnails(self, soup):
+        """
+        waziExHentai.parseSoupForNormalThumbnails(self, soup)
+        *Heartless.*
+
+        Parse the soup for get normal thumbnails.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: list[dict{}]
+            The list of thumbnails.
+            [{
+                "style": str,                           # Thumbnail style.
+                "divMargin": str,                       # Thumbnail div margin.
+                "divWidth": str,                        # Thumbnail div width.
+                "url": str,                             # Thumbnail url.
+                "transparent": str,                     # Thumbnail transparent.
+                "imgAlt": str,                          # Thumbnail img alt.
+                "imgTitle": str,                        # Thumbnail img title.
+                "imgWidth": str,                        # Thumbnail img width.
+                "imgHeight": str,                       # Thumbnail img height.
+                "imgMargin": str,                       # Thumbnail img margin.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，开始分析。")
         thumbnails = []
@@ -2188,6 +2281,36 @@ class waziExHentai:
         return thumbnails
     
     def yieldGetNormalThumbnails(self, link):
+        """
+        next(waziExHentai.yieldGetNormalThumbnails(self, link))
+        *Figuring out my intentions.*
+
+        A generator to get normal thumbnails one page by one page.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Each Yield:
+            Type: list[dict{}]
+            The list of thumbnails.
+            [{
+                "style": str,                           # Thumbnail style.
+                "divMargin": str,                       # Thumbnail div margin.
+                "divWidth": str,                        # Thumbnail div width.
+                "url": str,                             # Thumbnail url.
+                "transparent": str,                     # Thumbnail transparent.
+                "imgAlt": str,                          # Thumbnail img alt.
+                "imgTitle": str,                        # Thumbnail img title.
+                "imgWidth": str,                        # Thumbnail img width.
+                "imgHeight": str,                       # Thumbnail img height.
+                "imgMargin": str,                       # Thumbnail img margin.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其页码信息： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
@@ -2213,6 +2336,38 @@ class waziExHentai:
                 yield data
         
     def getNormalThumbnails(self, link):
+        """
+        waziExHentai.getNormalThumbnails(self, link)
+        *Nightmare.*
+
+        Get Normal thumbnails at once. May take long time.
+        Recommended to use waziExHentai.yieldGetNormalThumbnails(self, link) this generator.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: list[list[dict{}]]
+            The list of all thumbnails.
+            Big list, page list, img list.
+            [[{
+                "style": str,                           # Thumbnail style.
+                "divMargin": str,                       # Thumbnail div margin.
+                "divWidth": str,                        # Thumbnail div width.
+                "url": str,                             # Thumbnail url.
+                "transparent": str,                     # Thumbnail transparent.
+                "imgAlt": str,                          # Thumbnail img alt.
+                "imgTitle": str,                        # Thumbnail img title.
+                "imgWidth": str,                        # Thumbnail img width.
+                "imgHeight": str,                       # Thumbnail img height.
+                "imgMargin": str,                       # Thumbnail img margin.
+            }]]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得其页码信息： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
@@ -2242,6 +2397,30 @@ class waziExHentai:
             return thumbnails
 
     def getTitle(self, link, params):
+        """
+        waziExHentai.getTitle(self, link, params)
+        *Will disappear.*
+
+        Get the gallery title.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+            
+            params: dict{}
+                A dict of parameters.
+                Like:
+                {
+                    "japanese": bool,               # Whether to get japanese title.
+                }
+        
+        Return:
+            Type: str
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL 和参数，正在获得其标题。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}， 参数： {params}")
@@ -2252,11 +2431,36 @@ class waziExHentai:
             waziLog.log("debug", f"({self.name}.{fuName}) 需要罗马音等标题，通过 getInfo 获取。")
             title = waziExHentai.getInfo(self, link)["title"]
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完毕： {title}，剔除字符。")
-        title.strip().rstrip("\\")
+        title = title.strip().rstrip("\\")
         waziLog.log("info", f"({self.name}.{fuName}) 标题为： {title}")
         return title
 
     def createFolder(self, link, params):
+        """
+        waziExHentai.createFolder(self, link, params)
+        *Active.*
+
+        Create a folder.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+            
+            params: dict{}
+                A dict of parameters.
+                Like:
+                {
+                    "japanese": bool,               # Whether to get japanese title.
+                    "path": str,                    # Path to save.
+                }
+        
+        Return:
+            None
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL 和参数，正在创建文件夹。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}， 参数： {params}")
@@ -2268,10 +2472,24 @@ class waziExHentai:
             os.makedirs(os.path.join(params["path"], self.fileName.toRight(title)))
         waziLog.log("info", f"({self.name}.{fuName}) 文件夹创建完成。")
     
-    def yieldGetMPVImages(self, link, params):
+    def yieldGetMPVImages(self, link):
+        """
+        next(waziExHentai.yieldGetMPVImages(self, link))
+        *Be loved.*
+
+        A generator to get MPV images one by one.
+
+        Parameters:
+            link: str
+                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+        
+        Return:
+            Type: dict
+            
+        """
         fuName = waziFun.getFuncName()
-        waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL 和参数，正在获取 MPV 图像列表。")
-        waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}， 参数： {params}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获取 MPV 图像列表。")
+        waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在组合 URL。")
         mpvUrl = self.urls["mpv"] + link.split("/")[4] + "/" + link.split("/")[5]
         waziLog.log("debug", f"({self.name}.{fuName}) 组合完成： {mpvUrl}")
