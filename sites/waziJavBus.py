@@ -282,6 +282,44 @@ class waziJavBus:
                 return response.read()
 
     def getItems(self, soup, itemsType, ea):
+        """
+        waziJavBus.getItems(self, soup, itemsType, ea)
+        *Hate.*
+
+        Get the items from the soup.
+
+        Parameters:
+            soup: BeautifulSoup
+                The soup of the page.
+            
+            itemsType: str
+                The type of the items.
+                Should be one of the following:
+                    normal / worker / eaWorker
+            
+            ea: bool
+                Whether the items are from the javbus.red.
+                Or from the javbus.com.
+
+        Return:
+            Type: list
+            The items.
+            
+            If error:
+                Type: list
+                []
+            
+            For more information, check the content returned by the functions that use this method.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot get the soup.
+                    + Cannot get the items.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息和显示模式，正在分析。")
         waziLog.log("debug", f"({self.name}.{fuName}) 显示模式： {itemsType}")

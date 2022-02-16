@@ -167,7 +167,7 @@ class waziLog:
     def log(self, level, text):
         """
         waziLog.log(self, level, text)
-        *Work for myself, that without you.*
+        *I work for me, not for you.*
 
         Print and call the outputLog method.
 
