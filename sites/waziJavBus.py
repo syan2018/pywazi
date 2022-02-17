@@ -441,6 +441,33 @@ class waziJavBus:
             return itemsDict
 
     def getTags(self, soup):
+        """
+        waziJav.getTags(self, soup)
+        *Future Core.*
+
+        Get tags from soup.
+
+        Parameters:
+            soup: BeautifulSoup.
+                A BeautifulSoup object.
+        
+        Return:
+            Type: list[dict{}]
+                A list of tags.
+                Like: [{
+                    "tagType": str,
+                    "tags": list[str]
+                }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot get the soup.
+                    + Cannot get the tags.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，正在分析。")
         if soup == "Error. / 错误。":
@@ -482,6 +509,45 @@ class waziJavBus:
         return tags
 
     def getWorkers(self, soup, avType, avTypeFromWebSite, ea):
+        """
+        waziJav.getWorkers(self, soup, avType, avTypeFromWebSite, ea)
+        *No one remember.*
+
+        Get workers from soup.
+
+        Parameters:
+            soup: BeautifulSoup.
+                A BeautifulSoup object.
+            
+            avType: str or int
+                The type of the av.
+            
+            avTypeFromWebSite: bool
+                Whether the av type is from the website.
+            
+            ea: bool
+                Whether the av is from javbus.red.
+        
+        Return:
+            Type: list[dict{}]
+                A list of workers.
+                Like:
+                [{
+                    "link": str,                            # The link of the worker.
+                    "frame": str,                           # The frame of the worker.
+                    "name": str,                            # The name of the worker.
+                    "workerId": str,                        # The id of the worker.
+                    "avType": str or int,                   # The type of the av.
+                }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot get the soup.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息和出演类型，是否需要从网站确定出演类型。")
         waziLog.log("debug", f"({self.name}.{fuName}) 出演类型（可能）： {avType}")
@@ -542,6 +608,84 @@ class waziJavBus:
         return workers
 
     def getDetails(self, soup, ea):
+        """
+        waziJavBus.getDetails(self, soup, ea)
+        *Better.*
+
+        Get the details of the AV.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup object to get the details.
+            
+            ea: bool
+                Whether the AV is from javbus.red or not.
+        
+        Return:
+            Type: dict{}
+            May Like (Some cannot get will return "None. / 无。"):
+            {
+                "title": str,                                   # The title of the AV.
+                "cover": str,                                   # The cover URL of the AV.
+                "coverTitle": str,                              # The title of the cover.
+                "avId": str,                                    # The AV ID.
+                "time": str,                                    # The time of the AV.
+                "long": str,                                    # The length of the AV.
+                "director": {                                   # The director of the AV.
+                    "name": str,                                # The name of the director.
+                    "id": str,                                  # The ID of the director.
+                    "type": str or int                          # The type of the director.
+                },
+                "studio": {                                     # The studio of the AV.
+                    "name": str,                                # The name of the studio.
+                    "id": str,                                  # The ID of the studio.
+                    "type": str or int                          # The type of the studio.
+                },
+                "label": {                                      # The label of the AV.
+                    "name": str,                                # The name of the label.
+                    "id": str,                                  # The ID of the label.
+                    "type": str or int                          # The type of the label.
+                },
+                "series": {                                     # The series of the AV.
+                    "name": str,                                # The name of the series.
+                    "id": str,                                  # The ID of the series.
+                    "type": str or int                          # The type of the series.
+                },
+                "tags": [{                                      # The tags of the AV.
+                    "name": str,                                # The name of the tag.
+                    "id": str,                                  # The ID of the tag.
+                    "type": str or int                          # The type of the tag.
+                }],
+                "workers": [{                                   # The workers of the AV.
+                    "name": str,                                # The name of the worker.
+                    "id": str,                                  # The ID of the worker.
+                    "type": str or int                          # The type of the worker.
+                }],
+                "samples": [{                                   # The samples of the AV.
+                    "title": str,                               # The title of the sample.
+                    "url": str                                  # The URL of the sample.
+                }],
+                "sameVideos": [{                                # The same videos of the AV.
+                    "frame": str,                               # The frame of the same video.
+                    "title": str,                               # The title of the same video.
+                    "img": str,                                 # The img of the same video.
+                    "id": str                                   # The ID of the same video.
+                }],
+                "hots": [{
+                    "url": str,                                 # The URL of the hot.
+                    "title": str,                               # The title of the hot.
+                    "cover": str                                # The cover of the hot.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Error:
+                    + Cannot get the soup.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 信息，正在分析。")
         if soup == "Error. / 错误。":
@@ -752,7 +896,8 @@ class waziJavBus:
                     sameVideoDict = {
                         "frame": sameVideo.attrs["href"],
                         "title": sameVideo.span.text,
-                        "img": self.apiUrl + sameVideo.img.attrs["src"]
+                        "img": self.apiUrl + sameVideo.img.attrs["src"],
+                        "id": sameVideo.img.attrs["src"].split("/")[-1]
                     }
                     waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {sameVideoDict}")
                     sameVideosList.append(sameVideoDict)
@@ -822,6 +967,46 @@ class waziJavBus:
         return detail
 
     def browse(self, page, tag, avType):
+        """
+        waziJavBus.browse(self, page, tag, avType)
+        *How big are your dreams?*
+
+        Browse the avs.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            tag: str
+                The tag. If you do not want to use the tag, just input "".
+            
+            avType: int or str
+                1 is uncensored, 0 is censored.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，标签和 AV 类型，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {tag}， AV 类型： {avType}")
@@ -870,6 +1055,43 @@ class waziJavBus:
         return items
 
     def eaBrowse(self, page, tag):
+        """
+        waziJavBus.eaBrowse(self, page, tag)
+        *Name.*
+
+        Browse the avs from Javbus.red.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            tag: str
+                The tag. If you do not want to use the tag, just input "".
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和标签，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}")
@@ -898,6 +1120,55 @@ class waziJavBus:
         return items
 
     def withWorkerBrowse(self, page, workerId, avType):
+        """
+        waziJavBus.withWorkerBrowse(self, page, workerId, avType)
+        *Step.*
+
+        Browse the avs with the worker.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            workerId: str
+                The worker id.
+            
+            avType: int or str
+                1 is uncensored, 0 is censored.
+
+        Return:
+            Type: list[dict{}]
+            The result.
+            Index 0:
+                {
+                    "name": str,                    # The name of the worker.
+                    "img": str,                     # The image of the worker.
+                    "basic" [{                      # The basic information of the worker.
+                        "type": str,                # The type of the worker.
+                        "content": str              # The content of the worker.
+                    }]
+                }
+            Others:
+                {
+                    "link": str,                        # The link of the av.
+                    "frame": str,                       # The frame URL of the av.
+                    "title": str,                       # The title of the av.
+                    "avId": str,                        # The av id.
+                    "title": str,                       # The title of the av.
+                    "others": {                         # The other information.
+                        "type": str,                    # The type of the av.
+                        "has": [str],                   # The avs that has type.
+                        "tags": [{                      # The tags of the av.
+                            "type": str,                # The type of the tag.
+                            "title": str                # The title of the tag.
+                        }]
+                    }
+                }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，工作者 ID 和 AV 类型，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 工作者 ID： {workerId}， AV 类型： {avType}")
@@ -929,6 +1200,52 @@ class waziJavBus:
         return items
 
     def withEAWorkerBrowse(self, page, workerId):
+        """
+        waziJavBus.withEAWorkerBrowse(self, page, workerId)
+        *Long hair.*
+
+        Browse the avs with the worker from javbus.red.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            workerId: str
+                The worker id.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Index 0:
+                {
+                    "name": str,                    # The name of the worker.
+                    "img": str,                     # The image of the worker.
+                    "basic" [{                      # The basic information of the worker.
+                        "type": str,                # The type of the worker.
+                        "content": str              # The content of the worker.
+                    }]
+                }
+            Others:
+                {
+                    "link": str,                        # The link of the av.
+                    "frame": str,                       # The frame URL of the av.
+                    "title": str,                       # The title of the av.
+                    "avId": str,                        # The av id.
+                    "title": str,                       # The title of the av.
+                    "others": {                         # The other information.
+                        "type": str,                    # The type of the av.
+                        "has": [str],                   # The avs that has type.
+                        "tags": [{                      # The tags of the av.
+                            "type": str,                # The type of the tag.
+                            "title": str                # The title of the tag.
+                        }]
+                    }
+                }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和工作者 ID，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 工作者 ID： {workerId}")
@@ -950,6 +1267,46 @@ class waziJavBus:
         return items
 
     def withDirectorBrowse(self, page, directorId, avType):
+        """
+        waziJavBus.withDirectorBrowse(self, page, directorId, avType)
+        *World.*
+
+        Browse the avs with the director.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            directorId: str
+                The director id.
+            
+            avType: int or str
+                1 is uncensored, 0 is censored.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，导演 ID 和 AV 类型，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 导演 ID： {directorId}， AV 类型： {avType}")
@@ -981,6 +1338,43 @@ class waziJavBus:
         return items
 
     def withEADirectorBrowse(self, page, directorId):
+        """
+        waziJavBus.withEADirectorBrowse(self, page, directorId)
+        *I don't care about the country, I mean, the bragging ambitions and the unification plans.*
+
+        Browse the avs with the director from javbus.red
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            directorId: str
+                The director id.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和导演 ID，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 导演 ID： {directorId}")
@@ -1002,6 +1396,46 @@ class waziJavBus:
         return items
 
     def withStudioBrowse(self, page, studioId, avType):
+        """
+        waziJavBus.withStudioBrowse(self, page, studioId, avType)
+        *Funding.*
+
+        Browse the avs with the studio.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            studioId: str
+                The studio id.
+            
+            avType: int or str
+                1 is uncensored, 0 is censored.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，工作室 ID 和 AV 类型，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 导演 ID： {studioId}， AV 类型： {avType}")
@@ -1033,6 +1467,43 @@ class waziJavBus:
         return items
 
     def withEAStudioBrowse(self, page, studioId):
+        """
+        waziJavBus.withEAStudioBrowse(self, page, studioId)
+        *Shen bi.*
+
+        Browse the avs with the studio from javbus.red
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            studioId: str
+                The studio id.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和工作室 ID，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 导演 ID： {studioId}")
@@ -1054,6 +1525,46 @@ class waziJavBus:
         return items
 
     def withLabelBrowse(self, page, labelId, avType):
+        """
+        waziJavBus.withLabelBrowse(self, page, labelId, avType)
+        *Tape.*
+
+        Browse the avs with the label.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            labelId: str
+                The label id.
+            
+            avType: int or str
+                1 is uncensored, 0 is censored.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，发行商 ID 和 AV 类型，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 发行商 ID： {labelId}， AV 类型： {avType}")
@@ -1085,6 +1596,43 @@ class waziJavBus:
         return items
 
     def withEALabelBrowse(self, page, labelId):
+        """
+        waziJavBus.withEALabelBrowse(self, page, labelId)
+        *Box.*
+
+        Browse the avs with the label from javbus.red
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            labelId: str
+                The label id.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和发行商 ID，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 发行商 ID： {labelId}")
@@ -1106,6 +1654,46 @@ class waziJavBus:
         return items
 
     def withSeriesBrowse(self, page, seriesId, avType):
+        """
+        waziJavBus.withSeriesBrowse(self, page, seriesId, avType)
+        *Fly away.*
+
+        Browse the avs with the series.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            seriesId: str
+                The series id.
+            
+            avType: int or str
+                1 is uncensored, 0 is censored.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，系列 ID 和 AV 类型，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 系列 ID： {seriesId}， AV 类型： {avType}")
@@ -1137,6 +1725,43 @@ class waziJavBus:
         return items
 
     def withEASeriesBrowse(self, page, seriesId):
+        """
+        waziJavBus.withEASeriesBrowse(self, page, seriesId)
+        *Myspace.*
+
+        Browse the avs with the series from javbus.red
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+            
+            seriesId: str
+                The series id.
+        
+        Return:
+            Type: list[dict{}]
+            The result.
+            Like:
+            [{
+                "link": str,                        # The link of the av.
+                "frame": str,                       # The frame URL of the av.
+                "title": str,                       # The title of the av.
+                "avId": str,                        # The av id.
+                "title": str,                       # The title of the av.
+                "others": {                         # The other information.
+                    "type": str,                    # The type of the av.
+                    "has": [str],                   # The avs that has type.
+                    "tags": [{                      # The tags of the av.
+                        "type": str,                # The type of the tag.
+                        "title": str                # The title of the tag.
+                    }]
+                }
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和系列 ID，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 系列 ID： {seriesId}")
