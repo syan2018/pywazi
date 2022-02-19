@@ -2123,6 +2123,82 @@ class waziJavBus:
     def getAVDetailsWithMagnet(self, avId):
         """
         waziJavBus.getAVDetailsWithMagnet(self, avId)
+        *Why so long?*
+
+        Parameters:
+            avId: str
+                The AV ID.
+        
+        Return:
+            Type: dict{}
+            May Like (Some cannot get will return "None. / 无。"):
+            {
+                "title": str,                                   # The title of the AV.
+                "cover": str,                                   # The cover URL of the AV.
+                "coverTitle": str,                              # The title of the cover.
+                "avId": str,                                    # The AV ID.
+                "time": str,                                    # The time of the AV.
+                "long": str,                                    # The length of the AV.
+                "director": {                                   # The director of the AV.
+                    "name": str,                                # The name of the director.
+                    "id": str,                                  # The ID of the director.
+                    "type": str or int                          # The type of the director.
+                },
+                "studio": {                                     # The studio of the AV.
+                    "name": str,                                # The name of the studio.
+                    "id": str,                                  # The ID of the studio.
+                    "type": str or int                          # The type of the studio.
+                },
+                "label": {                                      # The label of the AV.
+                    "name": str,                                # The name of the label.
+                    "id": str,                                  # The ID of the label.
+                    "type": str or int                          # The type of the label.
+                },
+                "series": {                                     # The series of the AV.
+                    "name": str,                                # The name of the series.
+                    "id": str,                                  # The ID of the series.
+                    "type": str or int                          # The type of the series.
+                },
+                "tags": [{                                      # The tags of the AV.
+                    "name": str,                                # The name of the tag.
+                    "id": str,                                  # The ID of the tag.
+                    "type": str or int                          # The type of the tag.
+                }],
+                "workers": [{                                   # The workers of the AV.
+                    "name": str,                                # The name of the worker.
+                    "id": str,                                  # The ID of the worker.
+                    "type": str or int                          # The type of the worker.
+                }],
+                "samples": [{                                   # The samples of the AV.
+                    "title": str,                               # The title of the sample.
+                    "url": str                                  # The URL of the sample.
+                }],
+                "sameVideos": [{                                # The same videos of the AV.
+                    "frame": str,                               # The frame of the same video.
+                    "title": str,                               # The title of the same video.
+                    "img": str,                                 # The img of the same video.
+                    "id": str                                   # The ID of the same video.
+                }],
+                "hots": [{
+                    "url": str,                                 # The URL of the hot.
+                    "title": str,                               # The title of the hot.
+                    "cover": str                                # The cover of the hot.
+                }],
+                "magnets": [{                                   # The magnets of the AV.
+                    "title": str,                               # The title of the magnet.
+                    "tags": [{                                  # The tags of the magnet.
+                        "title": str,                           # The title of the tag.
+                        "type": str or None                     # The type of the tag.
+                    }],
+                    "size": str,                                # The size of the magnet.
+                    "date": str,                                # The date of the magnet.
+                    "magnet": str                               # The magnet of the magnet.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到番号，正在获取： {avId}")
@@ -2138,6 +2214,85 @@ class waziJavBus:
         return details
 
     def getEAAVDetailsWithMagnet(self, avId):
+        """
+        waziJavBus.getEAAVDetailsWithMagnet(self, avId)
+        *Not ready yet.*
+
+        Parameters:
+            avId: str
+                The AV ID.
+        
+        Return:
+            Type: dict{}
+            May Like (Some cannot get will return "None. / 无。"):
+            {
+                "title": str,                                   # The title of the AV.
+                "cover": str,                                   # The cover URL of the AV.
+                "coverTitle": str,                              # The title of the cover.
+                "avId": str,                                    # The AV ID.
+                "time": str,                                    # The time of the AV.
+                "long": str,                                    # The length of the AV.
+                "director": {                                   # The director of the AV.
+                    "name": str,                                # The name of the director.
+                    "id": str,                                  # The ID of the director.
+                    "type": str or int                          # The type of the director.
+                },
+                "studio": {                                     # The studio of the AV.
+                    "name": str,                                # The name of the studio.
+                    "id": str,                                  # The ID of the studio.
+                    "type": str or int                          # The type of the studio.
+                },
+                "label": {                                      # The label of the AV.
+                    "name": str,                                # The name of the label.
+                    "id": str,                                  # The ID of the label.
+                    "type": str or int                          # The type of the label.
+                },
+                "series": {                                     # The series of the AV.
+                    "name": str,                                # The name of the series.
+                    "id": str,                                  # The ID of the series.
+                    "type": str or int                          # The type of the series.
+                },
+                "tags": [{                                      # The tags of the AV.
+                    "name": str,                                # The name of the tag.
+                    "id": str,                                  # The ID of the tag.
+                    "type": str or int                          # The type of the tag.
+                }],
+                "workers": [{                                   # The workers of the AV.
+                    "name": str,                                # The name of the worker.
+                    "id": str,                                  # The ID of the worker.
+                    "type": str or int                          # The type of the worker.
+                }],
+                "samples": [{                                   # The samples of the AV.
+                    "title": str,                               # The title of the sample.
+                    "url": str                                  # The URL of the sample.
+                }],
+                "sameVideos": [{                                # The same videos of the AV.
+                    "frame": str,                               # The frame of the same video.
+                    "title": str,                               # The title of the same video.
+                    "img": str,                                 # The img of the same video.
+                    "id": str                                   # The ID of the same video.
+                }],
+                "hots": [{
+                    "url": str,                                 # The URL of the hot.
+                    "title": str,                               # The title of the hot.
+                    "cover": str                                # The cover of the hot.
+                }],
+                "magnets": [{                                   # The magnets of the AV.
+                    "title": str,                               # The title of the magnet.
+                    "tags": [{                                  # The tags of the magnet.
+                        "title": str,                           # The title of the tag.
+                        "type": str or None                     # The type of the tag.
+                    }],
+                    "size": str,                                # The size of the magnet.
+                    "date": str,                                # The date of the magnet.
+                    "magnet": str                               # The magnet of the magnet.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到番号，正在获取： {avId}")
         url = self.eaApiUrl + "/" + avId
@@ -2152,6 +2307,36 @@ class waziJavBus:
         return details
 
     def search(self, searchType, keyWord, page):
+        """
+        waziJavBus.search(self, searchType, keyWord, page)
+        *Inoremap.*
+
+        Parameters:
+            searchType: str or int
+                The type of the search.
+                0 - censored, 1 - uncensored, 2 - worker, 3 - director, 4 - studio, 5 - label, 6 - series
+            
+            keyWord: str
+                The key word of the search.
+            
+            page: int or str
+                The page of the search. Start from 1.
+            
+        Return:
+            searchType: 2
+                Goto: waziJavBus.getWorkers
+            
+            else:
+                Goto: waziJavBus.getItems
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + searchType is not in [0, 1, 2, 3, 4, 5, 6]
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到搜索类型，关键词和页码信息，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 搜索类型： {searchType}， 关键词： {keyWord}， 页码： {page}")
@@ -2187,6 +2372,36 @@ class waziJavBus:
         return waziJavBus.getItems(self, waziJavBus.getPage(self, url, self.newHeaders, False), "normal", False)
 
     def eaSearch(self, searchType, keyWord, page):
+        """
+        waziJavBus.eaSearch(self, searchType, keyWord, page)
+        *Support.*
+
+        Parameters:
+            searchType: str or int
+                The type of the search.
+                0 - movie, 1 - worker
+
+            keyWord: str
+                The key word of the search.
+            
+            page: int or str
+                The page of the search. Start from 1.
+        
+        Return:
+            searchType: 0
+                Goto: waziJavBus.getItems
+            
+            searchType: 1
+                Goto: waziJavBus.getWorkers
+            
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + searchType is not in [0, 1]
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到搜索类型，关键词和页码信息，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) 搜索类型： {searchType}， 关键词： {keyWord}， 页码： {page}")
@@ -2207,6 +2422,25 @@ class waziJavBus:
             return []
 
     def getAjax(self, avId, isEa):
+        """
+        waziJavBus.getAjax(self, avId, isEa)
+        *Falling Apart.*
+
+        Parameters:
+            avId: str
+                The id of the av.
+            
+            isEa: bool
+                Whether the av is from javbus.red.
+        
+        Return:
+            Type: str
+            The url of the ajax.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 AV 番号和欧美区信息，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) AV 番号： {avId}， 欧美区信息： {isEa}")
@@ -2266,6 +2500,34 @@ class waziJavBus:
         return url
 
     def getMagnet(self, avId, isEa):
+        """
+        waziJavBus.getMagnet(self, avId, isEa)
+        *Need 250BPM.*
+
+        Get magnet infomation.
+
+        Parameters:
+            avId: str
+                The id of the av.
+            
+            isEa: bool
+                If the av from javbus.red.
+
+        Return:
+            Type: list[dict{}]
+            The magnet infomation.
+            Like:
+            [{
+                "title": str,                               # The title of the magnet.
+                "tags": [{                                  # The tags of the magnet.
+                    "title": str,                           # The title of the tag.
+                    "type": str or None                     # The type of the tag.
+                }],
+                "size": str,                                # The size of the magnet.
+                "date": str,                                # The date of the magnet.
+                "magnet": str                               # The magnet of the magnet.
+            }]
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 AV 番号和欧美区信息，正在获取。")
         waziLog.log("debug", f"({self.name}.{fuName}) AV 番号： {avId}， 欧美区信息： {isEa}")
@@ -2325,6 +2587,38 @@ class waziJavBus:
         return avLists
 
     def downloadFile(self, url, orgName, path):
+        """
+        waziJavBus.downloadFile(self, url, orgName, path)
+        *22.*
+
+        Download the file from the url.
+        OKay, this is a function that is only used for my discord bot.
+        If you think this is a redundant function, it is recommended to delete it.
+
+        Parameters:
+            url: str
+                The url of the file.
+            
+            orgName: str
+                The original name of the file.
+            
+            path: str
+                The path of the file.
+        
+        Return:
+            Type: bool
+            If the download is successful, return True, else return False.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+                (Cannot save the file may cause the program to crash.)
+            
+            Logs:
+                Error:
+                    + Cannot get the response.
+                    + Cannot create the path.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，文件名和路径，正在准备下载。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 文件名： {orgName}， 路径： {path}")
