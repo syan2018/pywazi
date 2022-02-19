@@ -1,3 +1,9 @@
+"""
+sites/waziNyaa.py
+
+class: waziNyaa
+"""
+
 from mods import waziFun
 from bs4 import BeautifulSoup
 from mods.waziURL import waziURL
@@ -6,7 +12,15 @@ from mods.waziCheck import waziCheck
 from mods.waziRequest import waziRequest
 
 class waziNyaa:
-    # TODO: Support sukebei.nyaa.si and nyaa.si
+    """
+    waziNyaa
+    *My comment format is a mystery.*
+
+    A class for crawling the nyaa.si website. (Support sukebei.nyaa.si)
+
+    Attributes:
+        
+    """
     def __init__(self):
         super(waziNyaa, self).__init__()
         self.headers = {
@@ -25,8 +39,14 @@ class waziNyaa:
         self.request = waziRequest()
         self.name = self.__class__.__name__
     
+    def giveParams(self, params):
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到配置信息，正在写入。")
+        self.params = params
+        waziLog.log("info", f"({self.name}.{fuName}) 写入完成，目前配置为： {self.params}")
+        return self.params
+    
     def getFiles(self, ul):
-        # No Log Here
         for i in ul.contents:
             if i != "\n":
                 if i.find("a"):
@@ -38,8 +58,6 @@ class waziNyaa:
                     self.tempFiles.append(i.text.strip())
     
     def returnSoup(self, link, xml):
-        # TODO: Put this function in waziRequest
-        #       Emmm... I cannot.
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得 Soup： {link}")
         tempParams = self.params
@@ -59,13 +77,6 @@ class waziNyaa:
         else:
             waziLog.log("info", f"({self.name}.{fuName}) 获取成功，Soup 返回中。")
             return soup
-    
-    def giveParams(self, params):
-        fuName = waziFun.getFuncName()
-        waziLog.log("debug", f"({self.name}.{fuName}) 收到配置信息，正在写入。")
-        self.params = params
-        waziLog.log("info", f"({self.name}.{fuName}) 写入完成，目前配置为： {self.params}")
-        return self.params
 
     def parsePage(self, soup, site):
         fuName = waziFun.getFuncName()
