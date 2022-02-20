@@ -1,3 +1,9 @@
+"""
+sites/waziPicAcg.py
+
+class: waziPicAcg
+"""
+
 import os
 import json
 import uuid
@@ -9,12 +15,27 @@ from mods.waziRequest import waziRequest
 from mods.waziFileName import waziFileName
 
 class waziPicAcg:
-    # An APP that facilitates people to view magazines (R-18).
-    # my impression of it is that it is particularly difficult to do crawling.
-    #
-    # 一个方便人们观看杂志（R-18）的 APP。
-    # 我对它的印象就是：特别难做爬虫。
-    # [2]
+    """
+    waziPicAcg
+    *Hardcore Game.*
+
+    A class for crawling the PicAcg.
+
+    Attributes:
+        imageQuality: list
+            The quality of the image.
+            ["original", "low", "medium", "high"]
+        
+        name: str
+            The name of the class.
+        
+        headers: dict
+            The headers of the request.
+            Will be modified in the class.
+        
+        info: dict
+            
+    """
     def __init__(self):
         super(waziPicAcg, self).__init__()
         self.imageQuality = ["original", "low", "medium", "high"]

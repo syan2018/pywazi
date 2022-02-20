@@ -180,6 +180,62 @@ class waziNyaa:
     def parsePage(self, soup, site):
         """
         waziNyaa.parsePage(self, soup, site)
+        *No Heroes.*
+
+        Parse the page to get the information.
+
+        Parameters:
+            soup: BeautifulSoup
+                A BeautifulSoup of the page.
+            
+            site: int
+                The site of the page.
+                0: https://nyaa.si/
+                1: https://sukebei.nyaa.si/
+        
+        Return:
+            Type: dict
+            A dict of the information.
+            Like:
+            {
+                "type": str,                                        # The type of the torrent.
+                "title": str,                                       # The title of the torrent.
+                "category": {                                       # The category of the torrent.
+                    "fatherCategory": str,                          # The father category of the torrent.
+                    "fatherCategoryId": str,                        # The father category ID of the torrent.
+                    "subCategory": str,                             # The sub category of the torrent.
+                    "subCategoryId": str                            # The sub category ID of the torrent.
+                    "category": str,                                # The category of the torrent.
+                },
+                "time": str,                                        # The time of the torrent.
+                "timeStamp": int,                                   # The time stamp of the torrent.
+                "uploader": str,                                    # The uploader of the torrent.
+                "uploaderLink": str,                                # The uploader link of the torrent.
+                "seeders": int,                                     # The seeders number of the torrent.
+                "information": str,                                 # The information of the torrent.
+                "informationLink": str,                             # The information link of the torrent.
+                "leechers": int,                                    # The leechers number of the torrent.
+                "size": str,                                        # The size of the torrent.
+                "completes": int,                                   # The download completes number of the torrent.
+                "hash": str,                                        # The hash of the torrent.
+                "torrent": str or None,                             # The torrent link of the torrent.
+                "magnet": str,                                      # The magnet link of the torrent.
+                "description": str,                                 # The description of the torrent.
+                "files": str or list[str],                          # The files of the torrent.
+                "comments": [{
+                    "name": str,                                    # The name of the commenter.
+                    "link": str,                                    # The link of the commenter.
+                    "extra": str,                                   # The extra information of the commenter.
+                    "time": str,                                    # The time of the commenter.
+                    "timeStamp": int,                               # The time stamp of the commenter.
+                    "editTime": str,                                # The edit time of the commenter.
+                    "editTimeStamp": float,                         # The edit time stamp of the commenter.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 和 site 参数，正在解析。")
@@ -267,6 +323,45 @@ class waziNyaa:
         return itemInfo
 
     def parseRSS(self, rss):
+        """
+        waziNyaa.parseRSS(self, rss)
+        *I love you so.*
+
+        Parses the RSS feed and returns a list of items.
+
+        Parameters:
+            rss: BeautifulSoup
+                The RSS feed.
+        
+        Return:
+            Type: list[dict{}]
+            A list of dictionaries containing the item information.
+            Like:
+            [{
+                "type": str,                        # The type of the item.
+                "category": str,                    # The category of the item.
+                "categoryId": str,                  # The category ID of the item.
+                "comments": int,                    # The number of comments of the item.
+                "title": str,                       # The title of the item.
+                "link": str,                        # The link of the item.
+                "id": int,                          # The ID of the item.
+                "torrent": str or None,             # The link to the torrent file of the item.
+                "magnet": str,                      # The magnet link of the item.
+                "size": str,                        # The size of the torrent.
+                "time": str,                        # The time of the torrent.
+                "seeders": int,                     # The number of seeders of the torrent.
+                "leechers": int,                    # The number of leechers of the torrent.
+                "completes": int                    # The number of completions of the torrent.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + Cannot get item elements.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 RSS 数据，正在解析。")
         items = rss.find_all("item")
@@ -318,6 +413,52 @@ class waziNyaa:
             return result
 
     def parseSearch(self, soup, site):
+        """
+        waziNyaa.parseSearch(self, soup, site)
+        *Cold but warm.*
+
+        Parse the search result.
+
+        Parameters:
+            soup: BeautifulSoup
+                The soup of the search result.
+            
+            site: int
+                The site of the page.
+                0: https://nyaa.si/
+                1: https://sukebei.nyaa.si/
+        
+        Return:
+            Type: list[dict{}]
+            The parsed result.
+            Like:
+            [{
+                "type": str,                        # The type of the item.
+                "typeExtra": str,                   # The extra type of the item. (May have)
+                "category": str,                    # The category of the item.
+                "categoryId": str,                  # The category ID of the item.
+                "comments": int,                    # The number of comments of the item.
+                "title": str,                       # The title of the item.
+                "link": str,                        # The link of the item.
+                "id": int,                          # The ID of the item.
+                "torrent": str,                     # The torrent link of the item.
+                "magnet": str,                      # The magnet link of the item.
+                "size": str,                        # The size of the item.
+                "time": str,                        # The time of the item.
+                "timeStamp": int,                   # The timestamp of the item.
+                "seeders": int,                     # The number of seeders of the item.
+                "leechers": int,                    # The number of leechers of the item.
+                "completes": int                    # The number of completes of the item.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Log:
+                Warn:
+                    + Cannot get tbody element.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup，正在解析。")
         table = soup.find("tbody")
@@ -378,6 +519,50 @@ class waziNyaa:
             return result
 
     def search(self, params):
+        """
+        waziNyaa.search(self, params)
+        *Nonfiction ecstasy.*
+
+        Parameters:
+            params: dict
+                The search parameters.
+                {
+                    "page": int or str,             # The page number. Start from 1.
+                    "keyword": str,                 # The search keyword.
+                    "category": str,                # The category.
+                    "filter": str,                  # The filter. No / No Remakes / Trusted Only
+                    "order": str,                   # The order. Comments / Size / Date / Seeders / Leechers / Completed Downloads,
+                    "site": str or int,             # The site. 0 is https://nyaa.si/, 1 is https://sukebei.nyaa.si/
+                    "orderBy": str                  # The order by. asc / desc
+                }
+        
+        Return:
+            Type: list[dict{}]
+            The search result.
+            Like:
+            [{
+                "type": str,                        # The type of the item.
+                "typeExtra": str,                   # The extra type of the item. (May have)
+                "category": str,                    # The category of the item.
+                "categoryId": str,                  # The category ID of the item.
+                "comments": int,                    # The number of comments of the item.
+                "title": str,                       # The title of the item.
+                "link": str,                        # The link of the item.
+                "id": int,                          # The ID of the item.
+                "torrent": str,                     # The torrent link of the item.
+                "magnet": str,                      # The magnet link of the item.
+                "size": str,                        # The size of the item.
+                "time": str,                        # The time of the item.
+                "timeStamp": int,                   # The timestamp of the item.
+                "seeders": int,                     # The number of seeders of the item.
+                "leechers": int,                    # The number of leechers of the item.
+                "completes": int                    # The number of completes of the item.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到搜索请求，正在获取 Soup。")
         waziLog.log("debug", f"({self.name}.{fuName}) 用户搜索请求： {params}")
@@ -402,12 +587,57 @@ class waziNyaa:
         if "order" in params:
             waziLog.log("debug", f"({self.name}.{fuName}) 检测到排序参数，正在设置排序。")
             searchParams.update(self.check.nyaaSearch["orders"][params["order"]])
+            if "orderBy" in params:
+                waziLog.log("debug", f"({self.name}.{fuName}) 检测到排序方式参数，正在设置排序方式。")
+                searchParams["o"] = params["orderBy"]
         waziLog.log("debug", f"({self.name}.{fuName}) 正在合成 URL。")
         url = self.URL.getFullURL(self.urls[int(params["site"])], searchParams)
         waziLog.log("debug", f"({self.name}.{fuName}) 合成完成，正在解析： {url}")
         return waziNyaa.parseSearch(self, waziNyaa.returnSoup(self, url, False), int(params["site"]))
         
     def searchRSS(self, params):
+        """
+        waziNyaa.searchRSS(self, params)
+        *Rat.*
+
+        Parameters:
+            params: dict
+                The search parameters.
+                {
+                    "page": int or str,             # The page number. Start from 1.
+                    "keyword": str,                 # The search keyword.
+                    "category": str,                # The category.
+                    "filter": str,                  # The filter. No / No Remakes / Trusted Only
+                    "order": str,                   # The order. Comments / Size / Date / Seeders / Leechers / Completed Downloads,
+                    "site": str or int,             # The site. 0 is https://nyaa.si/, 1 is https://sukebei.nyaa.si/
+                    "orderBy": str                  # The order by. asc / desc
+                }
+
+        Return:
+            Type: list[dict{}]
+            The search result.
+            Like:
+            [{
+                "type": str,                        # The type of the item.
+                "category": str,                    # The category of the item.
+                "categoryId": str,                  # The category ID of the item.
+                "comments": int,                    # The number of comments of the item.
+                "title": str,                       # The title of the item.
+                "link": str,                        # The link of the item.
+                "id": int,                          # The ID of the item.
+                "torrent": str or None,             # The link to the torrent file of the item.
+                "magnet": str,                      # The magnet link of the item.
+                "size": str,                        # The size of the torrent.
+                "time": str,                        # The time of the torrent.
+                "seeders": int,                     # The number of seeders of the torrent.
+                "leechers": int,                    # The number of leechers of the torrent.
+                "completes": int                    # The number of completions of the torrent.
+            }]
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到搜索请求，正在获取 XML 结果。")
         waziLog.log("debug", f"({self.name}.{fuName}) 用户搜索请求： {params}")
@@ -433,12 +663,70 @@ class waziNyaa:
         if "order" in params:
             waziLog.log("debug", f"({self.name}.{fuName}) 检测到排序参数，正在设置排序。")
             searchParams.update(self.check.nyaaSearch["orders"][params["order"]])
+            if "orderBy" in params:
+                waziLog.log("debug", f"({self.name}.{fuName}) 检测到排序方式参数，正在设置排序方式。")
+                searchParams["o"] = params["orderBy"]
         waziLog.log("debug", f"({self.name}.{fuName}) 正在合成 URL。")
         url = self.URL.getFullURL(self.urls[int(params["site"])], searchParams)
         waziLog.log("debug", f"({self.name}.{fuName}) 合成完成，正在解析： {url}")
         return waziNyaa.parseRSS(self, waziNyaa.returnSoup(self, url, True))
     
     def getViewFromId(self, id, site):
+        """
+        waziNyaa.getViewFromId(self, id, site)
+        *I love CityPop.*
+
+        Parameters:
+            id: int or str
+                The ID of the item.
+
+            site: int or str
+                The site of the item. 0 is https://nyaa.si/, 1 is https://sukebei.nyaa.si/
+        
+        Return:
+            Type: dict
+            A dict of the information.
+            Like:
+            {
+                "type": str,                                        # The type of the torrent.
+                "title": str,                                       # The title of the torrent.
+                "category": {                                       # The category of the torrent.
+                    "fatherCategory": str,                          # The father category of the torrent.
+                    "fatherCategoryId": str,                        # The father category ID of the torrent.
+                    "subCategory": str,                             # The sub category of the torrent.
+                    "subCategoryId": str                            # The sub category ID of the torrent.
+                    "category": str,                                # The category of the torrent.
+                },
+                "time": str,                                        # The time of the torrent.
+                "timeStamp": int,                                   # The time stamp of the torrent.
+                "uploader": str,                                    # The uploader of the torrent.
+                "uploaderLink": str,                                # The uploader link of the torrent.
+                "seeders": int,                                     # The seeders number of the torrent.
+                "information": str,                                 # The information of the torrent.
+                "informationLink": str,                             # The information link of the torrent.
+                "leechers": int,                                    # The leechers number of the torrent.
+                "size": str,                                        # The size of the torrent.
+                "completes": int,                                   # The download completes number of the torrent.
+                "hash": str,                                        # The hash of the torrent.
+                "torrent": str or None,                             # The torrent link of the torrent.
+                "magnet": str,                                      # The magnet link of the torrent.
+                "description": str,                                 # The description of the torrent.
+                "files": str or list[str],                          # The files of the torrent.
+                "comments": [{
+                    "name": str,                                    # The name of the commenter.
+                    "link": str,                                    # The link of the commenter.
+                    "extra": str,                                   # The extra information of the commenter.
+                    "time": str,                                    # The time of the commenter.
+                    "timeStamp": int,                               # The time stamp of the commenter.
+                    "editTime": str,                                # The edit time of the commenter.
+                    "editTimeStamp": float,                         # The edit time stamp of the commenter.
+                }]
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 ID 和 site 参数，正在获取 Soup。")
         waziLog.log("debug", f"({self.name}.{fuName}) ID： {id}， 站点： {site}")
