@@ -19,9 +19,47 @@ class waziNyaa:
     A class for crawling the nyaa.si website. (Support sukebei.nyaa.si)
 
     Attributes:
+        headers: dict
+            The headers for the request. A customized header is filled in.
         
+        proxies: dict
+            The proxy for the request.
+            Default: {'proxyAddress': '127.0.0.1', 'proxyPort': '7890'}
+        
+        params: dict
+            A dict of user params for requests. User can set the params in config.json.
+        
+        tempFiles: list
+            A list of files in the page.
+        
+        urls: list
+            A list of urls.
+            0: https://nyaa.si/
+            1: https://sukebei.nyaa.si/
+        
+        URL: waziURL
+            A waziURL object.
+        
+        check: waziCheck
+            A waziCheck object.
+        
+        request: waziRequest
+            A waziRequest object.
+        
+        name: str
+            The name of the class.
+    
+    Methods:
+        - Please use help()
     """
     def __init__(self):
+        """
+        waziNyaa.__init__(self)
+        *I know this is a lie.*
+
+        Parameters:
+            None
+        """
         super(waziNyaa, self).__init__()
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -40,6 +78,23 @@ class waziNyaa:
         self.name = self.__class__.__name__
     
     def giveParams(self, params):
+        """
+        waziNyaa.giveParams(self, params)
+        *Everywhere.*
+
+        Give params to this class. Controled by user.
+        Proxy and headers are controlled by self.params.
+
+        Parameters:
+            params: dict
+                A dict of params, user given.
+        
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到配置信息，正在写入。")
         self.params = params
@@ -47,6 +102,24 @@ class waziNyaa:
         return self.params
     
     def getFiles(self, ul):
+        """
+        waziNyaa.getFiles(self, ul)
+        *The Art of Recursion.*
+
+        Get all files in the page.
+        Input root ul element, you can get all files in the page.
+        Save in self.tempFiles.
+
+        Parameters:
+            ul: BeautifulSoup
+                The root ul element.
+            
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         for i in ul.contents:
             if i != "\n":
                 if i.find("a"):
@@ -58,6 +131,32 @@ class waziNyaa:
                     self.tempFiles.append(i.text.strip())
     
     def returnSoup(self, link, xml):
+        """
+        waziNyaa.returnSoup(self, link, xml)
+        *Reuse, abstract. But I cannot.*
+
+        Request a link and return a BeautifulSoup.
+
+        Parameters:
+            link: str
+                A link to request.
+
+            xml: bool
+                Whether the link is xml or not.
+        
+        Return:
+            soup: BeautifulSoup
+                A BeautifulSoup of the requested link.
+                If the request failed, return BeautifulSoup("<html></html>", "lxml")
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Logs:
+                Error:
+                    + Cannot get the response.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得 Soup： {link}")
         tempParams = self.params
@@ -79,6 +178,9 @@ class waziNyaa:
             return soup
 
     def parsePage(self, soup, site):
+        """
+        waziNyaa.parsePage(self, soup, site)
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 Soup 和 site 参数，正在解析。")
         waziLog.log("debug", f"({self.name}.{fuName}) 站点： {site}")
