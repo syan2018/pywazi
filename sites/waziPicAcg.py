@@ -539,6 +539,7 @@ class waziPicAcg:
 
     def search(self, page, keyword):
         """
+        ??????????????????????????
         waziPicAcg.search(self, page, keyword)
         *I always find the API interfaces in my decompiled code so strange.*
 
@@ -553,6 +554,13 @@ class waziPicAcg:
         
         Return:
             Type: dict
+            The comics. But for now, you cannot get comics from this method.
+            Will return:
+            {'code': 200, 'message': 'success'}
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和关键词，正在发起请求。")
@@ -564,6 +572,76 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getComic(self, comicId):
+        """
+        waziPicAcg.getComic(self, comicId)
+        *I wonder about everything.*
+
+        Get comic with comic id.
+
+        Parameters:
+            comicId: str
+                The comic id.
+        
+        Return:
+            Type: dict
+            The comic.
+            May like:
+            {
+                "code": int,                                            # The status code of request.
+                "message": str,                                         # The message of request.
+                "data": {                                               # The data of request.
+                    "comic": {                                          # The comic.
+                        "_id": str,                                     # The id of comic.
+                        "_creator": {                                   # The creator of comic.
+                            "_id": str,                                 # The id of creator.
+                            "gender": str,                              # The gender of creator.
+                            "name" str,                                 # The name of creator.
+                            "verified": bool,                           # Whether the creator is verified.
+                            "exp": int,                                 # The exp of creator.
+                            "level": int,                               # The level of creator.
+                            "characters": list[str],                    # The characters of creator.
+                            "role: str,                                 # The role of creator.
+                            "avatar": {                                 # The avatar of creator.
+                                "originalName": str,                    # The original name of avatar.
+                                "path": str,                            # The path of avatar.
+                                "fileServer": str                       # The file server of avatar.
+                            },
+                            "slogan": str,                              # The slogan of creator.
+                            "character": str,                           # The character of creator.
+                        },
+                        "title": str,                                   # The title of comic.
+                        "description": str,                             # The description of comic.
+                        "thumb": {                                      # The thumb of comic.
+                            "originalName": str,                        # The original name of thumb.
+                            "path": str,                                # The path of thumb.
+                            "fileServer": str                           # The file server of thumb.
+                        },
+                        "author": str or may be other object,           # The author of comic.
+                        "chineseTeam": str or may be other object,      # The chinese team of comic.
+                        "categories": list[str],                        # The categories of comic.
+                        "tags": list[str],                              # The tags of comic.
+                        "pagesCount": int,                              # The pages count of comic.
+                        "epsCount": int,                                # The eps count of comic.
+                        "finished": bool,                               # Whether the comic is finished.
+                        "updated_at": str,                              # The updated time of comic.
+                        "created_at": str,                              # The created time of comic.
+                        "allowDownload": bool,                          # Whether the comic allow download.
+                        "allowComment": bool,                           # Whether the comic allow comment.
+                        "totalLikes": int,                              # The total likes of comic.
+                        "totalViews": int,                              # The total views of comic.
+                        "viewsCount": int,                              # The views count of comic.
+                        "likesCount": int,                              # The likes count of comic.
+                        "isFavorite": bool,                             # Whether the comic is favorite by user.
+                        "isLiked": bool,                                # Whether the comic is liked by user.
+                        "commentsCount": int                            # The comments count of comic.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}")
