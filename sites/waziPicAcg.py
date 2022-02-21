@@ -34,9 +34,49 @@ class waziPicAcg:
             Will be modified in the class.
         
         info: dict
-            
+            A dict of the information of the request.
+            Save request's secret key, api key, base url, uuid.
+            Will be modified in the class.
+        
+        params: dict
+            A dict of user params for requests. User can set the params in config.json.
+        
+        proxies: dict
+            The proxy for the request.
+            Default: {'proxyAddress': '127.0.0.1', 'proxyPort': '7890'}
+        
+        token: str
+            The token for the request.
+            The user's token will be filled in the login method.
+        
+        urls: dict
+            The urls for the request.
+        
+        request: waziRequest
+            A waziRequest object.
+        
+        check: waziCheck
+            A waziCheck object.
+        
+        fileName: waziFileName
+            A waziFileName object.
+        
+    Methods:
+        - Please use help()
     """
     def __init__(self):
+        """
+        waziPicAcg.__init__(self)
+        *su be te mi se ta i.*
+
+        Initialize the class.
+
+        Parameters:
+            None
+        
+        Actions:
+            + Set the headers: waziPicAcg.editHeaders(self)
+        """
         super(waziPicAcg, self).__init__()
         self.imageQuality = ["original", "low", "medium", "high"]
         self.name = self.__class__.__name__
@@ -127,6 +167,23 @@ class waziPicAcg:
         self.editHeaders()
 
     def giveParams(self, params):
+        """
+        waziPicAcg.giveParams(self, params)
+        *Oops!*
+
+        Give params to this class. Controled by user.
+        Proxy and headers are controlled by self.params.
+
+        Parameters:
+            params: dict
+                A dict of params, user given.
+        
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到配置信息，正在写入。")
         self.params = params
@@ -134,6 +191,23 @@ class waziPicAcg:
         return self.params
 
     def editHeaders(self):
+        """
+        waziPicAcg.editHeaders(self)
+        *Into the Vault!*
+
+        Edit headers.
+        Generate a new uuid, and fill in the headers with other params.
+        Called in __init__.
+
+        Parameters:
+            None
+        
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 接到 __init__ 指令，正在创建 headers。")
         self.info["uuid"] = str(uuid.uuid4()).replace("-", "")
@@ -142,6 +216,26 @@ class waziPicAcg:
         waziLog.log("debug", f"({self.name}.{fuName}) 创建完成，header 已写入： {self.headers}")
 
     def sign(self, url, method):
+        """
+        waziPicAcg.sign(self, url, method)
+        *Keep it secret, keep it safe!*
+
+        Signature request.
+        Use self.check.construct to construct the request headers.
+
+        Parameters:
+            url: str
+                The url of request.
+            
+            method: str
+                The method of request.
+        
+        Return:
+            None
+        
+        Errors:
+            None
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL 和请求方式，正在签名。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 请求方式： {method}")
@@ -154,6 +248,39 @@ class waziPicAcg:
         waziLog.log("debug", f"({self.name}.{fuName}) 写入完成： {self.headers}")
 
     def up(self, url, needAuth, data, method, jsonNeed):
+        """
+        waziPicAcg.up(self, url, needAuth, data, method, jsonNeed)
+        *Eee.*
+
+        Send a request.
+
+        Parameters:
+            url: str
+                The url of request.
+            
+            needAuth: bool
+                Whether need auth.
+            
+            data: object
+                The data of request.
+            
+            method: str
+                The method of request.
+            
+            jsonNeed: bool
+                Whether need return json.
+        
+        Return:
+            jsonNeed: True
+                Type: list or dict Object.
+            
+            jsonNeed: False
+                Type: urllib3.response.HTTPResponse
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，是否验证信息，数据，请求方式和是否返回 JSON 信息，正在请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 是否验证信息： {needAuth}， 数据： {data}")
@@ -174,6 +301,36 @@ class waziPicAcg:
         return waziPicAcg.normalUP(self, tempParams, url, data, method, jsonNeed)
 
     def justUP(self, url, data, method, jsonNeed):
+        """
+        waziPicAcg.justUP(self, url, data, method, jsonNeed)
+        *Wanna be the first one?*
+
+        Send a request without sign and auth.
+
+        Parameters:
+            url: str
+                The url of request.
+            
+            data: object
+                The data of request.
+            
+            method: str
+                The method of request.
+            
+            jsonNeed: bool
+                Whether need return json.
+        
+        Return:
+            jsonNeed: True
+                Type: list or dict Object.
+            
+            jsonNeed: False
+                Type: urllib3.response.HTTPResponse
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，数据，请求方式和是否返回 JSON 信息，正在请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 数据： {data}， 请求方式： {method}")
@@ -186,6 +343,40 @@ class waziPicAcg:
         return waziPicAcg.normalUP(self, tempParams, url, data, method, jsonNeed)
 
     def normalUP(self, tempParams, url, data, method, jsonNeed):
+        """
+        waziPicAcg.normalUP(self, tempParams, url, data, method, jsonNeed)
+        *Night.*
+
+        Re-abstraction of the request method.
+        The base request method in this class.
+
+        Parameters:
+            tempParams: dict
+                The params of request. User-defined.
+            
+            url: str
+                The url of request.
+            
+            data: object
+                The data of request.
+            
+            method: str
+                The method of request.
+            
+            jsonNeed: bool
+                Whether need return json.
+        
+        Return:
+            jsonNeed: True
+                Type: list or dict Object.
+            
+            jsonNeed: False
+                Type: urllib3.response.HTTPResponse
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到用户参数，URL，数据，请求方式和是否返回 JSON 信息，正在请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 用户参数： {tempParams}， URL： {url}， 数据： {data}")
@@ -211,6 +402,33 @@ class waziPicAcg:
             return self.request.do(requestParams)
 
     def login(self, username, password):
+        """
+        waziPicAcg.login(self, username, password)
+        *Pepper Salt.*
+
+        Login in the account.
+        If success, will use your token to request.
+        So you have to use this method once to get your token before any authorization request is needed.
+
+        Parameters:
+            username: str
+                The username of account.
+            
+            password: str
+                The password of account.
+        
+        Return:
+            Type: str
+            The token of account.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+            
+            Logs:
+                Error:
+                    + Login failed.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到用户名和密码，正在发起登录请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 用户名： {username}， 密码： {password}")
