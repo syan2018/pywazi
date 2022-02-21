@@ -449,11 +449,77 @@ class waziPicAcg:
             return self.token
 
     def getCategories(self):
+        """
+        waziPicAcg.getCategories(self)
+        *Fear.*
+
+        Get all categories.
+
+        Parameters:
+            None
+        
+        Return:
+            Type: dict
+            The categories.
+            May like (Some categories may not have these information):
+            {
+                "code": int,                            # The status code of request.
+                "message": str,                         # The message of request.
+                "data": {                               # The data of request.
+                    "categories": [{                    # The categories.
+                        "title": str,                   # The title of category.
+                        "thumb": {                      # The thumbnail of category.
+                            "originalName": str,        # The original name of thumb.
+                            "path": str,                # The path of thumb.
+                            "fileServer": str           # The file server of thumb.
+                        },
+                        "isWeb": bool,                  # Whether the category is web.
+                        "active": bool,                 # Whether the category is active.
+                        "link": str,                    # The link of category.
+                        "_id": str,                     # The id of category.
+                        "description": str,             # The description of category.
+                    }]
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
         return waziPicAcg.up(self, self.urls["categories"], True, None, "GET", True)
 
     def getComics(self, page, c, t, s):
+        """
+        ?Why cannot get comics?
+        waziPicAcg.getComics(self, page, c, t, s)
+        *Go listen to VOY@GER.*
+
+        Get comics with page, category, tag and sort.
+
+        Parameters:
+            page: int or str
+                The page of comics. Start from 1.
+            
+            c: str
+                Category of comics. Can be string from getCategories.
+            
+            t: str
+                Tag of comics. Please use traditional Chinese.
+            
+            s: str
+                Sorting of comics.
+                    ua: Default.
+                    dd: From newest to oldest.
+                    da: From oldest to newest.
+                    vd: From users named most to users named least. (What is that? Hot?)
+                    ld: From users liked most to users liked least.
+        
+        Return:
+            Type: dict
+            The comics.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码、分区、标签和排序，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 分区： {c}， 标签： {t}， 排序： {s}")
