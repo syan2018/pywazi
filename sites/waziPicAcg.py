@@ -681,10 +681,10 @@ class waziPicAcg:
                             "updated_at": str,                          # The updated time of eps.
                             "id": str                                   # The id of eps.
                         }],
-                        "total": int,                                  # The total of eps.
-                        "limit": int,                                  # The limit of eps.
-                        "page": int,                                   # The page of eps.
-                        "pages": int                                   # The pages of eps.
+                        "total": int,                                   # The total of eps.
+                        "limit": int,                                   # The limit of eps.
+                        "page": int,                                    # The page of eps.
+                        "pages": int                                    # The pages of eps.
                     }
                 }
             }
