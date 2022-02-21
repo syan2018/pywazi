@@ -652,6 +652,47 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getComicEps(self, comicId, page):
+        """
+        waziPicAcg.getComicEps(self, comicId, page)
+        *Anxiety.*
+
+        Get comic eps with page.
+
+        Parameters:
+            comicId: str
+                The comic id.
+            
+            page: int or int
+                The page.
+        
+        Return:
+            Type: dict
+            The comic eps.
+            May like:
+            {
+                "code": int,                                            # The status code of request.
+                "message": str,                                         # The message of request.
+                "data": {                                               # The data of request.
+                    "eps": {                                            # The eps.
+                        "docs": [{                                      # The eps list.
+                            "_id": str,                                 # The id of eps.
+                            "title": str,                               # The title of eps.
+                            "order": int,                               # The order of eps.
+                            "updated_at": str,                          # The updated time of eps.
+                            "id": str                                   # The id of eps.
+                        }],
+                        "total": int,                                  # The total of eps.
+                        "limit": int,                                  # The limit of eps.
+                        "page": int,                                   # The page of eps.
+                        "pages": int                                   # The pages of eps.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID 和分 P 数据，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}， 分 P 数据： {page}")
@@ -662,6 +703,70 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def advancedSearch(self, categories, keyword, sort, page):
+        """
+        waziPicAcg.advancedSearch(self, categories, keyword, sort, page)
+        *Step by step.*
+
+        Advanced search with categories, keyword, sort and page.
+        You should use this method rather than waziPicAcg.search and waziPicAcg.getComics.
+
+        Parameters:
+            categories: list[str]
+                The categories. If you do not want to use this parameter, just set it to [].
+            
+            keyword: str
+                The keyword.
+            
+            sort: str
+                Sorting of comics.
+                    ua: Default.
+                    dd: From newest to oldest.
+                    da: From oldest to newest.
+                    vd: From users named most to users named least. (May Hot.)
+                    ld: From users liked most to users liked least.
+            
+            page: int or str
+                The page. Start from 1.
+            
+        Return:
+            Type: dict
+            The comics.
+            May like:
+            {
+                "code": int,                                            # The status code of request.
+                "message": str,                                         # The message of request.
+                "data": {                                               # The data of request.
+                    "comics": {                                         # The comics.
+                        "total": int,                                   # The total of comics.
+                        "page": int,                                    # The page of comics.
+                        "pages": int,                                   # The pages of comics.
+                        "docs": [{                                      # The comics list.
+                            "updated_at": str,                          # The updated time of comic.
+                            "thumb": {                                  # The thumb of comic.
+                                "originalName": str,                    # The original name of thumb.
+                                "path": str,                            # The path of thumb.
+                                "fileServer": str                       # The file server of thumb.
+                            },
+                            "author": str,                              # The author of comic.
+                            "description": str,                         # The description of comic.
+                            "chineseTeam": str or may other object,     # The chinese team of comic.
+                            "created_at": str,                          # The created time of comic.
+                            "finished": bool,                           # Whether the comic is finished.
+                            "categories": [str],                        # The categories of comic.
+                            "title": str,                               # The title of comic.
+                            "tags": [str],                              # The tags of comic.
+                            "_id": str,                                 # The id of comic.
+                            "likesCount": int                           # The likes count of comic.
+                        }],
+                        "limit": int                                    # The limit of comics.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到分类、关键词、排序和页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 分类： {categories}， 关键词： {keyword}， 排序： {sort}， "
@@ -680,6 +785,10 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, body, "POST", True)
 
     def getComicPages(self, comicId, eps, page):
+        """
+        waziPicAcg.getComicPages(self, comicId, eps, page)
+        
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID、分 P 数据和页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}， 分 P 数据： {eps}， 页码： {page}")

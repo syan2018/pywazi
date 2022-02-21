@@ -32,6 +32,7 @@ def globalParams(filePath):
     waziDanbooru.giveParams(jsonData)
     waziExHentai.giveParams(jsonData)
     waziAsianSister.giveParams(jsonData)
+    waziNyaa.giveParams(jsonData)
     return jsonData
 
 def defConfig(filePath):
