@@ -787,7 +787,53 @@ class waziPicAcg:
     def getComicPages(self, comicId, eps, page):
         """
         waziPicAcg.getComicPages(self, comicId, eps, page)
+        *Why we run?*
+
+        Get the pages of comic.
         
+        Parameters:
+            comicId: str
+                The comic ID.
+            
+            eps: int
+                The eps of comic.
+            
+            page: int or str
+                The page.
+        
+        Return:
+            Type: dict
+            The pages of comic.
+            May like:
+            {
+                "code": int,                                            # The status code of request.
+                "message": str,                                         # The message of request.
+                "data": {                                               # The data of request.
+                    "pages": {                                          # The pages of comic.
+                        "docs": [{                                      # The pages list.
+                            "_id": str,                                 # The id of page.
+                            "media": {                                  # The media of page.
+                                "originalName": str,                    # The original name of page.
+                                "path": str,                            # The path of page.
+                                "fileServer": str                       # The file server of page.
+                            },
+                            "id": str                                   # The id of page.
+                        }],
+                        "total": int,                                   # The total of pages.
+                        "limit": int,                                   # The limit of pages.
+                        "page": int,                                    # The page of pages.
+                        "pages": int                                    # The pages of pages.
+                    },
+                    "ep": {                                             # The eps of comic.
+                        "_id": str,                                     # The id of ep.
+                        "title": str                                    # The title of ep.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID、分 P 数据和页码，正在发起请求。")
@@ -799,6 +845,46 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getComicRecommend(self, comicId):
+        """
+        waziPicAcg.getComicRecommend(self, comicId)
+        *Black magic.*
+
+        Get the recommend of comic. (Fix now!)
+
+        Parameters:
+            comicId: str
+                The comic ID.
+        
+        Return:
+            Type: dict
+            The recommend comics of comic.
+            May like:
+            {
+                "code": int,                                        # The status code of request.
+                "message": str,                                     # The message of request.
+                "data": {                                           # The data of request.
+                    "comics": [{                                    # The recommend comics.
+                        "_id": str,                                 # The id of comic.
+                        "title": str,                               # The title of comic.
+                        "author": str,                              # The author of comic.
+                        "pagesCount": int,                          # The pages count of comic.
+                        "epsCount": int,                            # The eps count of comic.
+                        "finished": bool,                           # The finished of comic.
+                        "categories": [str],                        # The categories of comic.
+                        "thumb": {                                  # The thumb of comic.
+                            "originalName": str,                    # The original name of thumb.
+                            "path": str,                            # The path of thumb.
+                            "fileServer": str                       # The file server of thumb.
+                        },
+                        "likesCount": int                           # The likes count of comic.
+                    }]
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}")
@@ -809,11 +895,68 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getKeywords(self):
+        """
+        waziPicAcg.getKeywords(self)
+        *Fly me to the mars.*
+
+        Get the hot keywords.
+
+        Parameters:
+            None
+        
+        Return:
+            Type: dict
+            The hot keywords.
+            May like:
+            {
+                "code": int,                                        # The status code of request.
+                "message": str,                                     # The message of request.
+                "data": {                                           # The data of request.
+                    "keywords": [str]                               # The hot keywords.
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
         return waziPicAcg.up(self, self.urls["keywords"], True, None, "GET", True)
 
     def getMyComments(self, page):
+        """
+        waziPicAcg.getMyComments(self, page)
+        *No knowledge at all.*
+
+        Get the comments of user.
+
+        Parameters:
+            page: int
+                The page of comments. Start from 1.
+        
+        Return:
+            Type: dict
+            The comments of user.
+            May like:
+            {
+                "code": int,                                        # The status code of request.
+                "message": str,                                     # The message of request.
+                "data": {                                           # The data of request.
+                    "comments": {                                   # The comments of user.
+                        "docs": [],                                 # The comment lists of user. (I don't know what could exist inside.)
+                        "total": int,                               # The total of comments.
+                        "limit": int,                               # The limit of comments.
+                        "page": str,                                # The page of comments.
+                        "pages": int                                # The pages of comments.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}")
@@ -824,6 +967,61 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getMyFavourites(self, page, s):
+        """
+        waziPicAcg.getMyFavourites(self, page, s)
+        *But I know this.*
+
+        Get the favourites of user.
+
+        Parameters:
+            page: int or str
+                The page of favourites. Start from 1.
+
+            s: str
+                The sort of favourites.
+                You can use:
+                    ua: Default.
+                    dd: From newest to oldest.
+                    da: From oldest to newest.
+        
+        Return:
+            Type: dict
+            The favourites of user.
+            May like:
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "comics": {                                 # The comics of user.
+                        "pages": int,                           # The pages of comics.
+                        "total": int,                           # The total of comics.
+                        "docs": [{                              # The comic lists of user.
+                            "_id": str,                         # The id of comic.
+                            "title": str,                       # The title of comic.
+                            "author": str,                      # The author of comic.
+                            "pagesCount": int,                  # The pages count of comic.
+                            "epsCount": int,                    # The eps count of comic.
+                            "finished": bool,                   # The finished of comic.
+                            "categories": [str],                # The categories of comic.
+                            "thumb": {                          # The thumb of comic.
+                                "fileServer": str,              # The file server of thumb.
+                                "path": str,                    # The path of thumb.
+                                "originalName": str             # The original name of thumb.
+                            },
+                            "totalViews": int,                  # The total views of comic.
+                            "totalLikes": int,                  # The total likes of comic.
+                            "likesCount": int                   # The likes count of comic.
+                        }],
+                        "page": int,                            # The page of comics.
+                        "limit": int                            # The limit of comics.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和排序，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 排序： {s}")
@@ -834,11 +1032,101 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getMyProfile(self):
+        """
+        waziPicAcg.getMyProfile(self)
+        *Like stars.*
+
+        Get the profile of user.
+
+        Parameters:
+            None
+        
+        Return:
+            Type: dict
+            The profile of user.
+            May like:
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "user": {                                   # The user of profile.
+                        "_id": str,                             # The id of user.
+                        "birthday": str,                        # The birthday of user.
+                        "email": str,                           # The email of user.
+                        "gender": str,                          # The gender of user.
+                        "name": str,                            # The name of user.
+                        "slogan": str,                          # The solgan of user.
+                        "title": str,                           # The title of user.
+                        "verified": bool,                       # Whether the user is verified.
+                        "exp": int,                             # The exp of user.
+                        "level": int,                           # The level of user.
+                        "characters": [str],                    # The characters of user.
+                        "created_at": str,                      # The created at of user.
+                        "avatar": {                             # The avatar of user.
+                            "fileServer": str,                  # The file server of avatar.
+                            "path": str,                        # The path of avatar.
+                            "originalName": str                 # The original name of avatar.
+                        },
+                        "isPunched": bool,                      # Whether the user is punched.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
         return waziPicAcg.up(self, self.urls["profile"], True, None, "GET", True)
 
     def getGames(self, page):
+        """
+        waziPicAcg.getGames(self, page)
+        *NONE.*
+
+        Get the games.
+
+        Parameters:
+            page: int or str
+                The page of games. Start from 1.
+        
+        Return:
+            Type: dict
+            The games.
+            May like:
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "games": {                                  # The games.
+                        "docs": [{                              # The game lists.
+                            "_id": str,                         # The id of game.
+                            "title": str,                       # The title of game.
+                            "version": str,                     # The version of game.
+                            "publisher": str,                   # The publisher of game.
+                            "suggest": bool,                    # Whether the game is suggested.
+                            "adult": bool,                      # Whether the game is adult.
+                            "android": bool,                    # Whether the game is android.
+                            "ios": bool,                        # Whether the game is ios.
+                            "icon": {                           # The icon of game.
+                                "originalName": str,            # The original name of icon.
+                                "path": str,                    # The path of icon.
+                                "fileServer": str               # The file server of icon.
+                            }
+                        }],
+                        "total": int,                           # The total of games.
+                        "limit": int,                           # The limit of games.
+                        "page": int,                            # The page of games.
+                        "pages": int                            # The pages of games.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}")
@@ -849,6 +1137,63 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getGameInfo(self, gameId):
+        """
+        waziPicAcg.getGameInfo(self, gameId)
+        *Hey!*
+
+        Get the game info.
+
+        Parameters:
+            gameId: str
+                The id of game.
+        
+        Return:
+            Type: dict
+            The game info.
+            May like:
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "game": {                                   # The game info.
+                        "_id": str,                             # The id of game.
+                        "title": str,                           # The title of game.
+                        "description": str,                     # The description of game.
+                        "version": str,                         # The version of game.
+                        "icon": {                               # The icon of game.
+                            "fileServer": str,                  # The file server of icon.
+                            "path": str,                        # The path of icon.
+                            "originalName": str                 # The original name of icon.
+                        },
+                        "publisher": str,                       # The publisher of game.
+                        "ios": bool,                            # Whether the game is ios.
+                        "iosLinks": [str],                      # The ios links of game.
+                        "android": bool,                        # Whether the game is android.
+                        "androidLinks": [str],                  # The android links of game.
+                        "adult": bool,                          # Whether the game is adult.
+                        "suggest": bool,                        # Whether the game is suggested.
+                        "downloadsCount": int,                  # The downloads count of game.
+                        "screenshots": [{                       # The screenshots of game.
+                            "originalName": str,                # The original name of screenshot.
+                            "path": str,                        # The path of screenshot.
+                            "fileServer": str                   # The file server of screenshot.
+                        }],
+                        "androidSize": int,                     # The android size of game.
+                        "iosSize": int,                         # The ios size of game.
+                        "updateContent": str,                   # The update content of game.
+                        "updated_at": str,                      # The updated at of game.
+                        "created_at": str,                      # The created at of game.
+                        "likesCount": int,                      # The likes count of game.
+                        "isLiked": bool,                        # Whether the game is liked.
+                        "commentsCount": int                    # The comments count of game.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到游戏 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 游戏 ID： {gameId}")
@@ -859,6 +1204,32 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def likeOrUnLikeGame(self, gameId):
+        """
+        waziPicAcg.likeOrUnLikeGame(self, gameId)
+        *Light.*
+
+        Like or unlike the game.
+
+        Parameters:
+            gameId: str
+                The id of game.
+        
+        Return:
+            Type: dict
+            The return of request.
+            May like:
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "action": str                               # The action of request. (like or unlike)
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到游戏 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 游戏 ID： {gameId}")
@@ -869,6 +1240,31 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "POST", True)
 
     def favOrUnFavComic(self, comicId):
+        """
+        waziPicAcg.favOrUnFavComic(self, comicId)
+        *Without Decoration.*
+
+        Favorite (v.) or unfavorite (v.) the comic.
+
+        Parameters:
+            comicId: str
+                The id of comic.
+            
+        Return:
+            Type: dict
+            The return of request.
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "action": str                               # The action of request. (favorite or un_favorite)
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}")
@@ -879,6 +1275,32 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "POST", True)
 
     def likeOrUnLikeComic(self, comicId):
+        """
+        waziPicAcg.likeOrUnLikeComic(self, comicId)
+        *To Be Continued.*
+
+        Like or unlike the comic.
+
+        Parameters:
+            comicId: str
+                The id of comic.
+        
+        Return:
+            Type: dict
+            The return of request.
+            May like:
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "action": str                               # The action of request. (like or unlike)
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}")
@@ -889,6 +1311,27 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "POST", True)
 
     def likeOrUnLikeComment(self, commentId):
+        """
+        waziPicAcg.likeOrUnLikeComment(self, commentId)
+        *Draw the curtains.*
+
+        Like or unlike the comment.
+
+        Parameters:
+            commentId: str
+                The id of comment.
+        
+        Return:
+            Type: dict
+            The return of request.
+
+            Because I am not brave enough to commit such an act,
+            I am not sure exactly how the format would return.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到评论 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 评论 ID： {commentId}")
@@ -899,6 +1342,26 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "POST", True)
 
     def hideOrUnHideComment(self, commentId):
+        """
+        waziPicAcg.hideOrUnHideComment(self, commentId)
+        *SNS.*
+
+        Hide or unhide the comment.
+
+        Parameters:
+            commentId: str
+                The id of comment.
+        
+        Return:
+            Type: dict
+            The return of request.
+
+            I got 1005 error, casue I am not the admin of the site.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到评论 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 评论 ID： {commentId}")
@@ -909,6 +1372,70 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "POST", True)
 
     def getCommentsChildren(self, commentId, page):
+        """
+        waziPicAcg.getCommentsChildren(self, commentId, page)
+        *Labor.*
+
+        Get the children comments of the comment.
+
+        Parameters:
+            commentId: str
+                The id of comment.
+            
+            page: int or str
+                The page of comment.
+        
+        Return:
+            Type: dict
+            The children comments of the comment.
+            May like:
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "comments": {                               # The children comments of the comment.
+                        "docs": [{                              # The children comments list of the comment.
+                            "_id": str,                         # The id of comment.
+                            "content": str,                     # The content of comment.
+                            "_user": {                          # The user of comment.
+                                "_id": str,                     # The id of user.
+                                "gender": str,                  # The gender of user.
+                                "name": str,                    # The name of user.
+                                "title": str,                   # The title of user.
+                                "verified": bool,               # Whether the user is verified.
+                                "exp": int,                     # The exp of user.
+                                "level": int,                   # The level of user.
+                                "characters": [str],            # The characters of user.
+                                "role": str,                    # The role of user.
+                                "avatar": {                     # The avatar of user.
+                                    "originalName": str,        # The original name of avatar.
+                                    "path": str,                # The path of avatar.
+                                    "fileServer": str,          # The file server of avatar.
+                                },
+                                "slogan": str,                  # The slogan of user.
+                                "character": str                # The character of user.
+                            },
+                            "_parent": str,                     # The parent comment id of comment.
+                            "_comic": str,                      # The comic id of comment.
+                            "isTop": bool,                      # Whether the comment is top.
+                            "hide": bool,                       # Whether the comment is hidden.
+                            "created_at": str,                  # The time of comment.
+                            "id": str,                          # The id of comment.
+                            "likesCount": int,                  # The likes count of comment.
+                            "isLiked": bool                     # Whether the comment is liked.
+                        }],
+                        "total": int,                           # The total of comments.
+                        "limit": int,                           # The limit of comments.
+                        "page": str,                            # The page of comments.
+                        "pages": int                            # The pages of comments.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到评论 ID 和页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 评论 ID： {commentId}， 页码： {page}")
@@ -919,6 +1446,30 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def replyComment(self, commentId, content):
+        """
+        waziPicAcg.replyComment(self, commentId, content)
+        *the internet is truly the festering cesspool of hell born from modern society. but even so, i have nowhere else to turn to. -- NEEDY GIRL OVERDOSE.*
+
+        Reply comment.
+
+        Parameters:
+            commentId: str
+                The id of comment.
+            
+            content: str
+                The reply content.
+        
+        Return:
+            Type: dict
+            The return of request.
+
+            Because I am not brave enough to commit such an act,
+            I am not sure exactly how the format would return.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到评论 ID 和内容，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 评论 ID： {commentId}， 内容： {content}")
@@ -934,6 +1485,27 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, body, "POST", True)
 
     def reportComment(self, commentId):
+        """
+        waziPicAcg.reportComment(self, commentId)
+        *Hurt.*
+
+        Report comment.
+
+        Parameters:
+            commentId: str
+                The id of comment.
+        
+        Return:
+            Type: dict
+            The return of request.
+
+            Because I am not brave enough to commit such an act,
+            I am not sure exactly how the format would return.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到评论 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 评论 ID： {commentId}")
@@ -944,6 +1516,27 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "POST", True)
 
     def topOrUnTopComment(self, commentId):
+        """
+        waziPicAcg.topOrUnTopComment(self, commentId)
+        *So much pain.*
+
+        Top or un-top comment. What the fuck is this? Normal user can use this method.
+
+        Return:
+            Type: dict
+            The return of request.
+            {
+                "code": int,                                    # The status code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "isTop": bool                               # Whether the comment is top.
+                }          
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到评论 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 评论 ID： {commentId}")
@@ -954,6 +1547,9 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "POST", True)
 
     def getGameComments(self, gameId, page):
+        """
+        
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到游戏 ID 和页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 游戏 ID： {gameId}， 页码： {page}")
