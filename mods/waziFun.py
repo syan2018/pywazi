@@ -6,20 +6,20 @@ import inspect
 
 def getFuncName():
     """
-        waziFun.getFuncName()
-        *Get his name.*
+    waziFun.getFuncName()
+    *Get his name.*
 
-        Get a function name.
+    Get a function name.
 
-        Parameters:
-            None
+    Parameters:
+        None
 
-        Return:
-            Type: str
-            The function name.
+    Return:
+        Type: str
+        The function name.
 
-        Errors:
-            Python:
-                + Sometimes may cause IndexError.
+    Errors:
+        Python:
+            + Sometimes may cause IndexError.
     """
     return inspect.stack()[1][3]

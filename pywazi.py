@@ -25,7 +25,67 @@ waziDanbooru = Wdb()
 waziExHentai = Weh()
 waziAsianSister = Was()
 
-def globalParams(filePath):
+def globalParams(params):
+    """
+    pywazi.globalParams(params)
+    *OCD*
+
+    Set global parameters.
+
+    Parameters:
+        params: dict
+            The parameters.
+            {
+                "useProxies": bool,                 # Whether to use proxies.
+                "proxyAddress": str,                # The address of the proxy.
+                "proxyPort": int or str,            # The port of the proxy.
+                "useHeaders": bool,                 # (*) Whether to use headers.
+                "headers": dict,                    # (*) The custom headers.
+            }
+            *: The parameters are not recommended. The program will auto set them. If you set them, may cause some problems.
+    
+    Return:
+        Type: dict
+        The parameters.
+
+    Errors:
+        None
+    """
+    waziJavBus.giveParams(params)
+    waziPicAcg.giveParams(params)
+    waziDanbooru.giveParams(params)
+    waziExHentai.giveParams(params)
+    waziAsianSister.giveParams(params)
+    waziNyaa.giveParams(params)
+    return params
+
+def globalParamsByFile(filePath):
+    """
+    pywazi.globalParamsByFile(filePath)
+    *OCD*
+
+    Set global parameters.
+
+    Parameters:
+        filePath: str
+            The path of the config file.
+            Config file format:
+            {
+                "useProxies": bool,                 # Whether to use proxies.
+                "proxyAddress": str,                # The address of the proxy.
+                "proxyPort": int or str,            # The port of the proxy.
+                "useHeaders": bool,                 # (*) Whether to use headers.
+                "headers": dict,                    # (*) The custom headers.
+            }
+            *: The parameters are not recommended. The program will auto set them. If you set them, may cause some problems.
+    
+    Return:
+        Type: dict
+        The parameters.
+
+    Errors:
+        None
+    """
     jsonData = waziConfig.readConfig(filePath)
     waziJavBus.giveParams(jsonData)
     waziPicAcg.giveParams(jsonData)
@@ -36,6 +96,24 @@ def globalParams(filePath):
     return jsonData
 
 def defConfig(filePath):
+    """
+    pywazi.defConfig(filePath)
+    *Transvestism.*
+
+    Use config file to define all modules.
+
+    Parameters:
+        filePath: str
+            The path of the config file.
+
+    Return:
+        Type: bool
+        The result.
+
+    Errors:
+        Python:
+            Perhaps there are potential errors.
+    """
     jsonData = waziConfig.readConfig(filePath)
     for i in jsonData:
         if i["name"] == "JavBus":
@@ -89,9 +167,11 @@ def defConfig(filePath):
             pass
     return True
 
-
+"""
+Try to import the config file: "./config.json".
+"""
 try:
-    returnInfo = defConfig("./config.json")
+    defConfig("./config.json")
 except:
     pass
 
@@ -99,5 +179,5 @@ except:
 # [2]: Api 参考： https://github.com/AnkiKong/picacomic （MIT 版权）
 #      Headers 引用： https://github.com/tonquer/picacg-windows （LGPL-3.0 版权）
 #      相关信息参考： https://www.hiczp.com/wang-luo/mo-ni-bi-ka-android-ke-hu-duan.html （版权归 czp，未注明详细的版权协议）
-#      我参考了一位开源者的代码，但是很可惜，我已经在 GitHub 找不到他的项目了（可能是代码进行改动了）
+#      在 PicAcg 部分，我参考了一位开源者的代码，但是很可惜，我已经在 GitHub 找不到他的项目了（可能是代码进行改动了）
 # 感谢我的朋友： cloudwindy 提供了 ExHentai 账号信息

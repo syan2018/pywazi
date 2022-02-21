@@ -2860,7 +2860,7 @@ class waziPicAcg:
                 The title of folder.
             
             docTitle: str
-                The title of document.
+                The title of eps.
         
         Return:
             None
@@ -2890,7 +2890,7 @@ class waziPicAcg:
                 The id of comic.
         
         Return:
-            Type: list
+            Type: list[str]
             The thumb image link and other information.
                 0: original file name, Type: str
                 1: comic name, Type: str
@@ -3026,6 +3026,24 @@ class waziPicAcg:
         return waziPicAcg.up(self, self.urls["apps"], True, None, "GET", True)
     
     def getComicImageURLs(self, pageDict):
+        """
+        waziPicAcg.getComicImageURLs(self, pageDict)
+        *The story end with a kiss.*
+
+        Get the comic image URLs.
+
+        Parameters:
+            pageDict: dict
+                The page dictionary. waziPicAcg.getComicPages()
+        
+        Return:
+            Type: list[str]
+            The comic image URLs.
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到分 P 分页字典，正在获取漫画图片地址: {pageDict}")
         waziLog.log("debug", f"({self.name}.{fuName}) 准备进入遍历。")
@@ -3043,6 +3061,32 @@ class waziPicAcg:
         return urls
 
     def singleDownloadComicImage(self, pageDict, path, comicName, docTitle):
+        """
+        waziPicAcg.singleDownloadComicImage(self, pageDict, path, comicName, docTitle)
+        *Ramake.*
+
+        Download the comic image in one page.
+
+        Parameters:
+            pageDict: dict
+                The page dictionary. waziPicAcg.getComicPages()
+            
+            path: str
+                The path of the comic.
+            
+            comicName: str
+                The name of the comic.
+            
+            docTitle: str
+                The title of the eps.
+        
+        Return:
+            None
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到分 P 分页字典，路径，漫画 ID 和分页标题，正在下载。")
         waziLog.log("debug", f"({self.name}.{fuName}) 分 P 分页字典： {pageDict}， 路径： {path}， 漫画 ID： {comicName}， "
@@ -3065,7 +3109,33 @@ class waziPicAcg:
                 f.write(temp.data)
             waziLog.log("debug", f"({self.name}.{fuName}) 写入完成。")
     
-    def getComicFilesList(self, comicId):
+    def yieldGetComicFilesList(self, comicId):
+        """
+        next(waziPicAcg.yieldGetComicFilesList(self, comicId))
+        *Always so melancholy.*
+
+        A generator to tet the comic files list one page by one page.
+
+        Parameters:
+            comicId: str
+                The comic ID.
+        
+        Each Yield:
+            At first:
+                Type: list[str]
+                The thumbnail information.
+                    0: original file name, Type: str
+                    1: comic name, Type: str
+                    2: thumb image link, Type: str
+            
+            After:
+                Type: list[str]
+                The comic image URLs.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}")
@@ -3098,7 +3168,93 @@ class waziPicAcg:
                         waziLog.log("debug", f"({self.name}.{fuName}) 请求完成，正在通过 getComicImageURLs 获取。")
                         yield waziPicAcg.getComicImageURLs(self, newPage)
 
+    def getComicFilesList(self, comicId):
+        """
+        waziPicAcg.getComicFilesList(self, comicId)
+        *Thunder.*
+
+        Get the comic files list at once.
+        Recommended to use yieldGetComicFilesList instead.
+
+        Parameters:
+            comicId: str
+                The comic ID.
+        
+        Return:
+            Type: list[list[str]]
+            The comic files list.
+            Index 0:
+                Type: list[str]
+                The thumbnail information.
+                    0: original file name, Type: str
+                    1: comic name, Type: str
+                    2: thumb image link, Type: str
+            
+            Index 1, 2, ...:
+                Type: list[str]
+                The comic image URLs.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID，正在发起请求。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 漫画 ID： {comicId}")
+        fileList = []
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 getThumbImage 获取封面。")
+        thumbs = waziPicAcg.getThumbImageLink(self, comicId)
+        fileList.append(thumbs)
+        waziLog.log("debug", f"({self.name}.{fuName}) 下载完成，正在获取漫画信息。")
+        comicInfo = waziPicAcg.getComic(self, comicId)
+        waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在获取分页。")
+        comicName = comicInfo["data"]["comic"]["title"]
+        eps = int(comicInfo["data"]["comic"]["epsCount"])
+        waziLog.log("debug", f"({self.name}.{fuName}) 漫画吗： {comicName}， 分页数： {eps}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 进入 for in range。")
+        for i in range(1, eps + 1):
+            waziLog.log("debug", f"({self.name}.{fuName}) 正在获取分 P 内容。")
+            newEps = waziPicAcg.getComicEps(self, comicId, str(i))
+            waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在进入遍历。")
+            for j in newEps["data"]["eps"]["docs"]:
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在获取分 P 的分页。")
+                newPage = waziPicAcg.getComicPages(self, comicId, str(i), str(j["order"]))
+                waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在检查是否为单页。")
+                if newPage["data"]["pages"]["pages"] == 1:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 单页，通过 getComicImageURLs 获取。")
+                    fileList.append(waziPicAcg.getComicImageURLs(self, newPage))
+                else:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 多页，正在进入 for in range。")
+                    for q in range(1, newPage["data"]["pages"]["pages"] + 1):
+                        waziLog.log("debug", f"({self.name}.{fuName}) 正在请求 {str(q)} 页。")
+                        newPage = waziPicAcg.getComicPages(self, comicId, str(i), str(q))
+                        waziLog.log("debug", f"({self.name}.{fuName}) 请求完成，正在通过 getComicImageURLs 获取。")
+                        fileList.append(waziPicAcg.getComicImageURLs(self, newPage))
+        waziLog.log("info", f"({self.name}.{fuName}) 获取完成，数据返回： {fileList}")
+        return fileList
+
     def downloadComic(self, comicId, path):
+        """
+        waziPicAcg.downloadComic(self, comicId, path)
+        *In fact, I really don't care.*
+
+        Download the comic at once.
+
+        Parameters:
+            comicId: str
+                The comic ID.
+            
+            path: str
+                The path to save the comic.
+        
+        Return:
+            Type: str
+            If successful, return "Done! / 完工！"
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到漫画 ID 和下载路径，正在开始下载。")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 getThumbImage 获取封面。")
@@ -3135,6 +3291,51 @@ class waziPicAcg:
         return "Done! / 完工！"
 
     def getAndroidAPPs(self, page):
+        """
+        waziPicAcg.getAndroidAPPs(self, page)
+        *History.*
+
+        Get android apps.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+        
+        Return:
+            Type: dict
+            The android apps.
+            May like:
+            {
+                "code": int,                                        # The code of the response.
+                "message": str,                                     # The message of the response.
+                "data": {                                           # The data of the response.
+                    "applications": {                               # The applications.
+                        "docs": [{                                  # The list of the applications.
+                            "_id": str,                             # The ID of the application.
+                            "downloadUrl": str,                     # The download URL of the application.
+                            "updateContent": str,                   # The update content of the application.
+                            "version": str,                         # The version of the application.
+                            "created_at": str,                      # The time of the application.
+                            "apk": {                                # The apk of the application.
+                                "originalName": str,                # The original name of the apk.
+                                "path": str,                        # The path of the apk.
+                                "fileServer": str                   # The file server of the apk.
+                            }
+                        }],
+                        "total": int,                               # The total number of the applications.
+                        "limit": int,                               # The limit of the applications.
+                        "page": int,                                # The page number of the applications.
+                        "pages": int                                # The total number of the pages.
+                    },
+                    "apiLevel": int,                                # The api level of the response.
+                    "minApiLevel": int                              # The min api level of the response.
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}")
@@ -3145,6 +3346,27 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def blockUser(self, userId):
+        """
+        waziPicAcg.blockUser(self, userId)
+        *Burying.*
+
+        Block a user.
+
+        Parameters:
+            userId: str
+                The ID of the user.
+        
+        Return:
+            Type: dict
+            The response of server.
+
+            I got 1007 error, it means that the method not found.
+            But you can find this api from the Decompiled code of PicAcg.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到用户 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 用户 ID： {userId}")
@@ -3156,6 +3378,38 @@ class waziPicAcg:
         return waziPicAcg.up(self, self.urls["blockUser"], True, data, "POST", True)
 
     def getNotifications(self, page):
+        """
+        waziPicAcg.getNotifications(self, page)
+        *No.*
+
+        Get notifications.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+        
+        Return:
+            Type: dict
+            The notifications.
+            May like:
+            {
+                "code": int,                                        # The code of the response.
+                "message": str,                                     # The message of the response.
+                "data": {                                           # The data of the response.
+                    "notifications": {                              # The notifications.
+                        "docs": [],                                 # The list of the notifications. I do not know what is the structure of the notification.
+                        "total": int,                               # The total number of the notifications.
+                        "limit": int,                               # The limit of the notifications.
+                        "page": int,                                # The page number of the notifications.
+                        "pages": int                                # The total number of the pages.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}")
@@ -3166,6 +3420,48 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getAnnouncements(self, page):
+        """
+        waziPicAcg.getAnnouncements(self, page)
+        *Yes.*
+
+        Get announcements.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+        
+        Return:
+            Type: dict
+            The announcements.
+            May like:
+            {
+                "code": int,                                        # The code of the response.
+                "message": str,                                     # The message of the response.
+                "data": {                                           # The data of the response.
+                    "announcements": {                              # The announcements.
+                        "docs": [{                                  # The list of the announcements.
+                            "_id": str,                             # The ID of the announcement.
+                            "title": str,                           # The title of the announcement.
+                            "content": str,                         # The content of the announcement.
+                            "created_at": str,                      # The time of the announcement.
+                            "thumb": {                              # The thumbnail of the announcement.
+                                "originalName": str,                # The original name of the thumbnail.
+                                "path": str,                        # The path of the thumbnail.
+                                "fileServer": str                   # The file server of the thumbnail.
+                            }
+                        }],
+                        "total": int,                               # The total number of the announcements.
+                        "limit": int,                               # The limit of the announcements.
+                        "page": str,                                # The page number of the announcements.
+                        "pages": int                                # The total number of the pages.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}")
@@ -3176,6 +3472,32 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def getUserDirty(self, userId):
+        """
+        waziPicAcg.getUserDirty(self, userId)
+        *Good old memories.*
+
+        Get user dirty.
+
+        Parameters:
+            userId: str
+                The user ID.
+        
+        Return:
+            Type: dict
+            The user dirty status.
+            May like:
+            {
+                "code": int,                                        # The code of the response.
+                "message": str,                                     # The message of the response.
+                "data": {                                           # The data of the response.
+                    "dirty": bool                                   # The dirty status of the user.
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到用户 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 用户 ID： {userId}")
@@ -3186,6 +3508,47 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "POST", True)
 
     def getUserProfile(self, userId):
+        """
+        waziPicAcg.getUserProfile(self, userId)
+        *Infection.*
+
+        Get user profile.
+
+        Parameters:
+            userId: str
+                The user ID.
+        
+        Return:
+            Type: dict
+            The user profile.
+            May like:
+            {
+                "code": int,                                        # The code of the response.
+                "message": str,                                     # The message of the response.
+                "data": {                                           # The data of the response.
+                    "user": {                                       # The user profile.
+                        "_id": str,                                 # The ID of the user.
+                        "gender": str,                              # The gender of the user.
+                        "name": str,                                # The name of the user.
+                        "slogan": str,                              # The slogan of the user.
+                        "title": str,                               # The title of the user.
+                        "verified": bool,                           # Whether the user is verified.
+                        "exp": int,                                 # The exp of the user.
+                        "level": int,                               # The level of the user.
+                        "avatar": {                                 # The avatar of the user.
+                            "originalName": str,                    # The original name of the avatar.
+                            "path": str,                            # The path of the avatar.
+                            "fileServer": str                       # The file server of the avatar.
+                        },
+                        "character": str                            # The character of the user.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到用户 ID，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 用户 ID： {userId}")
@@ -3196,6 +3559,56 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def latestUpdate(self, page):
+        """
+        waziPicAcg.latestUpdate(self, page)
+        *Last words.*
+
+        Get the latest update comics.
+        Use waziPicAcg.advancedSearch.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 1.
+        
+        Return:
+            Type: dict
+            The latest update comics.
+            May like:
+            {
+                "code": int,                                            # The status code of request.
+                "message": str,                                         # The message of request.
+                "data": {                                               # The data of request.
+                    "comics": {                                         # The comics.
+                        "total": int,                                   # The total of comics.
+                        "page": int,                                    # The page of comics.
+                        "pages": int,                                   # The pages of comics.
+                        "docs": [{                                      # The comics list.
+                            "updated_at": str,                          # The updated time of comic.
+                            "thumb": {                                  # The thumb of comic.
+                                "originalName": str,                    # The original name of thumb.
+                                "path": str,                            # The path of thumb.
+                                "fileServer": str                       # The file server of thumb.
+                            },
+                            "author": str,                              # The author of comic.
+                            "description": str,                         # The description of comic.
+                            "chineseTeam": str or may other object,     # The chinese team of comic.
+                            "created_at": str,                          # The created time of comic.
+                            "finished": bool,                           # Whether the comic is finished.
+                            "categories": [str],                        # The categories of comic.
+                            "title": str,                               # The title of comic.
+                            "tags": [str],                              # The tags of comic.
+                            "_id": str,                                 # The id of comic.
+                            "likesCount": int                           # The likes count of comic.
+                        }],
+                        "limit": int                                    # The limit of comics.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}")
@@ -3203,6 +3616,58 @@ class waziPicAcg:
         return waziPicAcg.advancedSearch(self, [], "", "dd", page)
 
     def filterIt(self, backJson, filters):
+        """
+        waziPicAcg.filterIt(self, backJson, filters)
+        *Yiiiie.*
+
+        Filter the comics.
+
+        Parameters:
+            backJson: dict
+                The comics. Accept waziPicAcg.advancedSearch(), waziPicAcg.getComics() and waziPicAcg.search() return value.
+            
+            filters: list[str]
+                The filters. Fill in the categories you do not want.
+        
+        Return:
+            Type: dict
+            The comics.
+            May like:
+            {
+                "code": int,                                            # The status code of request.
+                "message": str,                                         # The message of request.
+                "data": {                                               # The data of request.
+                    "comics": {                                         # The comics.
+                        "total": int,                                   # The total of comics.
+                        "page": int,                                    # The page of comics.
+                        "pages": int,                                   # The pages of comics.
+                        "docs": [{                                      # The comics list.
+                            "updated_at": str,                          # The updated time of comic.
+                            "thumb": {                                  # The thumb of comic.
+                                "originalName": str,                    # The original name of thumb.
+                                "path": str,                            # The path of thumb.
+                                "fileServer": str                       # The file server of thumb.
+                            },
+                            "author": str,                              # The author of comic.
+                            "description": str,                         # The description of comic.
+                            "chineseTeam": str or may other object,     # The chinese team of comic.
+                            "created_at": str,                          # The created time of comic.
+                            "finished": bool,                           # Whether the comic is finished.
+                            "categories": [str],                        # The categories of comic.
+                            "title": str,                               # The title of comic.
+                            "tags": [str],                              # The tags of comic.
+                            "_id": str,                                 # The id of comic.
+                            "likesCount": int                           # The likes count of comic.
+                        }],
+                        "limit": int                                    # The limit of comics.
+                    }
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到需要过滤的内容和过滤标签，正在通过 needFilterIt 完成过滤。")
         returnJson = backJson
