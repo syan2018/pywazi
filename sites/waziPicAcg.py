@@ -93,7 +93,8 @@ class waziPicAcg:
             "Content-Type": "application/json; charset=UTF-8",
             "User-Agent": "okhttp/3.8.1",
             "app-build-version": "45",
-            "image-quality": "original"
+            "image-quality": "original",
+            "accept-encoding": "gzip",
         }
         self.info = {
             "secretKey": "~d}$Q7$eIni=V)9\\RK/P.RM4;9[7|@/CA}b~OW!3?EV`:<>M7pddUBL5n|0/*Cn",
@@ -518,7 +519,13 @@ class waziPicAcg:
         
         Return:
             Type: dict
-            The comics.
+            The comics. But for now, you cannot get comics from this method.
+            Will return:
+            {'code': 200, 'message': 'success'}
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码、分区、标签和排序，正在发起请求。")
@@ -531,6 +538,22 @@ class waziPicAcg:
         return waziPicAcg.up(self, newUrl, True, None, "GET", True)
 
     def search(self, page, keyword):
+        """
+        waziPicAcg.search(self, page, keyword)
+        *I always find the API interfaces in my decompiled code so strange.*
+
+        Search comics with page and keyword.
+        
+        Parameters:
+            page: int or str
+                The page of search. Start from 1.
+            
+            keyword: str
+                The keyword of search.
+        
+        Return:
+            Type: dict
+        """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和关键词，正在发起请求。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 关键词： {keyword}")
