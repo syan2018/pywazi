@@ -126,7 +126,8 @@ class waziExHentai:
                 A dict of params, user given.
         
         Return:
-            None
+            Type: dict
+            The params given.
         
         Errors:
             None
