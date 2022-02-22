@@ -1,3 +1,146 @@
-# 文档
+# PyWazi: 从入门到放弃
 
-抱歉，我不认为现在可以向你介绍这个项目。
+> PyWazi 参考文档
+> 
+> 正在编写...
+
+该文档使用的版本是与 GitHub 同步（2022.02.22）的 1.4 版本，最近更新时间是 2022.02.22。
+
+## 前言
+
+PyWazi 大抵是终于要写文档了。我思来想去，似乎 Markdown 已经离我远去了，每每打开 Typora 看到未激活的时候便觉得没有 Markdown 也无所谓，于是乎走上了写内嵌文档的不归路，只想用 `help()` 打发一下。
+
+文档写得很慢，不过凌晨的时候也已搞定了。“啊，已经没有什么可做的了。”可并未如此，想来白日里觉得详细的文档还是要有的，用户看了便也大概知晓一二。内嵌文档写了，似乎也不明白究竟何时要用这个接口。打开 VS Code 一看，竟自己渲染了格式。思前想后，还是得写网络文档。
+
+很久很久之前，也试着用过 LaTeX 去写文档的，用 morelull 那个模板，在 Overleaf 上，似乎很像教科书，也写得差不多了。当时使用的 PyWazi 版本都还是一个文件包四个模块上千行的那种。真正开始开源之后一直在用 Markdown 写文档，也有试过自己写一个静态 HTML 用上 Tailwind，但是一直写 class 确实难吃得消。
+
+我似乎很想念 Typora 的所见即所得，LaTeX 需要编译后才能拿到 PDF 确实令我有些急躁，本地配置环境确实是令人头疼的感受。
+
+像日记的废话先少说了，还是先说说我对于 PyWazi 的理解吧。我之前一直拿“爬虫”的噱头说这个项目，大抵是真的不对。如今想来，应该是自己实现了一个网络爬虫搞的一个网络抓取带数据处理的项目框架。
+	
+似乎在我潜意识（大抵就是刻板印象）里面，网络爬虫，基本都是用 Python 写的，多半都是自动下载互联网的媒体。可刻板印象终究是刻板印象，世界上也有很多种类型的爬虫。我的项目不光只是单单下载媒体的功能，还有数据处理，HTML 分析之类的。
+	
+可以直接 Clone 下来，用 PyWazi 来做一个小型的客户端了，或许可以用它开发 Web 服务，或者一个小软件也蛮不错的。尽管它大部分在我手上的时候就只是充当一个自动下载互联网媒体的相比于其他爬虫还要麻烦的工具罢了。
+
+我已经记不清我究竟是把这个项目写成什么样了，个人感觉比较糟糕，但能用，功能还挺全面的。如果我不是开发者只是一个普通用户的话，我大概会在某个夏天的午后，独自把玩这个项目，然后看源码看到头痛的感觉。
+	
+源码里面中英文混搭，充斥着拙劣的语法，VS Code 提示的标点符号混淆边框，以及在内嵌文档里写的各种骚话属实要把我弄窒息了。如果有机会的话，我不会把这个代码弄得这么脏，会尽量少一点功能，会试着去想怎么样才能做到高效且代码看着美观又逻辑清晰，大概会花上很多时间吧。
+	
+这个项目只是从去年开始，我自己花了一晚上时间做出来的，因为时差的缘故，我夜晚就相当于东八区的白天，便跟朋友瞎聊天，之后口嗨说我要写一个模块，能够采集一些 NSFW 网站的数据，不单单只是下载，我还要做数据收集，把能看到的都给采集下来。最后越说越激动，给我真的写出来了。不过一开始的版本，现在看来是真的很糟糕，使用 urllib 模块导致的连接 Close 问题使得一些情况下压根取不到 ExHentai 的数据，一个文件上千行，没有注释。一口气直接写下来，似乎很爽，但也管不了那么多了。
+
+现在文档问题依旧存在，代码也依旧不能入眼，可是只要我还在用它，那我会一直更新下去的。
+
+-- 2022 年 2 月 22 日， Yazawazi
+
+## PyWazi 介绍
+
+PyWazi 是一个功能完备，不单单只有媒体下载功能的针对一些 NSFW 站点的带数据处理的网络抓取项目。它带了多个站点的基本解决方案，你可以使用它以进行针对特定网站的数据下载、收集、二次开发等。
+
+项目主页：[GitHub - Yazawazi/pywazi: Internet Resource Crawler / 互联网资源爬虫](https://github.com/Yazawazi/pywazi)。
+
+### 所支持的站点
+
++ [AsianSister](https://asiansister.com/)
++ [Danbooru](https://danbooru.donmai.us/) *等一系列基于 Danbooru 的网站 (API 相近)*
++ [ExHentai](https://exhentai.org/) *没有 E-Hentai 的支持*
++ [JavBus](https://javbus.com/)
++ [Nyaa](https://nyaa.si/) *当然也有 sukebei 的支持*
++ [PicAcg](https://picacomic.xyz/)
+
+未来会持续增加...
+
+### 所需环境
+
+你需要 Python 版本大于 3.7，安装：
+
++ beautifulsoup4>=4.9.0
++ bs4>=0.0.1
++ certifi>=2021.10.8
++ lxml>=4.6.3
++ urllib3>=1.26.6
+
+或许更低的版本同样可以正常使用，我未进行任何测试。
+
+### 版权声明及致谢
+
+程序源码以 GPL-3.0 许可协议开源，内嵌文档和网络文档则不以 GPL-3.0 许可开源。所有引用的歌词、名言、相关作品等版权由原作者享有。
+
+本项目的开发离不开以下开源项目：
+
+1. JavBus 代码参考：[WWILLV/iav: 可搜索javbus、btso的磁力链接和avgle的预览视频 (github.com)](https://github.com/WWILLV/iav)；
+2. PicAcg 部分：[AnkiKong/picacomic: 哔咔漫画相关api (github.com)](https://github.com/AnkiKong/picacomic) 提供了大部分的 Api 链接；从 [tonquer/picacg-windows: 哔咔漫画，picacomic，bika，PC客户端。 (github.com)](https://github.com/tonquer/picacg-windows)  中获取了最新 headers；https://www.hiczp.com/wang-luo/mo-ni-bi-ka-android-ke-hu-duan.html 提供了一些想法（GitHub 地址：[czp3009/czp-blog (github.com)](https://github.com/czp3009/czp-blog)）。
+
+感谢 [cloudwindy (github.com)](https://github.com/cloudwindy) 提供的 ExHentai 账号，得以我进行开发测试；感谢我的朋友 **The Galaxy~ Of Dick** 给我制作的 Banner。
+
+### 相关警告
+
+> 🛑 在使用之前，我有必要提醒你以下几点：
+
+1. 这个项目仅有一个人负责，尽管它支持的功能较多但它效率低下，尤其是 ExHentai 部分；
+2. 没有统一的返回格式和参数，包括大小写的统一；
+3. 日志、请求系统均不采用流行的方式，不使用 requests, logging，它使用自己抽象的日志，请求模块；
+4. 它的日志系统过于繁琐，尽管你可以设置取消日志；
+5. 可能较为脆弱的稳定性，因为测试并未完全进行。
+
+### 环境配置
+
+1. `git clone https://github.com/Yazawazi/pywazi`
+2. `cd pywazi`
+3. `vim [name].py` 或者其他你喜欢的编辑器，IDE 之类的
+4. 开头使用 `from pywazi import *` 导入
+
+其实你可以自己写一个 `setup.py` 把它变成库。
+
+## 案例导入
+
+假设你需要做一些比较机械重复的工作，非常的枯燥且耗时，比如每天从 Danbooru 类网站上找点 R18 图片看亦或者去 JavBus 从某个分类下面找点片看。
+
+你或许会自己用 JavaScript 或者 Python 去写一个爬虫出来，亦或者去 GitHub 找找开源的解决方案。PyWazi 就非常适合你，只需要进行配置就可以完成这些简单的基础任务。
+
+```python
+from pywazi import waziDanbooru    # 假设你只爬取 Danbooru 类网站
+
+waziDanbooru.giveParams({
+    "useProxies": True,				# 是否使用代理
+    "proxyAddress": "127.0.0.1",	# 代理地址
+    "proxyPort": 7890				# 代理端口
+})
+
+waziDanbooru.setApi("https://konachan.com") # 设置你想爬的 Danbooru 类网站地址
+
+for page in range(1, 101):
+    # 爬一百页
+    waziDanbooru.downloadPosts(
+        page = page,					# 指定页码
+        tags = "rating:explicit",		# 标签
+        limit = 40, 					# 每页限制几张图片，最多就 40 张
+        path = "./download"				# 下载目录
+    )
+
+```
+
+> 代码案例: 自动爬取 Konachan 100 页 R-18 图片
+
+```python
+from pywazi import waziJavBus	# JavBus 解决方案
+
+waziJavBus.giveParams({
+    "useProxies": True,				# 是否使用代理
+    "proxyAddress": "127.0.0.1",	# 代理地址
+    "proxyPort": 7890				# 代理端口
+})
+
+# 浏览
+items = waziJavBus.browse(
+	page = 1,			# 页码
+    tag = "4u",			# 标签 ID 4u 表示 戲劇
+    avType = 0			# AV 类型 0 是有码 1 是无码
+)
+
+for i in items:
+    print(f"{i['avId']} - {i['title']}")	# 打印所有获取到的番号和标题
+
+```
+
+> 代码案例: 获取一个分类中第一页的 AV 番号和标题
+
