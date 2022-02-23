@@ -158,7 +158,7 @@ def defConfig(filePath):
         elif i["name"] == "Nyaa":
             if "params" in i:
                 waziNyaa.giveParams(i["params"])
-        elif i["name"] == "Config":
+        elif i["name"] == "Log":
             if "save" in i:
                 waziLog.needSave(i["save"])
             if "level" in i:
