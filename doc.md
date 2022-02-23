@@ -198,4 +198,128 @@ from pywazi import waziLog
 
 ### 站点模块
 
-> 
+> 似乎你已经知道了，这里是最重要的了。
+
+```python
+from pywazi import waziAsianSister, waziDanbooru, waziExHentai, waziJavBus, waziPicAcg, waziNyaa
+```
+使用以上代码，导入所有站点模块。
+
++ `waziAsianSister` - 收集 AsianSister 中画廊和视频的模块；
++ `waziDanbooru` - 获取或下载 Danbooru 类网站的图集、标签、图片等的模块；
++ `waziExHentai` - 获取或下载 ExHentai 网站的图片、评论等的模块；
++ `waziJavBus` - 获取 JavBus 番号磁力链接以及信息的模块；
++ `waziNyaa` - 获取 waziNyaa 网站的磁力、信息等的模块；
++ `waziPicAcg` - 基于官方 API 的获取 PicAcg 图片、信息等的模块。
+
+### 配置函数
+
+> 蓝天的阳光，这里是风力发电机。
+
+存在三个配置函数，以用于全局配置和配置文件导入。此外，在导入主函数时，程序会自动请求当前目录下的 `config.json` 文件以用于作为默认配置。
+
+#### 读取全局配置文件
+
+> 像大海一样。
+
+如果你需要让所有的站点模块都用同一个 `params` 配置文件（记录了代理信息和请求头信息）的话，可以使用 `globalParamsByFile(filePath)` 函数以获取配置文件。
+
+如：
+
+```python
+from pywazi import *
+
+globalParamsByFile('./config.json')
+```
+
+文件的格式应当如下：
+
+```python
+{
+    "useProxies": True,             # 要不要用代理
+    "proxyAddress": "127.0.0.1",    # 代理地址
+    "proxyPort": 7890,              # 代理端口（整数或者字符串）
+    "useHeaders": True,             # 要不要用请求头（不需要写这个其实，程序会自己写好的）
+    "headers": {}                   # 自定义请求头（字典，同样，程序会自动补全的）
+}
+```
+
+#### 设置全局配置
+
+> 没有重载函数，也不想自己造一个...
+
+如果你不想要读取文件，而想直接写一个 `params` 字典传进去，你可以使用 `globalParams(params)` 函数。
+
+举个例子：
+
+```python
+from pywazi import *
+
+globalParams({
+    "useProxies": True,
+    "proxyAddress": "127.0.0.1",
+    "proxyPort": 1080
+})
+```
+
+#### 读取自定义配置文件
+
+> 分析类型和可变参数也不是不行。
+
+我们在案例中看到了一些配置类的代码，比如：
+
+```python
+waziDanbooru.giveParams({
+    "useProxies": True,
+    "proxyAddress": "127.0.0.1",
+    "proxyPort": 7890
+})
+
+waziDanbooru.setApi("https://konachan.com")
+```
+
+那么我们能否把这些代码或者配置放到一个文件里，以便以后使用呢？事实上，这是可以的。PyWazi 主模块提供了一个接口：`defConfig(filePath)` 以用于读取这样的配置。
+
+在导入主模块时会自动尝试 `defConfig('./config.json')` 以帮助用户进行配置。
+
+这种配置文件的格式如下（内容都是可选的） ：
+
+```jsonc
+[{
+    "name": "JavBus",         // 即表示这是 JavBus 的配置
+    "params": {},             // 这里是 Params 内容，跟前文一致
+    "url": "",                // 设置 JavBus 的镜像站地址
+    "eaUrl": "",              // 设置 JavBus.red 的镜像站地址
+    "type": 0                 // 设置 JavBus 的类型，0 为仅显示有磁力的影片，1 为显示所有影片
+}, {
+    "name": "PicAcg",         // 即表示这是 PicAcg 的配置
+    "params": {},             // 这里是 Params 内容，跟前文一致
+    "login": {
+        "username": "",       // 设置登录用户名
+        "password": ""        // 设置登录密码
+    },
+    "image": 0                // 设置图片素质，0 为原图，1 为 low，2 为 medium，3 为 high
+}, {
+    "name": "Danbooru",       // 即表示这是 Danbooru 的配置
+    "params": {},             // 这里是 Params 内容，跟前文一致
+    "url": "",                // 设置 Danbooru 类网站地址
+}, {
+    "name": "ExHentai",       // 即表示这是 ExHentai 的配置
+    "params": {},             // 这里是 Params 内容，跟前文一致
+    "cookies": "",            // 设置 ExHentai 的 Cookies
+    "fullComment": true,      // 设置是否显示全部评论
+    "jump": true,             // 是否跳过画廊警告
+    "parse": true,            // 是否解析画廊
+    "thumbType": "large"      // 设置缩略图类型，large 是大图，normal 是普通模式
+}, {
+    "name": "AsianSister",    // 即表示这是 AsianSister 的配置
+    "params": {}              // 这里是 Params 内容，跟前文一致
+}, {
+    "name": "Nyaa",           // 即表示这是 Nyaa 的配置
+    "params": {}              // 这里是 Params 内容，跟前文一致
+}, {
+    "name": "Log",            // 即表示这是 Log 的配置
+    "save": true,             // 是否保存日志
+    "level": 5                // 设置日志屏幕输入等级，-1 不显示，0 是错误，1 是警告，2 是信息，3 是调试，更高级别则与 3 同步
+}]
+```
