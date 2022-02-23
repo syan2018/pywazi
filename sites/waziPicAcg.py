@@ -3675,3 +3675,27 @@ class waziPicAcg:
         returnJson["data"]["comics"]["docs"] = self.check.needFilterIt(backJson["data"]["comics"]["docs"], filters)
         waziLog.log("info", f"({self.name}.{fuName}) 过滤完成： {returnJson}")
         return returnJson
+
+    def logout(self):
+        """
+        waziPicAcg.logout(self)
+        *Wave.*
+
+        Login out the account.
+
+        Parameters:
+            None
+        
+        Return:
+            None
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到登出请求，正在请求登出。")
+        self.token = ""
+        waziLog.log("debug", f"({self.name}.{fuName}) 清空 Token 完毕，重置请求头。")
+        self.editHeaders()
+        waziLog.log("info", f"({self.name}.{fuName}) 登出完毕。")
