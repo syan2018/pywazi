@@ -5,11 +5,11 @@ Instantiated config system
 from mods.waziConfig import waziConfig as Wc
 
 """
-    waziConfig
-    *We're moving on.*
+waziConfig
+*We're moving on.*
 
-    Instantiated config system.
+Instantiated config system.
 
-    Go mods/waziConfig.py
+Go mods/waziConfig.py
 """
 waziConfig = Wc()

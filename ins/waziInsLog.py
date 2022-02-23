@@ -5,11 +5,11 @@ Instantiated logging system
 from mods.waziLog import waziLog as Wl
 
 """
-    waziLog
-    *They say it's darkest before the dawn.*
+waziLog
+*They say it's darkest before the dawn.*
 
-    Instantiated logging system.
+Instantiated logging system.
 
-    Go mods/waziLog.py
+Go mods/waziLog.py
 """
 waziLog = Wl()
