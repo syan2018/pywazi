@@ -1,0 +1,16 @@
+@GET("comics")
+  Call<GeneralResponse<ComicListResponse>> a(@Header("authorization") String paramString1, @Query("page") int paramInt, @Query("c") String paramString2, @Query("t") String paramString3, @Query("a") String paramString4, @Query("f") String paramString5, @Query("s") String paramString6, @Query("ct") String paramString7, @Query("ca") String paramString8);
+
+Translate:
+    Post: 
+        https://picaapi.picacomic.com/comics?
+        {
+            "page": int,        // Start from 1.
+            "c": string,        // Category of comics.
+            "t": string,        // Tag of comics.
+            "a": string,        // Author of comics. (I do not know)
+            "f": string,        // I do not know.
+            "s": string,        // Sort by.
+            "ct": string,       // I do not know. "VC" May be.
+            "ca": string        // I do not know.
+        }
