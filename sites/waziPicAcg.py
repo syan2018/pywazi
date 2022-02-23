@@ -492,6 +492,62 @@ class waziPicAcg:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
         return waziPicAcg.up(self, self.urls["categories"], True, None, "GET", True)
 
+    def getComicsWithFullParams(self, page, c, t, a, f, s, ct, ca):
+        """
+        ?No testing now
+        waziPicAcg.getComicsWithFullParams(self, page, c, t, a, f, s, ct, ca)
+        *Good game.*
+
+        Get comics with all params.
+
+        Parameters:
+            page: int or str
+                The page of comics. Start from 1.
+            
+            c: str
+                Category of comics. Can be string from getCategories.
+            
+            t: str
+                Tag of comics. Please use traditional Chinese.
+            
+            a: str
+                Author of comics.
+            
+            f: bool
+                Is this comic finished? Yes, True; No, False.
+            
+            s: str
+                Sorting of comics.
+                    ua: Default.
+                    dd: From newest to oldest.
+                    da: From oldest to newest.
+                    vd: From users named most to users named least. (What is that? Hot?)
+                    ld: From users liked most to users liked least.
+            
+            ct: str
+                Translation of comics.
+            
+            ca: str
+                Creator of comics' id.
+        
+        Return:
+            Type: dict
+            No test.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到页码、分区、标签和排序，正在发起请求。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 分区： {c}， 标签： {t}， 排序： {s}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在创建 URL。")
+        newUrl = self.urls["comics"] + "?page=" + str(page) + "&c=" + c
+        newUrl += "&t=" + t + "&a=" + a + "&f=" + str(f) + "&s=" + s + "&ct=" + ct + "&ca=" + ca
+        waziLog.log("debug", f"({self.name}.{fuName}) URL 创建完毕： {newUrl}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
+        return waziPicAcg.up(self, newUrl, True, None, "GET", True)
+
     def getComics(self, page, c, t, s):
         """
         ?Why cannot get comics?
