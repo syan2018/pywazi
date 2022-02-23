@@ -78,24 +78,24 @@ class waziColor:
                     "R": 255,
                     "G": 233,
                     "B": 0
-                },				        # Dict, text color
+                },                      # Dict, text color
                 "bgColor": {
                     "R": 255,
                     "G": 233,
                     "B": 0
-                },				        # Dict, background color
+                },                      # Dict, background color
                 "effects": {
-                    "normal": True,		# Normal text style, just like as you see
-                    "highLight": True,	# Highlight text style, light
-                    "lowLight": True,	# Lowlight text style, dark
-                    "itail": True,		# Italic text style, like a book or a poem
-                    "underLine": True,	# Underline text style, make me nervous
-                    "slowShine": True,	# Slow shine text style, like a broken light in night
-                    "revWhite": True,	# Reverse white text style, never use it
-                    "hide": True,		# Hide the text, er, I mean, invisible
-                    "delLine": True		# Deleteline text style, deliberately mystifying
+                    "normal": True,     # Normal text style, just like as you see
+                    "highLight": True,  # Highlight text style, light
+                    "lowLight": True,   # Lowlight text style, dark
+                    "itail": True,      # Italic text style, like a book or a poem
+                    "underLine": True,  # Underline text style, make me nervous
+                    "slowShine": True,  # Slow shine text style, like a broken light in night
+                    "revWhite": True,   # Reverse white text style, never use it
+                    "hide": True,       # Hide the text, er, I mean, invisible
+                    "delLine": True     # Deleteline text style, deliberately mystifying
                 },
-                "text": "Text"			# String, text to print
+                "text": "Text"          # String, text to print
             }
 
         Return:
@@ -128,9 +128,9 @@ class waziColor:
                 text += "\x1b[5m"
             if "revWhite" in jsons["effects"]:
                 text += "\x1b[7m"
-            if "hide" in jsons["eff"]:
+            if "hide" in jsons["effects"]:
                 text += "\x1b[8m"
-            if "delLine" in jsons["eff"]:
+            if "delLine" in jsons["effects"]:
                 text += "\x1b[9m"
         text += jsons["text"] + "\x1b[0m"
         print(text)
