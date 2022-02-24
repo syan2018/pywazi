@@ -175,6 +175,13 @@ try:
 except:
     pass
 
+print("""I'm sorry to bother you for a few minutes.
+Although it is not good to bring the author's political views into any work that has nothing to do with politics.
+If you can, please oppose the Russian war against Ukraine. Of course, you can still use this program without opposing this war.
+All I'm saying is that the Russian side should be condemned in these supposedly peaceful times. Not only this war, but think of the armed conflicts going on in the world or the massacres of citizens by governments or armies now or in the past.
+These are all things that should be opposed and criticized.
+Thank you.""")
+
 # [1]: 代码使用： https://github.com/WWILLV/iav （未注明详细的版权协议）
 # [2]: Api 参考： https://github.com/AnkiKong/picacomic （MIT 版权）
 #      Headers 引用： https://github.com/tonquer/picacg-windows （LGPL-3.0 版权）
