@@ -2748,6 +2748,68 @@ class waziExHentai:
         waziLog.log("info", f"({self.name}.{fuName}) 数据： {images}，结果返回。")
         return images
     
+    def yieldGetNormalImagesOneImageByOneImage(self, link):
+        """
+        next(waziExHentai.yieldGetNormalImagesCustom(self, link))
+        *6 4 5 1*
+
+        A generator to get normal images by user params.
+
+        Parameters:
+            link: str
+                Link of the page. Like https://exhentai.org/g/2138558/297d844cf6/.
+        
+        Each Yield:
+            Type: str
+            Images.
+
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 link，正在获取图像列表。")
+        waziLog.log("debug", f"({self.name}.{fuName}) URL： {link}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在获取页码信息。")
+        page = waziExHentai.getPages(self, link)
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码信息： {page}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在修改请求 Header。")
+        tempParams = self.params
+        tempParams["useHeaders"] = True
+        waziLog.log("debug", f"({self.name}.{fuName}) 请求 Header 修改完毕，正在获取 Soup。")
+        soup = waziExHentai.returnSoup(self, link)
+        pics = soup.find_all(id = "gdt")[0].find_all("a")
+        waziLog.log("debug", f"({self.name}.{fuName}) 已获取，准备进入循环遍历。")
+        for pic in pics:
+            waziLog.log("debug", f"({self.name}.{fuName}) 正在获取详细信息。")
+            href = pic["href"]
+            waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {href}，准备通过 returnSoup 获取 Soup。")
+            soups = waziExHentai.returnSoup(self, href)
+            waziLog.log("debug", f"({self.name}.{fuName}) 已获取，正在获取图像地址。")
+            src = soups.find_all(id = "img")[0].attrs["src"]
+            waziLog.log("debug", f"({self.name}.{fuName}) 图像地址： {src}")
+            yield src
+        # Maybe it will be abstract.
+        if page != 0:
+            waziLog.log("debug", f"({self.name}.{fuName}) 页码信息不为 0，准备进入循环。")
+            for i in range(1, page):
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在合成 URL。")
+                url = link + "?p=" + str(i)
+                waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕： {url}，正在通过 returnSoup 获取 Soup。")
+                soup = waziExHentai.returnSoup(self, url)
+                waziLog.log("debug", f"({self.name}.{fuName}) Soup 信息获取完成，正在通过 getImages 获取。")
+                pics = soup.find_all(id = "gdt")[0].find_all("a")
+                waziLog.log("debug", f"({self.name}.{fuName}) 已获取，准备进入循环遍历。")
+                for pic in pics:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 正在获取详细信息。")
+                    href = pic["href"]
+                    waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {href}，准备通过 returnSoup 获取 Soup。")
+                    soups = waziExHentai.returnSoup(self, href)
+                    waziLog.log("debug", f"({self.name}.{fuName}) 已获取，正在获取图像地址。")
+                    src = soups.find_all(id = "img")[0].attrs["src"]
+                    waziLog.log("debug", f"({self.name}.{fuName}) 图像地址： {src}")
+                    yield src
+    
     def yieldGetNormalImages(self, link):
         """
         next(waziExHentai.yieldGetNormalImages(self, link))
