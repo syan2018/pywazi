@@ -2740,7 +2740,7 @@ class waziExHentai:
                 waziLog.log("debug", f"({self.name}.{fuName}) 请求参数处理完毕： {requestParams}， 准备发起请求。")
                 fileData = self.request.do(requestParams).data
                 waziLog.log("debug", f"({self.name}.{fuName}) 请求发起完毕，准备写入。")
-                with open(os.path.join(params["path"], title, src.split("/")[-1]), "wb") as f:
+                with open(os.path.join(params["path"], self.fileName.toRight(title), src.split("/")[-1]), "wb") as f:
                     f.write(fileData)
                 waziLog.log("debug", f"({self.name}.{fuName}) 写入数据完成。")
                 images.append(os.path.join(params["path"], title, src.split("/")[-1]))
