@@ -2533,7 +2533,6 @@ class waziExHentai:
         i = 0
         waziLog.log("debug", f"({self.name}.{fuName}) 进入循环遍历。")
         for dic in imgLists:
-            print(imgLists)
             waziLog.log("debug", f"({self.name}.{fuName}) 正在修改 POST 请求参数。")
             i += 1
             post["page"] = i
