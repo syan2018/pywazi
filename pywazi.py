@@ -178,7 +178,7 @@ except:
 print("""I'm sorry to bother you for a few minutes.
 Although it is not good to bring the author's political views into any work that has nothing to do with politics.
 If you can, please oppose the Russian-Ukraine war. Of course, you can still use this program without opposing this war.
-All I'm saying is that the Russian side should be condemned in these supposedly peaceful times. Not only this war, but think of the armed conflicts going on in the world or the massacres of citizens by governments or armies now or in the past.
+All I'm saying is that the Russian side should be condemned in these times. Not only this war, but think of the armed conflicts going on in the world or the massacres of citizens by governments or armies now or in the past.
 These are all things that should be opposed and criticized.
 Thank you.""")
 

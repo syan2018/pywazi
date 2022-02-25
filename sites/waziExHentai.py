@@ -2738,13 +2738,18 @@ class waziExHentai:
                 waziLog.log("debug", f"({self.name}.{fuName}) 检测到下载模式，准备合成请求参数。")
                 requestParams = self.request.handleParams(tempParams, "get", src, self.headers, self.proxies)
                 waziLog.log("debug", f"({self.name}.{fuName}) 请求参数处理完毕： {requestParams}， 准备发起请求。")
-                fileData = self.request.do(requestParams).data
-                waziLog.log("debug", f"({self.name}.{fuName}) 请求发起完毕，准备写入。")
-                with open(os.path.join(params["path"], self.fileName.toRight(title), src.split("/")[-1]), "wb") as f:
-                    f.write(fileData)
-                waziLog.log("debug", f"({self.name}.{fuName}) 写入数据完成。")
-                images.append(os.path.join(params["path"], title, src.split("/")[-1]))
-                waziLog.log("debug", f"({self.name}.{fuName}) 文件路径已追加。")
+                try:
+                    fileData = self.request.do(requestParams).data
+                except:
+                    waziLog.log("error", f"({self.name}.{fuName}) 请求发起失败，写入失败 URL。")
+                    images.append(src)
+                else:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 请求发起完毕，准备写入。")
+                    with open(os.path.join(params["path"], self.fileName.toRight(title), src.split("/")[-1]), "wb") as f:
+                        f.write(fileData)
+                    waziLog.log("debug", f"({self.name}.{fuName}) 写入数据完成。")
+                    images.append(os.path.join(params["path"], title, src.split("/")[-1]))
+                    waziLog.log("debug", f"({self.name}.{fuName}) 文件路径已追加。")
         waziLog.log("info", f"({self.name}.{fuName}) 数据： {images}，结果返回。")
         return images
     
