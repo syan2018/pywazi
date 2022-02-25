@@ -174,7 +174,7 @@ class waziLog:
         Parameters:
             level: str
                 The level of the log.
-                Debug, Info, Warn, Error
+                debug, info, warn, error
             
             text: str
                 The log message.

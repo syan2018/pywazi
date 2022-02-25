@@ -53,7 +53,7 @@ class waziFileName:
             None
         """
         fuName = waziFun.getFuncName()
-        waziLog.log("debug", f"({self.name}.{fuName}) 收到文件名，正在删除不合法字符串：\\ / : ? \" < > |")
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到文件名，正在删除不合法字符串：\\ / : ? \" < > | *")
         waziLog.log("debug", f"({self.name}.{fuName}) 文件名为： {name}")
         finalName = name.replace("\\", "").replace("/", "").replace(":", "").replace("?", "").replace("\"", "")\
                         .replace("<", "").replace(">", "").replace("|", "").replace("*", "")
