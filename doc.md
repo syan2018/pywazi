@@ -523,6 +523,27 @@ function toggle_category(b) {
 
 只需要一个参数 `filePath`，是字符串，就可以读取配置文件，返回一个字典（只要你的配置文件存在并符合格式）。
 
-### waziError
+### waziDebug
 
-> 
+> 互联网，拯救我的不安。
+
+如何处理一个错误：
+
+1. 复制报错和代码；
+2. Google 启动，在 stackoverflow 搜索；
+3. 完事！
+
+它是一个装饰器，并没有在任何地方使用，你可以使用：
+
+```python
+from mods import waziDebug as Wdb
+debug = Wdb.waziDebug
+
+@debug
+def error():
+    raise ValueError("This is a error!")
+
+error()
+```
+
+类似这样的代码捕获错误，并打开对应的 `stackoverflow` 页面以快速了解该错误可能是什么以及触发的大致原因（它还是会使错误发生）。

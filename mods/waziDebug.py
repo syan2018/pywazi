@@ -1,7 +1,7 @@
 """
-mods/waziError.py
+mods/waziDebug.py
 
-class: waziError
+class: waziDebug
 """
 
 import traceback
@@ -62,6 +62,6 @@ class waziDebug:
             url = "https://stackoverflow.com/search?q=%5Bpython%5D+" + error.split("\n")[-2]
             webbrowser.open(url)
             traceback.print_exc()
-            exit()
+            return
         else:
             return info
