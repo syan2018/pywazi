@@ -305,7 +305,7 @@ class waziCheck:
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 成功打开文件，正在计算 SHA1。")
             while True:
-                temp2 = temp.read(128000)
+                temp2 = temp.read(8096)
                 self.sha1.update(temp2)
                 if not temp2:
                     break
