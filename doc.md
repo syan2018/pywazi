@@ -786,4 +786,28 @@ error()
 
 > 伊始。
 
+设置用户参数（即上文主模块的 `params`），参数是 `params` 字典，完成之后返回当前用户的参数，同样是字典。
+
+格式如下：
+
+```python
+{
+    "useProxies": True,             # 要不要用代理
+    "proxyAddress": "127.0.0.1",    # 代理地址
+    "proxyPort": 7890,              # 代理端口（整数或者字符串）
+    "useHeaders": True,             # 要不要用请求头（不需要写这个其实，程序会自己写好的）
+    "headers": {}                   # 自定义请求头（字典，同样，程序会自动补全的）
+}
+```
+
+#### returnSoup
+
+> Imagine all the people, living life in peace... --John Lennon
+
+通过该接口获取一个网站的 BeautifulSoup 对象，参数是 `link` 字符串，如果无法获取到网页信息，则返回 `<html></html>` 的 BeautifulSoup 对象。
+
+#### downloadFile
+
+> Hopeless.
+
 
