@@ -810,4 +810,80 @@ error()
 
 > Hopeless.
 
-该接口需要三个参数以下载文件，参数分别是 `url` 字符串，`name` 字符串，`path` 字符串，如果下载失败，则返回 `False`，否则返回 `True`。
+该接口需要三个参数以下载文件，`url`字符串、 `fileName`字符串、 `filePath`字符串，如果下载失败，则返回`False`；成功时返回`True`。
+
+#### parseVideo
+
+> 政客建立对立，人类祈求和平，所以黄色网站确实很和谐（笑） -A
+
+该接口的参数是BeautifulSoup对象，可以是`link`字符串，返回值为视频基本信息，例如标题、播放数、标签等等。
+
+#### parseGallery
+
+> Please make love, not war. -A
+
+该接口的参数是BeautifulSoup对象，可以是`link`字符串，返回值为图片信息，大致同`parseVideo`。
+
+#### parsePerson
+
+>查成分 -A
+
+该接口的参数是BeautifulSoup对象，可以是`link`字符串，返回值为个人主页信息，同上两个接口。
+
+#### parseRecommendImagesAndVideos
+
+>政治和权利都只是别有用心的人的玩物罢了，不要过度相信推送 -A
+
+该接口的参数是BeautifulSoup对象，`link`字符串，源码当中需要包含 ___`<div class="recommentBox"></div>`与`<div class="recommentBoxVideo"></div>`___ ，返回两个`list`，为推荐图片和视频，一个同`parseVideo`的返回值（大概），另一个同`parseGallery`的返回值（大概）。
+
+#### parseImagesAndVideos
+
+> 人类从不吸取教训 -A
+
+该接口的参数是BeautifulSoup对象，`link`字符串，`link`可以是搜索结果也可以是单纯的页面，例如 _https://asiansiter.com/_；返回值与 ___`parseRecommendImagesAndVideos`___ 几乎完全相同，不再过多赘述。
+
+#### getPage
+
+> 相比魔怔人，我还是喜欢mmr，当然，像我一样做个不出声的乐子人也行 -A
+
+接口参数是`page`基本整型，为页面数字（第一页即为1），返回值同样是两个`list`，不多赘述。
+
+#### search
+
+> 刚吃完午饭的下午可太困了 -A
+
+该接口有两个参数，`keyword`字符串与`page`基本整型，返回值又又又是两个`list`。
+
+#### tagsearch
+
+> 定向研究 -A
+
+该接口有两个参数，`tag`字符串与`page`基本整型，返回值又又又是两个`list`，基本同 ___`search`___。
+
+#### personSearch
+
+> 别查了，我什么成分都没有 -A
+
+该接口参数为`person`字符串，返回三个`list`，相比之前多了对于个人信息的介绍。
+
+
+#### getGallery
+
+> 似乎快完了 -A
+
+该接口参数是`gallery`字符串，返回一个`dict`，关于画册的基本信息。
+
+#### getVideo
+
+> 施法，施法 -A
+
+该接口的参数为`video`字符串，返回一个含有视频信息的`dict`。
+
+#### customParse
+
+>“第一阶段战略目标实现”（笑） -A
+
+该接口的参数为`content`字符串和`type`字符串，依据`type`的不同，返回值不同；返回值可能为 ___`parseImagesAndVideos()`，
+`parsePerson()`
+，`parseGallery()`
+，`parseVideo()`___ 中的一种
