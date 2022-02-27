@@ -816,74 +816,204 @@ error()
 
 > 政客建立对立，人类祈求和平，所以黄色网站确实很和谐（笑） -A
 
-该接口的参数是BeautifulSoup对象，可以是`link`字符串，返回值为视频基本信息，例如标题、播放数、标签等等。
+该接口的参数是 `BeautifulSoup` 对象，应当是某个视频的地址，返回值为视频基本信息，例如标题、播放数、标签等等。更详细的格式如下：
+
+```python
+{
+    "title": str,                                   # 视频的标题
+    "views": int,                                   # 视频的播放量
+    "tags": list[dict{"name": str, "link": str}],   # 视频的标签
+    "cover": str,                                   # 视频的封面
+    "url": str,                                     # 视频的文件地址
+    "comments": list[dict{                          # 视频的评论
+        "user": str,                                # 评论者的用户组
+        "avatar": str,                              # 评论者的头像
+        "name": str,                                # 评论者的名字
+        "time": str,                                # 评论时间
+        "content": str                              # 评论内容
+    }],                                             
+    "recommends": list[dict{                        # 该视频的有关推荐
+        "title": str,                               # 推荐视频的标题
+        "link": str,                                # 推荐视频的地址
+        "cover": str,                               # 推荐视频的封面
+        "views": int                                # 推荐视频的播放量
+    }]
+}
+```
 
 #### parseGallery
 
 > Please make love, not war. -A
 
-该接口的参数是BeautifulSoup对象，可以是`link`字符串，返回值为图片信息，大致同`parseVideo`。
+该接口的参数是 `BeautifulSoup` 对象，应当是某个画廊的地址，返回值为画廊信息，大致同 `parseVideo`，可以阅读下文的格式：
+
+```python
+{
+    "title": str,                                       # 画廊的标题
+    "stars": str,                                       # 画廊的评分，分数 / 总分
+    "category": dict{"name": str, "link": str},         # 画廊的分类
+    "tags": list[dict{"name": str, "link": str}],       # 画廊的分类
+    "description": str,                                 # 画廊的描述
+    "model": dict{"name": str, "link": str},            # 画廊中出演的任务
+    "covers": list[dict{"link": str, "alt": str}],      # 画廊的封面
+    "pictures": list[dict{"link": str, "org": str}],    # 画廊的图片
+                                                        # org: 原图，link: 压缩图
+    "pageNum": int,                                     # 画廊的页数
+    "comments": list[dict{                              # 画廊的评论
+        "user": str,                                    # 评论者的用户组
+        "avatar": str,                                  # 评论者的头像
+        "name": str,                                    # 评论者的名字
+        "time": str,                                    # 评论时间
+        "content": str                                  # 评论内容
+    }],                                                 
+    "galleries": list[dict{                             # 画廊的推荐画廊
+        "link": str,                                    # 推荐画廊的地址
+        "cover": str,                                   # 推荐画廊的封面
+        "alt": str,                                     # 推荐画廊的 alt 属性
+        "title": str,                                   # 推荐画廊的标题
+        "stars": str,                                   # 推荐画廊的评分
+        "VIP": bool                                     # 是否是 VIP 画廊
+    }],
+    "videos": list[dict{                                # 画廊的推荐视频
+        "data": str or None,                            # 推荐视频的动画封面 没有就是 None 不是很清楚这个
+        "link": str,                                    # 推荐视频的地址
+        "title": str,                                   # 推荐视频的标题
+        "cover": str,                                   # 推荐视频的封面
+        "VIP": bool                                     # 是否是VIP视频
+    }]
+}
+```
 
 #### parsePerson
 
->查成分 -A
+> 查成分 -A
 
-该接口的参数是BeautifulSoup对象，可以是`link`字符串，返回值为个人主页信息，同上两个接口。
+该接口的参数是 `BeautifulSoup` 对象，应当是某个人物的地址，返回值为个人主页信息，同上两个接口。详细信息可以见：
+
+```python
+{
+    "name": str,                                    # 名字
+    "descriptionHTML": str,                         # 描述（使用 HTML 语言）
+    "views": int,                                   # 浏览量
+    "tags": list[dict{                              # 标签
+        "name": str,                                # 标签名
+        "link": str                                 # 标签链接
+    }],
+    "galleries": list[dict{                         # 相关推荐画廊
+        "link": str,                                # 画廊的地址
+        "cover": str,                               # 画廊的封面
+        "alt": str,                                 # 画廊的 alt 属性
+        "title": str,                               # 画廊的标题
+        "stars": str,                               # 画廊的评分
+        "VIP": bool                                 # 是否是 VIP 画廊
+    }],
+    "videos": list[dict{                            # 相关推荐视频
+        "data": str or None,                        # 推荐视频的动画封面 没有就是 None 不是很清楚这个
+        "link": str,                                # 推荐视频的地址
+        "title": str,                               # 推荐视频的标题
+        "cover": str,                               # 推荐视频的封面
+        "VIP": bool                                 # 是否是 VIP 视频
+    }]
+}
+```
 
 #### parseRecommendImagesAndVideos
 
->政治和权利都只是别有用心的人的玩物罢了，不要过度相信推送 -A
+> 政治和权利都只是别有用心的人的玩物罢了，不要过度相信推送 -A
 
-该接口的参数是BeautifulSoup对象，`link`字符串，源码当中需要包含 ___`<div class="recommentBox"></div>`与`<div class="recommentBoxVideo"></div>`___ ，返回两个`list`，为推荐图片和视频，一个同`parseVideo`的返回值（大概），另一个同`parseGallery`的返回值（大概）。
+该接口的参数是 `BeautifulSoup` 对象。网页代码中需要包含 `<div class="recommentBox"></div>` 和 `<div class="recommentBoxVideo"></div>`，用于处理画廊等的推荐内容解析，详细返回格式可以见下文。
+
+它返回的是元组，尽管我也不知道为什么我会这么设计。
+
+```python
+(
+    list[dict{                                      # 推荐的画廊
+        "link": str,                                # 画廊的地址
+        "cover": str,                               # 画廊的封面
+        "alt": str,                                 # 画廊的 alt 属性
+        "title": str,                               # 画廊的标题
+        "stars": str,                               # 画廊的评分
+        "VIP": bool                                 # 是否是 VIP 画廊
+    }],
+    list[dict{                                      # 推荐的视频
+        "data": str or None,                        # 推荐视频的动画封面 没有就是 None 不是很清楚这个
+        "link": str,                                # 推荐视频的地址
+        "title": str,                               # 推荐视频的标题
+        "cover": str,                               # 推荐视频的封面
+        "VIP": bool                                 # 是否是 VIP 视频
+    }]
+)
+```
 
 #### parseImagesAndVideos
 
 > 人类从不吸取教训 -A
 
-该接口的参数是BeautifulSoup对象，`link`字符串，`link`可以是搜索结果也可以是单纯的页面，例如 _https://asiansiter.com/_；返回值与 ___`parseRecommendImagesAndVideos`___ 几乎完全相同，不再过多赘述。
+该接口的参数是 BeautifulSoup 对象，可以是搜索结果也可以是单纯的页面，例如 `https://asiansiter.com/`；返回值与 `parseRecommendImagesAndVideos` 几乎相同，但存在差异：
+
+```python
+(
+    list[dict{
+        "views": int,
+        "link": str,
+        "vip": bool,
+        "cover": str,
+        "alt": str,
+        "title": str
+    }],
+    list[dict{
+        "data": str or None,
+        "views": int,
+        "link": str,
+        "vip": bool,
+        "cover": str,
+        "title": str
+    }]
+)
+```
+
+多了一个 `views` 字段，表示浏览量。
 
 #### getPage
 
-> 相比魔怔人，我还是喜欢mmr，当然，像我一样做个不出声的乐子人也行 -A
+> 相比魔怔人，我还是喜欢 mmr，当然，像我一样做个不出声的乐子人也行 -A
 
-接口参数是`page`基本整型，为页面数字（第一页即为1），返回值同样是两个`list`，不多赘述。
+使用该接口以获取第几页的内容解析，参数是 `page` 整数，为页面数字（第一页即为 1），返回值同样是一个元组包两个 `list` 的 `parseImagesAndVideos` 返回值，不多赘述。
 
 #### search
 
 > 刚吃完午饭的下午可太困了 -A
 
-该接口有两个参数，`keyword`字符串与`page`基本整型，返回值又又又是两个`list`。
+使用该接口以在该网站上进行搜索，该接口有两个参数，`keyword` 字符串与 `page` 基本整型，返回同样依赖 `parseImagesAndVideos` 返回值。
 
 #### tagsearch
 
 > 定向研究 -A
 
-该接口有两个参数，`tag`字符串与`page`基本整型，返回值又又又是两个`list`，基本同 ___`search`___。
+使用该接口以在该网站上进行标签搜索，该接口有两个参数，`tag` 字符串与 `page` 基本整型，返回还是同样跟 `parseImagesAndVideos` 无异。
 
 #### personSearch
 
 > 别查了，我什么成分都没有 -A
 
-该接口参数为`person`字符串，返回三个`list`，相比之前多了对于个人信息的介绍。
-
+使用该接口以在该网站上进行人物搜索，该接口参数为 `person` 字符串，返回的是字典，它的格式与 `parsePerson` 的返回值相同。
 
 #### getGallery
 
 > 似乎快完了 -A
 
-该接口参数是`gallery`字符串，返回一个`dict`，关于画册的基本信息。
+使用该接口获取一个画廊的信息，该接口参数是 `gallery` 字符串，应当是 `https://asiansister.com/...` 后面的内容，返回格式与 `parseGallery` 无异。
 
 #### getVideo
 
 > 施法，施法 -A
 
-该接口的参数为`video`字符串，返回一个含有视频信息的`dict`。
+该接口的参数为 `video` 字符串，同样应当是 `https://asiansister.com/...`，后面的内容的返回格式是 `parseVideo` 的返回值。
 
 #### customParse
 
->“第一阶段战略目标实现”（笑） -A
+> “第一阶段战略目标实现”（笑） -A
 
-该接口的参数为`content`字符串和`type`字符串，依据`type`的不同，返回值不同；返回值可能为 ___`parseImagesAndVideos()`，
-`parsePerson()`
-，`parseGallery()`
-，`parseVideo()`___ 中的一种
+该接口的参数为 `content` 字符串和 `type` 字符串。如果 `type` 是 `main / tag / search` 的话会让 `parseImagesAndVideos` 去解析，如果是 `person` 的话会通过 `parsePerson` 去做，如果是 `gallery` 的话会通过 `parseGallery` 去做，如果是 `video` 的话会通过 `parseVideo` 去做。
+
+`content` 字符串将与 `https://asiansister.com/` 进行拼接以获取完整的 URL。

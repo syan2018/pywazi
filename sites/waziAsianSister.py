@@ -91,9 +91,9 @@ class waziAsianSister:
             None
         """
         fuName = waziFun.getFuncName()
-        waziLog.log("debug", f"({self.name}.{fuName}) Configuration information received, writing for now.\n收到配置信息，正在写入。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到配置信息，正在写入。")
         self.params = params
-        waziLog.log("info", f"({self.name}.{fuName}) Writing complete, current configuration:\n写入完成，目前配置为： {self.params}")
+        waziLog.log("info", f"({self.name}.{fuName}) 写入完成，目前配置为： {self.params}")
         return self.params
 
     def returnSoup(self, link):
@@ -121,20 +121,20 @@ class waziAsianSister:
                     + Cannot get the response.
         """
         fuName = waziFun.getFuncName()
-        waziLog.log("debug", f"({self.name}.{fuName}) URL request received, aquiring Soup:\n收到请求 URL，正在获得 Soup： {link}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到请求 URL，正在获得 Soup： {link}")
         tempParams = self.params
         tempParams["useHeaders"] = True
         tempHeaders = self.headers
-        waziLog.log("debug", f"({self.name}.{fuName}) URL check and process required.\n需要检查 URL 并进行处理。")
-        waziLog.log("debug", f"({self.name}.{fuName}) Initiating network request.\n正在发起网络请求。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 需要检查 URL 并进行处理。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在发起网络请求。")
         requestParams = self.request.handleParams(tempParams, "get", link, tempHeaders, self.proxies)
         try:
             soup = BeautifulSoup(self.request.do(requestParams).data.decode("utf-8"), "lxml")
         except:
-            waziLog.log("error", f"({self.name}.{fuName}) Can't obtain, returning invaild Soup.\n无法获取，返回无效 Soup。")
+            waziLog.log("error", f"({self.name}.{fuName}) 无法获取，返回无效 Soup。")
             return BeautifulSoup("<html></html>", "lxml")
         else:
-            waziLog.log("info", f"({self.name}.{fuName}) Obtain successfully, returning Soup.\n获取成功，Soup 返回中。")
+            waziLog.log("info", f"({self.name}.{fuName}) 获取成功，Soup 返回中。")
             return soup
     
     def downloadFile(self, url, name, path):
@@ -345,7 +345,7 @@ class waziAsianSister:
                     "time": str,                                    # The time of the comment.
                     "content": str                                  # The content of the comment.
                 }],                                                 
-                "galleries": list[dict{                            # The recommend galleries.
+                "galleries": list[dict{                             # The recommend galleries.
                     "link": str,                                    # The link of the recommend gallery.
                     "cover": str,                                   # The cover of the recommend gallery.
                     "alt": str,                                     # The alt of the recommend gallery.
@@ -353,7 +353,7 @@ class waziAsianSister:
                     "stars": str,                                   # The stars of the recommend gallery.
                     "VIP": bool                                     # The VIP status of the recommend gallery.
                 }],
-                "videos": list[dict{                               # The recommend videos.
+                "videos": list[dict{                                # The recommend videos.
                     "data": str or None,                            # The data of the video, None if not found.
                                                                     # data: The moved cover of the video.
                                                                     # I am not sure about this.
@@ -866,7 +866,7 @@ class waziAsianSister:
                 The person.
         
         Return:
-            Type: tuple
+            Type: dict
             The information of the images and videos.
             {
                 "name": str,                                    # The name of the person.
@@ -1030,11 +1030,11 @@ class waziAsianSister:
             
             type: str
                 The type of the content.
-                main: The main page.
-                person: The person page.
-                search: The search page.
-                gallery: The gallery page.
-                video: The video page.
+                    main: The main page.
+                    person: The person page.
+                    search: The search page.
+                    gallery: The gallery page.
+                    video: The video page.
             
         Return:
             main / tag / search -> parseImagesAndVideos()
