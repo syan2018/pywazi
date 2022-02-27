@@ -115,9 +115,9 @@ PyWazi 是一个功能完备，不单单只有媒体下载功能的针对一些 
 from pywazi import waziDanbooru    # 假设你只爬取 Danbooru 类网站
 
 waziDanbooru.giveParams({
-    "useProxies": True,				# 是否使用代理
-    "proxyAddress": "127.0.0.1",	# 代理地址
-    "proxyPort": 7890				# 代理端口
+    "useProxies": True,	            # 是否使用代理
+    "proxyAddress": "127.0.0.1",    # 代理地址
+    "proxyPort": 7890               # 代理端口
 })
 
 waziDanbooru.setApi("https://konachan.com") # 设置你想爬的 Danbooru 类网站地址
@@ -125,10 +125,10 @@ waziDanbooru.setApi("https://konachan.com") # 设置你想爬的 Danbooru 类网
 for page in range(1, 101):
     # 爬一百页
     waziDanbooru.downloadPosts(
-        page = page,					# 指定页码
-        tags = "rating:explicit",		# 标签
-        limit = 40, 					# 每页限制几张图片，最多就 40 张
-        path = "./download"				# 下载目录
+        page = page,                   # 指定页码
+        tags = "rating:explicit",      # 标签
+        limit = 40,                    # 每页限制几张图片，最多就 40 张
+        path = "./download"            # 下载目录
     )
 ```
 
@@ -138,20 +138,20 @@ for page in range(1, 101):
 from pywazi import waziJavBus	# JavBus 解决方案
 
 waziJavBus.giveParams({
-    "useProxies": True,				# 是否使用代理
-    "proxyAddress": "127.0.0.1",	# 代理地址
-    "proxyPort": 7890				# 代理端口
+    "useProxies": True,             # 是否使用代理
+    "proxyAddress": "127.0.0.1",    # 代理地址
+    "proxyPort": 7890               # 代理端口
 })
 
 # 浏览
 items = waziJavBus.browse(
-    page = 1,			# 页码
-    tag = "4u",			# 标签 ID 4u 表示 戲劇
-    avType = 0			# AV 类型 0 是有码 1 是无码
+    page = 1,           # 页码
+    tag = "4u",         # 标签 ID 4u 表示 戲劇
+    avType = 0          # AV 类型 0 是有码 1 是无码
 )
 
 for i in items:
-    print(f"{i['avId']} - {i['title']}")	# 打印所有获取到的番号和标题
+    print(f"{i['avId']} - {i['title']}")    # 打印所有获取到的番号和标题
 ```
 
 > 代码案例: 获取一个分类中第一页的 AV 番号和标题
