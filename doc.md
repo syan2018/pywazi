@@ -1036,3 +1036,4 @@ error()
 
 世界上有很多个 `Danbooru` 类网站，你可以通过这个接口设置当前所要爬取的 `Danbooru` 网站的主域名，参数是 `url` 字符串，返回值是你所设置的 `Danbooru` 网站的主域名。
 
+*try testing qwq
