@@ -1017,3 +1017,19 @@ error()
 该接口的参数为 `content` 字符串和 `type` 字符串。如果 `type` 是 `main / tag / search` 的话会让 `parseImagesAndVideos` 去解析，如果是 `person` 的话会通过 `parsePerson` 去做，如果是 `gallery` 的话会通过 `parseGallery` 去做，如果是 `video` 的话会通过 `parseVideo` 去做。
 
 `content` 字符串将与 `https://asiansister.com/` 进行拼接以获取完整的 URL。
+
+### waziDanbooru
+
+> 神明伟大，开放世界的创始逻辑和日志
+
+`Danbooru` 和开源 API，你好 `Danbooru`，就喜欢和开源 API 的连，因为开源 API 确实比闭源 API 有点素质，不是夸你们开源 API 呢。
+
+#### giveParams
+
+> 白日做梦
+
+设置用户参数，参数是 `params` 字典，完成之后返回当前用户的参数，同样是字典。这个在 `waziAsianSister` 中有写到，后面所有模块都有这个接口，所以不多赘述。
+
+#### setApi
+
+> 摸鱼去了
