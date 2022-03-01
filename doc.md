@@ -1046,4 +1046,6 @@ error()
 
 > Simple, not harmonic, motion
 
+ 该接口的参数是`page`整形或字符串，`tags`字符串，`limit`整形或字符串（*上限是40*），返回一个`list`或`dict`，关于网站的基本信息
 
+#### downloadFile
