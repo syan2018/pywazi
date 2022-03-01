@@ -1040,12 +1040,58 @@ error()
 
 > 新的摆烂的一周 -A
 
-该接口是会给API发送一个请求并返回`json`，接口参数为`port`字符串与上文提到过的`params`字典
+该接口是会给 API 发送一个请求并返回 `json`，接口参数为 `port` 字符串（API 路径地址）与 `params` 字典，即请求数据参数，如：
+
+```python
+waziDanbooru.toAPIJson('/posts.json', {'tags': 'tag1 tag2'})
+```
 
 #### getPosts
 
 > Simple, not harmonic, motion
 
- 该接口的参数是`page`整形或字符串，`tags`字符串，`limit`整形或字符串（*上限是40*），返回一个`list`或`dict`，关于网站的基本信息
+用于获取 `Posts` 信息，该接口的参数是 `page` 字符串或整数，表示页码，从 1 数起；`tags` 字符串，表示标签；`limit` 整数或字符串（*上限是40，可能不同网站有不同的设置*），返回一个 `list`。
+
+举例如下（Konachan）：
+```python
+[{
+    'id': 334447,
+    'tags': 'asamura_hiori bikini blush breasts brown_hair choker cleavage cross fang gradient green_eyes katana long_hair magic original skirt swimsuit sword thighhighs weapon zettai_ryouiki',
+    'created_at': 1636920653,
+    'creator_id': 73632,
+    'author': 'otaku_emmy',
+    'change': 2071516,
+    'source': 'https://www.pixiv.net/en/artworks/94143720',
+    'score': 32,
+    'md5': 'a2e11789abfdd59830b33f2598b5de5e',
+    'file_size': 4911373,
+    'file_url': 'https://konachan.com/image/a2e11789abfdd59830b33f2598b5de5e/Konachan.com%20-%20334447%20bikini%20blush%20breasts%20brown_hair%20choker%20cleavage%20cross%20fang%20gradient%20green_eyes%20katana%20long_hair%20magic%20original%20skirt%20swimsuit%20sword%20thighhighs%20weapon.png',
+    'is_shown_in_index': True,
+    'preview_url': 'https://konachan.com/data/preview/a2/e1/a2e11789abfdd59830b33f2598b5de5e.jpg',
+    'preview_width': 150,
+    'preview_height': 89,
+    'actual_preview_width': 300,
+    'actual_preview_height': 179,
+    'sample_url': 'https://konachan.com/sample/a2e11789abfdd59830b33f2598b5de5e/Konachan.com%20-%20334447%20sample.jpg',
+    'sample_width': 1500,
+    'sample_height': 893,
+    'sample_file_size': 349306,
+    'jpeg_url': 'https://konachan.com/jpeg/a2e11789abfdd59830b33f2598b5de5e/Konachan.com%20-%20334447%20bikini%20blush%20breasts%20brown_hair%20choker%20cleavage%20cross%20fang%20gradient%20green_eyes%20katana%20long_hair%20magic%20original%20skirt%20swimsuit%20sword%20thighhighs%20weapon.jpg',
+    'jpeg_width': 3500,
+    'jpeg_height': 2084,
+    'jpeg_file_size': 615611,
+    'rating': 's',
+    'has_children': False,
+    'parent_id': None,
+    'status': 'active',
+    'width': 5879,
+    'height': 3500,
+    'is_held': False,
+    'frames_pending_string': '',
+    'frames_pending': [],
+    'frames_string': '',
+    'frames': []
+}]
+```
 
 #### downloadFile
