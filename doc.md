@@ -1053,6 +1053,7 @@ waziDanbooru.toAPIJson('/posts.json', {'tags': 'tag1 tag2'})
 用于获取 `Posts` 信息，该接口的参数是 `page` 字符串或整数，表示页码，从 1 数起；`tags` 字符串，表示标签；`limit` 整数或字符串（*上限是40，可能不同网站有不同的设置*），返回一个 `list`。
 
 举例如下（Konachan）：
+
 ```python
 [{
     'id': 334447,
@@ -1098,75 +1099,272 @@ waziDanbooru.toAPIJson('/posts.json', {'tags': 'tag1 tag2'})
 
 > 许多杰出的行动都应归功于偶然， 然而将军和政客们却将掌声和欢呼占为己有。 ——亨利·霍姆 -A
 
-该接口通过三个参数下载文件。参数是`url`字符串，代表下载的链接；`orgName`字符串，代表文件的名称；`path`字符串，代表保存文件的路径。如果下载成功，则返回`True`，反之则返回`False`。
+该接口通过三个参数下载文件。参数是 `url` 字符串，代表下载的链接；`orgName` 字符串，代表文件的名称；`path` 字符串，代表保存文件的路径。如果下载成功，则返回 `True`，反之则返回 `False`。
 
 #### download
 
 > 或许人类根本没有自由意志，世间万物都是大脑放出的幻象罢了 -A
 
-该接口通过用三个参数下载加密后的post。分别是`posts`列表，代表post的链接；`path`字符串，代表保存文件的路径，`key`字符串，代表post的秘钥。返回一个有下载信息的`tuple`。
+该接口用于从 `Posts` 列表中下载链接。分别是 `posts` 列表，代表 `post` 的信息；`path` 字符串，代表保存文件的路径，`key` 字符串，代表指定下载链接的 `key`，返回一个有下载信息的`tuple`，格式是：
+
+```python
+(
+    list[str],                                      # 下载的文件
+    list[dict{fileURL: str, id: int}]               # 下载失败的文件
+)
+```
 
 #### downloadPosts
 
 > 我们无法观测物自体，正如我们无法了解任何事件的绝对真相。我们能看到的东西或许都是别人想让我们看到的 -A
 
-从API处下载posts，接口有五个参数。依次是`page`字符串，表示页码，从1开始；`tag`字符串；`limit`整形或是字符串，表示post的上限，最大为`40`；`path`字符串，代表文件保存的路径；`key`字符串是下载文件的URL，默认为`"file_url"`。返回一个有下载信息的`tuple`。
+从 API 处下载 `posts` 图片，是 `download` 和 `getPosts` 的友善写法，接口有五个参数。依次是 `page` 字符串或整数，表示页码，从 1 开始；`tag` 是字符串，表示标签；`limit` 是整数或是字符串，表示 `posts` 的上限，最大为 `40`（不同网站或有不同的 limit）；`path` 字符串，代表文件保存的路径；`key` 字符串是下载文件地址对应的键，默认为 `file_url`，返回一个有下载信息的`tuple`，格式同上不多赘述。
 
 #### getSizeLimit
 
 > 拉普拉斯的超级存在体 -A
 
----
+*作者声明未来可能移除该功能*
 
-**作者声明未来可能移除该功能*
-
----
-
-该接口的参数是`size`字典，形如：
+该接口用于生成尺寸搜索备忘单字符串，该接口的参数是 `size` 字典，形如：
 
 ```python
 {
-    "width": int or str,            # The width of the image.
-    "height": int or str,           # The height of the image.
-    "limit": str                    # b - bigger than, s - smaller than, e - equal to.
+    "width": int or str,            # 宽度
+    "height": int or str,           # 高度
+    "limit": str                    # b 大于 s 小于 e 等于
 }
 ```
-该接口讲返回一个`Type`字符串，是生成的`size limit cheat sheet`。
+
+所有生成搜索备忘单字符串的接口都会在末尾存在 ` `（即空格）以方便用户与其个人标签进行拼接。
 
 #### getOrder
 
 > 美好的每一天 -A
 
----
+*作者声明未来可能移除该功能*
 
-**作者声明未来可能移除该功能*
+该接口用于生成排序搜索备忘单字符串，该接口的参数是 `order` 列表，支持的排序方式有：
 
----
-
-- [ ] 似乎这个东西的参数不太对？
-
-
-该接口的参数是`size`列表，返回一个`order cheat sheet`字符串。
+```python
+["score", "fav", "wide", "nonwide"] # 包括你可以自定义排序方式
+# 按分数排序 | 收藏数排序 | 从大图排序 | 从小图排序
+```
 
 #### getRating
 
 > 不知道写什么就只能写一点鄙人的见闻和拙见了（笑） -A
 
----
+*作者声明未来可能移除该功能*
 
-**作者声明未来可能移除该功能*
+该接口的参数是 `ratingType` 列表，还适用于生成限制搜索备忘单字符串，支持的有：
 
----
-
-该接口的参数是`ratingType`列表，返回一个`rating cheat sheet`字符串。
+```python
+["safe", "questionable", "explicit", "questionableplus", "questionableless"] # 包括你可以自定义类型
+# 安全 | 可能存在限制 | 限制 | 可能存在限制（包括限制） | 可能存在限制（包括安全）
+```
 
 #### getTags
 
 > 不是因果逻辑，而是概率 -A
 
-该接口的参数有`page`整形或字符串，表示从1到无限的页面编号；`limit`整形或字符串，上限是`50`；`order`字符串，有`date`，`name`，`count`三种类型。返回一个含有标签的`Type`列表。
+该接口用于获取一个 `Danbooru` 网站的 `tags` 内容，该接口的参数有 `page` 整数或字符串，表示从 1 到底的页面编号；`limit` 整数或字符串，表示上限，一些网站是 `50`，或每个网站都不一致；`order` 字符串，有 `date`, `name`, `count` 三种类型，允许你使用按日期排序、按名称排序和按数量排序，返回一个标签列表，格式（可能）如下：
+
+```python
+[{'id': int, 'name': str, 'count': int, 'type': int, 'ambiguous': bool}]
+```
 
 #### getArtists
 
-> 无为而治
+> 无为而治 - 道德经
+
+该接口用于获取一个 `Danbooru` 网站的艺术家内容，需要两个参数：`page` 表示页码，从 1 开始数起，可以是字符串或整数；`order` 字符串，有 `date`, `name` 三种类型，允许你使用按日期排序和按名称排序这两种方式进行请求，最后返回一个艺术家列表，格式（可能）如下：
+
+```python
+[{
+    'id': int,
+    'name': str,
+    'alias_id': None or int or str,
+    'group_id': None or int or str,
+    'urls': [str]
+}]
+```
+
+#### getComment
+
+> 人生天地之间，若白驹过隙，忽然而已。 —— 庄子
+
+该接口用于获取一个 `Danbooru` 的评论，它需要一个参数，即 `commentId` 可以是整数也可以是字符串，表示评论的 ID，返回一个评论字典，格式（可能）如下：
+
+```python
+{
+    "id": int,
+    "created_at": str,
+    "post_id": int,
+    "creator": str,
+    "creator_id": int,
+    "body": str
+}
+```
+
+#### getPools
+
+> 呜呼哀哉
+
+如果你想搜索一个图集可以使用该接口，它需要两个参数：`query` 表示搜索内容，是字符串；`page` 表示页码，从 1 开始数起，可以是字符串或整数。最后返回一个图集列表，格式（可能）如下：
+
+```python
+[{
+    'id': int,
+    'name': str,
+    'created_at': str,
+    'updated_at': str,
+    'user_id': int,
+    'is_public': bool,
+    'post_count': int,
+    'description': str
+}]
+```
+
+#### getPoolFromId
+
+> 有考虑重新拿 JavaScipt 写一下这个项目
+
+如果你获取到了一个图集的 ID，那么你可以通过该接口获取图集的详细信息，它需要两个个参数：`poolId` 可以是整数也可以是字符串，表示图集的 ID；`page` 同样可以是字符串或者整数，表示页码，从 1 数起，返回一个图集字典，举例（Konachan）如下：
+
+```python
+{
+    'id': 489,
+    'name': 'Sailor_Moon_Redraw_2020',
+    'created_at': '2020-05-20T18:50:05.132Z',
+    'updated_at': '2021-04-19T18:24:09.842Z',
+    'user_id': 73632,
+    'is_public': True,
+    'post_count': 26,
+    'description': 'Art fad started in May 2020 wherein various artists redraw and parody a screenshot from the classic Sailor Moon anime.',
+    'posts': [{
+        'id': 306979,
+        'tags': 'aqua_eyes blonde_hair blush breasts choker cleavage close headband long_hair parody sailor_moon sailor_moon_(character) school_uniform tsukimaru tsukino_usagi twintails',
+        'created_at': '2020-05-18T06:13:47.090Z',
+        'creator_id': 257706,
+        'author': 'Dreista',
+        'change': 1845780,
+        'source': 'https://www.pixiv.net/artworks/81661508',
+        'score': 49,
+        'md5': '8ce8b8db600fab17dc05bfc9c28157a5',
+        'file_size': 6173818,
+        'file_url': 'https://konachan.com/image/8ce8b8db600fab17dc05bfc9c28157a5/Konachan.com%20-%20306979%20aqua_eyes%20blonde_hair%20blush%20breasts%20choker%20cleavage%20close%20headband%20long_hair%20parody%20sailor_moon%20school_uniform%20tsukimaru%20tsukino_usagi%20twintails.png',
+        'is_shown_in_index': True,
+        'preview_url': 'https://konachan.com/data/preview/8c/e8/8ce8b8db600fab17dc05bfc9c28157a5.jpg',
+        'preview_width': 150,
+        'preview_height': 96,
+        'actual_preview_width': 300,
+        'actual_preview_height': 191,
+        'sample_url': 'https://konachan.com/sample/8ce8b8db600fab17dc05bfc9c28157a5/Konachan.com%20-%20306979%20sample.jpg',
+        'sample_width': 1500,
+        'sample_height': 956,
+        'sample_file_size': 586758,
+        'jpeg_url': 'https://konachan.com/jpeg/8ce8b8db600fab17dc05bfc9c28157a5/Konachan.com%20-%20306979%20aqua_eyes%20blonde_hair%20blush%20breasts%20choker%20cleavage%20close%20headband%20long_hair%20parody%20sailor_moon%20school_uniform%20tsukimaru%20tsukino_usagi%20twintails.jpg',
+        'jpeg_width': 4050,
+        'jpeg_height': 2580,
+        'jpeg_file_size': 1177937,
+        'rating': 's',
+        'has_children': False,
+        'parent_id': None,
+        'status': 'active',
+        'width': 4050,
+        'height': 2580,
+        'is_held': False,
+        'frames_pending_string': '',
+        'frames_pending': [],
+        'frames_string': '',
+        'frames': []
+    }]
+}
+```
+
+#### downloadPool
+
+> 额，后悔吗，好像没有
+
+通过该接口以下载图集的单页，需要四个参数：`poolId` 可以是整数也可以是字符串，表示图集的 ID；`page` 同样可以是字符串或者整数，表示页码，从 1 数起；`path` 是字符串，表示下载目录；`key` 表示下载 URL 对应的键，默认为 `file_url`，也可以是其他键，如 `jpeg_url`，`sample_url` 等。最后返回元组表示下载情况：
+
+```python
+(
+    list[str],                                      # 下载的文件
+    list[dict{fileURL: str, id: int}]               # 下载失败的文件
+)
+```
+
+#### downloadPoolWithZip
+
+> 现在看来设计的太复杂了
+
+通过压缩包的格式以下载完全的图集，一些网站如 `yande.re` 会提供这种功能，你使用它之前请确保你所爬取的网站是否存在这个功能，需要三个参数：`poolId` 可以是整数也可以是字符串，表示图集的 ID；`needJPG` 应当是布尔值，表示是否以 JPG 格式下载；`path` 应当是字符串，表示下载目录。最后如果返回 `True` 表示下载成功，否则下载失败。
+
+#### customApi
+
+> 快竣工了
+
+自定义 API 接口请求，一些网站的请求接口可能不太一样，如果你还希望使用 `PyWazi` 的话，我提供给你了一个 `customApi` 接口以用于自行请求，它会帮助你最后得到一个对象，可能是字典也可能是列表，根据情况你自己进行解析，相对于 `toAPIJson` 来说，这个接口只是日志上显得好看一些。你需要两个参数：`port` 即请求 API 路径，跟在 URL 的后面的，是字符串；`params` 即请求数据，是字典或者列表，可以是单纯的 `{}`。
+
+最后会返回一个字典或列表，如果成功的话。
+
+### waziExHentai
+
+> 近在咫尺
+
+ExHentai 是 E-Hentai 的里站，提供了更多的画廊和图集，在 PyWazi 中，我们只支持 ExHentai 站点，或许在未来会尝试支持 E-Hentai 站点。
+
+#### giveParams
+
+> “他们为战争欢呼、雀跃、拍手叫好，仿佛所有的矛盾都可以在战争中解决。宏大叙事的车轮他们的推动下滚滚向前，看着身后的皑皑白骨他们感觉坐在车里参与了这一切的谋划，直到车轮把他们也碾压下去成了骨头。他们才发现——自己这样的人过去、现在，未来都不在车上。” —— Steam 玩家强尼银手对 《This war of mine》的评论
+
+设置用户参数，参数是 `params` 字典，完成之后返回当前用户的参数。在上文有更多说明，不做过多解释。
+
+#### setParse
+
+> 我会死去，你也会死去，我们都会死去。
+
+设置是否使用自定义解析器，参数是 `boolean` 布尔值，完成之后返回当前设置。如果设置为 `true`，则使用自定义解析器，会根据当前账户的显示模式以设置对应的解析函数，否则强制使用默认解析器（即将账户强制使用 `Extended` 显示，会对你的正常浏览造成可能的影响）。
+
+#### setCookies
+
+> 脖子上的铁链，看客无动于衷。
+
+设置你的账户 Cookies 信息，在进行任何操作之前，这个行为是必要的，参数是 `cookies` 字符串，完成之后返回当前设置。如何获取你的 `cookies` 可以见下文操作：
+
+1. 使用已经登录好 ExHentai 的账号的浏览器访问 `exhentai.org`;
+2. 打开 Console （不同的浏览器可能方式不一样，手机浏览器就，额，url 写 `javascript:` 把），输入 `document.cookie` 即可获得你的 `cookies` 信息；
+3. 把 `cookies` 信息填入参数。
+
+#### needFullComments
+
+> “我们的终点是在这里，在这里，我们的终点是在这里。” —— 漫画家阿尔萨斯
+
+设置是否需要完整的评论，参数是 `boolean` 布尔值，完成之后返回当前设置。如果设置为 `True`，则会在评论中显示完整的评论，否则只可能显示部分的评论。
+
+#### changeThumbnailMode
+
+> Copilot 创造了一个不存在的人类。
+
+修改缩略图显示模式，参数是 `method` 字符串，完成之后返回当前设置。应当是 `normal` 或 `large` 之一，如果是 `normal` 则会使用普通的缩略图，如果是 `large` 则会使用大图。其他值会引发错误。
+
+#### changeMethod
+
+> （主语丢失）也从此作为普通人，幸福地生活下去便好…… —— 千恋 * 万花
+
+修改画廊主页显示模式，参数是 `method` 字符串，完成之后返回当前设置。应当是 `Minimal, Minimal+, Compact, Extended, Thumbnail` 之一。其他值会保持现状，并报出日志警告。
+
+#### setJump
+
+> 警告明天的幸福，丧钟。
+
+设置是否跳过画廊警告，需要一个布尔值参数 `jumpNeed`，完成之后返回当前设置。如果设置为 `True`，则会跳过画廊警告，否则不会。如果有些画廊存在警告但不跳过，程序在解析时可能会直接崩溃，你可以使用 `try` 语句来捕获错误，在以后会考虑支持默认跳过警告的功能。
+
+#### getDisplayMode
+
+> 身份证上的签名，签名上的身份证。
+
+获取当前的显示模式，需要主页或搜索结果的 `soup` 参数，是 `BeautifulSoup` 对象，完成之后返回当前的显示模式。如果没有的话，会报错返回空字符串。
 

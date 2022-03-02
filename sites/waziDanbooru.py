@@ -534,8 +534,8 @@ class waziDanbooru:
 
     def getOrder(self, orderType):
         """
-        waziDanbooru.getSizeLimit(self, size)
-        *Sunlight is heavy.*
+        waziDanbooru.getOrder(self, orderType)
+        *No copy!*
 
         !Deprecated | I may remove this function in the future.
         !Try to read https://yande.re/help/cheatsheet for cheat sheet.
@@ -544,8 +544,8 @@ class waziDanbooru:
         Generate the order cheat sheet.
 
         Parameters:
-            size: list
-                The size type.
+            orderType: list
+                The order type.
         
         Return:
             Type: str
@@ -986,7 +986,8 @@ class waziDanbooru:
                 The path to save the zip file.
         
         Return:
-            None
+            Type: bool
+            Whether the download is successful.
         
         Errors:
             Python:
@@ -1008,8 +1009,10 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 downloadFile 下载。")
         if waziDanbooru.downloadFile(self, url, f"{poolId}.zip", path):
             waziLog.log("info", f"({self.name}.{fuName}) 下载成功！")
+            return True
         else:
             waziLog.log("error", f"({self.name}.{fuName}) 无法下载，请检查该站点是否允许图集直接使用 ZIP 下载。")
+            return False
 
     def customApi(self, port, params):
         """
