@@ -1048,7 +1048,7 @@ waziDanbooru.toAPIJson('/posts.json', {'tags': 'tag1 tag2'})
 
 #### getPosts
 
-> Simple, not harmonic, motion
+> Simple, not harmonic, motion -A
 
 用于获取 `Posts` 信息，该接口的参数是 `page` 字符串或整数，表示页码，从 1 数起；`tags` 字符串，表示标签；`limit` 整数或字符串（*上限是40，可能不同网站有不同的设置*），返回一个 `list`。
 
@@ -1095,3 +1095,78 @@ waziDanbooru.toAPIJson('/posts.json', {'tags': 'tag1 tag2'})
 ```
 
 #### downloadFile
+
+> 许多杰出的行动都应归功于偶然， 然而将军和政客们却将掌声和欢呼占为己有。 ——亨利·霍姆 -A
+
+该接口通过三个参数下载文件。参数是`url`字符串，代表下载的链接；`orgName`字符串，代表文件的名称；`path`字符串，代表保存文件的路径。如果下载成功，则返回`True`，反之则返回`False`。
+
+#### download
+
+> 或许人类根本没有自由意志，世间万物都是大脑放出的幻象罢了 -A
+
+该接口通过用三个参数下载加密后的post。分别是`posts`列表，代表post的链接；`path`字符串，代表保存文件的路径，`key`字符串，代表post的秘钥。返回一个有下载信息的`tuple`。
+
+#### downloadPosts
+
+> 我们无法观测物自体，正如我们无法了解任何事件的绝对真相。我们能看到的东西或许都是别人想让我们看到的 -A
+
+从API处下载posts，接口有五个参数。依次是`page`字符串，表示页码，从1开始；`tag`字符串；`limit`整形或是字符串，表示post的上限，最大为`40`；`path`字符串，代表文件保存的路径；`key`字符串是下载文件的URL，默认为`"file_url"`。返回一个有下载信息的`tuple`。
+
+#### getSizeLimit
+
+> 拉普拉斯的超级存在体 -A
+
+---
+
+**作者声明未来可能移除该功能*
+
+---
+
+该接口的参数是`size`字典，形如：
+
+```python
+{
+    "width": int or str,            # The width of the image.
+    "height": int or str,           # The height of the image.
+    "limit": str                    # b - bigger than, s - smaller than, e - equal to.
+}
+```
+该接口讲返回一个`Type`字符串，是生成的`size limit cheat sheet`。
+
+#### getOrder
+
+> 美好的每一天 -A
+
+---
+
+**作者声明未来可能移除该功能*
+
+---
+
+- [ ] 似乎这个东西的参数不太对？
+
+
+该接口的参数是`size`列表，返回一个`order cheat sheet`字符串。
+
+#### getRating
+
+> 不知道写什么就只能写一点鄙人的见闻和拙见了（笑） -A
+
+---
+
+**作者声明未来可能移除该功能*
+
+---
+
+该接口的参数是`ratingType`列表，返回一个`rating cheat sheet`字符串。
+
+#### getTags
+
+> 不是因果逻辑，而是概率 -A
+
+该接口的参数有`page`整形或字符串，表示从1到无限的页面编号；`limit`整形或字符串，上限是`50`；`order`字符串，有`date`，`name`，`count`三种类型。返回一个含有标签的`Type`列表。
+
+#### getArtists
+
+> 无为而治
+
