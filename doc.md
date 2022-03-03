@@ -1368,3 +1368,37 @@ ExHentai 是 E-Hentai 的里站，提供了更多的画廊和图集，在 PyWazi
 
 获取当前的显示模式，需要主页或搜索结果的 `soup` 参数，是 `BeautifulSoup` 对象，完成之后返回当前的显示模式。如果没有的话，会报错返回空字符串。
 
+#### getMainInfo
+
+> 我们都是精神病人 -A
+
+该接口通过分析器来解析索引页或搜索页，参数为`soup`，一个`BeautifulSoup`对象；`parserType`，为分析器种类，有`Extended`, `Minimal`, `Minimal+`, `Compact`,`Thumbnail`几种，分别会返回以下几个函数：
+
+```python
++ Extended -> waziExHentai.getExtendedMain
++ Minimal -> waziExHentai.getMinimalMain
++ Minimal+ -> waziExHentai.getMinimalPlusMain
++ Compact -> waziExHentai.getCompactMain
++ Thumbnail -> waziExHentai.getThumbnailMain
+```
+同时也会返回空值或者直接使用其他端口。
+
+#### getRatingNum
+
+> 骗人的 lifegame -A  
+**Roleplay so hard, even in life.**  
+**角色扮演太难了，即使是在现实生活中。**
+
+该接口用于返回评分，参数是`soup`，同样是`BeautifulSoup`对象，返回浮点数或是整形，代表评分。
+
+#### getMinimalJSON
+
+> 如果我们都是精神病，我们就不用为我们的错误承担责任了，因为，我们所做的事情都不受我们个人的控制；换言之，我们人类没有自由意志可言 -A
+
+该接口用于分析index页面，接口参数为`soup`，`BeautifulSoup`对象，和一个`parseType`字符串，返回一个带有基本信息的字典文件。
+
+#### itgGltmDel
+
+> 生活就像强奸，如果不能反抗，那就尝试着去享受 -A
+
+该接口的参数是`soup`，`BeautifulSoup`；以及一个`classname`字符串，返回一个含有`BeautifulSoup`对象的`list`，包含所有搜索结果
