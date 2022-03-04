@@ -1468,3 +1468,9 @@ Plus 格式：
 获取 `Minimal+` 即 `Plus` 模式的 `Minimal` 下的主页或搜索内容，同样会透过 `itgGltmDel` 获取内容和使用 `getMinimalJSON` 进行解析。
 
 返回格式同 `getMinimalJSON` 的 `Plus` 模式。
+
+#### getCompactMain
+
+> 我好想当个普通人，普通地读书，普通地工作，普通地生老病死 -A
+
+获取`Compact`模式下的主页的搜索内容，返回一个解析的结果列表。
