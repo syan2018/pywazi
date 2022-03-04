@@ -1318,7 +1318,7 @@ ExHentai 是 E-Hentai 的里站，提供了更多的画廊和图集，在 PyWazi
 
 #### giveParams
 
-> “他们为战争欢呼、雀跃、拍手叫好，仿佛所有的矛盾都可以在战争中解决。宏大叙事的车轮他们的推动下滚滚向前，看着身后的皑皑白骨他们感觉坐在车里参与了这一切的谋划，直到车轮把他们也碾压下去成了骨头。他们才发现——自己这样的人过去、现在，未来都不在车上。” —— Steam 玩家强尼银手对 《This war of mine》的评论
+> 个人内容消失，因为争议性的内容
 
 设置用户参数，参数是 `params` 字典，完成之后返回当前用户的参数。在上文有更多说明，不做过多解释。
 
@@ -1372,33 +1372,83 @@ ExHentai 是 E-Hentai 的里站，提供了更多的画廊和图集，在 PyWazi
 
 > 我们都是精神病人 -A
 
-该接口通过分析器来解析索引页或搜索页，参数为`soup`，一个`BeautifulSoup`对象；`parserType`，为分析器种类，有`Extended`, `Minimal`, `Minimal+`, `Compact`,`Thumbnail`几种，分别会返回以下几个函数：
+该接口通过分析器来解析索引页或搜索页，参数为 `soup`，一个 `BeautifulSoup` 对象；`parserType`，为分析器种类，有 `Extended`, `Minimal`, `Minimal+`, `Compact`,`Thumbnail` 几种，分别会交由以下几个函数处理：
 
-```python
 + Extended -> waziExHentai.getExtendedMain
 + Minimal -> waziExHentai.getMinimalMain
 + Minimal+ -> waziExHentai.getMinimalPlusMain
 + Compact -> waziExHentai.getCompactMain
 + Thumbnail -> waziExHentai.getThumbnailMain
-```
-同时也会返回空值或者直接使用其他端口。
+
+如果没有的话，会报错返回空字符串。
 
 #### getRatingNum
 
-> 骗人的 lifegame -A  
+> 骗人的 lifegame -A 
+
 **Roleplay so hard, even in life.**  
+
 **角色扮演太难了，即使是在现实生活中。**
 
-该接口用于返回评分，参数是`soup`，同样是`BeautifulSoup`对象，返回浮点数或是整形，代表评分。
+该接口用于返回评分，参数是 `soup`，同样是 `BeautifulSoup` 对象，返回浮点数或是整数，代表评分。`soup` 对应的代码是：
+
+```html
+<div class="ir" style="background-position:-16px -1px;opacity:1"></div>
+```
+
+类似这种单 img 标签的 HTML 代码，要求存在 `style` 参数，并且要有 `background-position` CSS 内容。
 
 #### getMinimalJSON
 
 > 如果我们都是精神病，我们就不用为我们的错误承担责任了，因为，我们所做的事情都不受我们个人的控制；换言之，我们人类没有自由意志可言 -A
 
-该接口用于分析index页面，接口参数为`soup`，`BeautifulSoup`对象，和一个`parseType`字符串，返回一个带有基本信息的字典文件。
+该接口用于分析 Minimal 的页面，接口参数为 `soup`，`BeautifulSoup` 对象，和一个 `parseType` 字符串，可以是 `normal` 或 `plus` 分别表示 `Minimal` 和 `Minimal+`，返回一个带有基本信息的字典文件。
+
+普通格式：
+
+```python
+{
+    "title": str,                               # 画廊标题
+    "URL": str,                                 # 画廊地址
+    "cat": str,                                 # 画廊分类
+    "cover": str,                               # 画廊封面
+    "uploader": str,                            # 画廊上传者
+    "uploaderURL": str,                         # 画廊上传者地址
+    "time": str,                                # 画廊上传时间
+    "hasTorrents": bool,                        # 是否有种子
+    "rating": int or float,                     # 画廊评分
+    "pages": str                                # 画廊页数
+}
+```
+
+Plus 格式：
+
+```python
+{
+    "title": str,                               # 画廊标题
+    "URL": str,                                 # 画廊地址
+    "cat": str,                                 # 画廊分类
+    "cover": str,                               # 画廊封面
+    "uploader": str,                            # 画廊上传者
+    "uploaderURL": str,                         # 画廊上传者地址
+    "time": str,                                # 画廊上传时间
+    "hasTorrents": bool,                        # 是否有种子
+    "rating": int or float,                     # 画廊评分
+    "pages": int,                               # 画廊页数
+    "others": {                                 # 其他信息
+        "type": "Minimal+ Own Information",     # 画廊特殊信息
+        "has": ["markedTags"],                  # 是否有标记标签
+        "markedTags": [{                        # 标记标签
+            "title": str,                       # 标记标签标题
+            "className": str,                   # 标记标签类名
+            "style": str,                       # 标记标签样式
+        }]
+    }
+}
+```
 
 #### itgGltmDel
 
 > 生活就像强奸，如果不能反抗，那就尝试着去享受 -A
 
-该接口的参数是`soup`，`BeautifulSoup`；以及一个`classname`字符串，返回一个含有`BeautifulSoup`对象的`list`，包含所有搜索结果
+该接口的参数是 `soup`，`BeautifulSoup`；以及一个 `className` 字符串，返回一个含有 `BeautifulSoup` 对象的 `list`，包含所有搜索结果，会去除头内容，用于各类解析器中，`className` 通常是 `itg gltm`。
