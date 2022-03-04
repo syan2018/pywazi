@@ -1452,3 +1452,19 @@ Plus 格式：
 > 生活就像强奸，如果不能反抗，那就尝试着去享受 -A
 
 该接口的参数是 `soup`，`BeautifulSoup`；以及一个 `className` 字符串，返回一个含有 `BeautifulSoup` 对象的 `list`，包含所有搜索结果，会去除头内容，用于各类解析器中，`className` 通常是 `itg gltm`。
+
+#### getMinimalMain
+
+> 风沙
+
+获取普通模式的 `Minimal` 下的主页或搜索内容，透过 `itgGltmDel` 获取内容和使用 `getMinimalJSON` 进行解析。
+
+返回格式同 `getMinimalJSON` 的普通模式。
+
+#### getMinimalPlusMain
+
+> 知晓自我
+
+获取 `Minimal+` 即 `Plus` 模式的 `Minimal` 下的主页或搜索内容，同样会透过 `itgGltmDel` 获取内容和使用 `getMinimalJSON` 进行解析。
+
+返回格式同 `getMinimalJSON` 的 `Plus` 模式。
