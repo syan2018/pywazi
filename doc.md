@@ -1457,7 +1457,7 @@ Plus 格式：
 
 > 风沙
 
-获取普通模式的 `Minimal` 下的主页或搜索内容，透过 `itgGltmDel` 获取内容和使用 `getMinimalJSON` 进行解析。
+获取普通模式的 `Minimal` 下的主页或搜索内容，需要一个 `soup` 参数。透过 `itgGltmDel` 获取内容和使用 `getMinimalJSON` 进行解析。
 
 返回格式同 `getMinimalJSON` 的普通模式。
 
@@ -1465,7 +1465,7 @@ Plus 格式：
 
 > 知晓自我
 
-获取 `Minimal+` 即 `Plus` 模式的 `Minimal` 下的主页或搜索内容，同样会透过 `itgGltmDel` 获取内容和使用 `getMinimalJSON` 进行解析。
+获取 `Minimal+` 即 `Plus` 模式的 `Minimal` 下的主页或搜索内容，需要一个 `soup` 参数。同样会透过 `itgGltmDel` 获取内容和使用 `getMinimalJSON` 进行解析。
 
 返回格式同 `getMinimalJSON` 的 `Plus` 模式。
 
@@ -1473,4 +1473,136 @@ Plus 格式：
 
 > 我好想当个普通人，普通地读书，普通地工作，普通地生老病死 -A
 
-获取`Compact`模式下的主页的搜索内容，返回一个解析的结果列表。
+获取 `Compact` 模式下的主页或搜索内容，还是需要一个 `soup` 参数。返回一个解析的结果列表。其返回格式如下：
+
+```python
+[{
+    "title": str,                               # 画廊标题
+    "URL": str,                                 # 画廊地址
+    "cat": str,                                 # 画廊分类
+    "cover": str,                               # 画廊封面
+    "uploader": str,                            # 画廊上传者
+    "uploaderURL": str,                         # 画廊上传者地址
+    "time": str,                                # 画廊上传时间
+    "hasTorrents": bool,                        # 是否有种子
+    "rating": int or float,                     # 画廊评分
+    "pages": int,                               # 画廊页数
+    "others": {                                 # 其他信息
+        "type": "Compact Own Information",      # 画廊特殊信息
+        "has": ["tags"],                        # 画廊特殊信息存在的键
+        "tags": [{                              # 画廊标签
+            "title": str,                       # 画廊标签标题
+            "className": str,                   # 画廊标签类名
+            "style": str                        # 画廊标签样式
+        }]
+    }
+}]
+```
+
+#### getThumbnailMain
+
+> 钓鱼
+
+获取 `Thumbnail` 模式下的主页或搜索内容，不管怎么说 `soup` 是一定需要的，同样的，还是会返回一个结果列表，但是相较于其他模式，它少了一些内容（上传者信息的丢失）：
+
+```python
+[{
+    "title": str,                               # 画廊标题
+    "URL": str,                                 # 画廊地址
+    "cat": str,                                 # 画廊分类
+    "cover": str,                               # 画廊封面
+    "uploader": "Uploader information is not available in thumbnail mode. / 缩略模式下无法获取上传者信息。",
+    "uploaderURL": "Uploader information is not available in thumbnail mode. / 缩略模式下无法获取上传者信息。",
+    "time": str,                                # 画廊上传时间
+    "hasTorrents": bool,                        # 画廊是否存在种子
+    "rating": int or float,                     # 画廊评分
+    "pages": int,                               # 画廊页数
+    "others": {                                 # 其他信息
+        "type": "Thumbnail Own Information",    # 画廊特殊信息
+        "has": ["markedTags"],                  # 画廊特殊信息存在的键
+        "markedTags": [{                        # 画廊标签
+            "title": str,                       # 画廊标签标题
+            "className": str,                   # 画廊标签类名
+            "style": str                        # 画廊标签样式
+        }]
+    }
+}]
+```
+
+#### getExtendedMain
+
+> 每天五条推 抑郁远离我（
+
+获取 `Extended` 模式下的主页或搜索内容，怎么说呢，还是需要 `soup`，返回如下：
+
+```python
+[{
+    "title": str,                               # 画廊标题
+    "URL": str,                                 # 画廊地址
+    "cat": str,                                 # 画廊分类
+    "cover": str,                               # 画廊封面
+    "uploader": str,                            # 画廊上传者
+    "uploaderURL": str,                         # 画廊上传者地址
+    "time": str,                                # 画廊上传时间
+    "hasTorrents": bool,                        # 画廊是否存在种子
+    "rating": int or float,                     # 画廊评分
+    "pages": int,                               # 画廊页数
+    "others": {                                 # 其他信息
+        "type": "Extended Own Information",     # 画廊特殊信息
+        "has": ["tags"],                        # 画廊特殊信息存在的键
+        "tags": [{                              # 画廊标签
+            "title": str,                       # 画廊标签标题
+            "className": str,                   # 画廊标签类名
+            "style": str                        # 画廊标签样式
+        }]
+    }
+}]
+```
+
+#### getBooks
+
+> 距离结束需要很长一段时间
+
+倘若你不想通过上面几个函数，你需要自己去通过接口获取 `soup` 然后再根据情况传入什么解析器或者别的乱七八糟的东西，不如直接使用 `getBooks` 接口传入 `url` 字符串参数，以进行解析。
+
+格式会自动根据用户设置的解析器情况自动返回。
+
+#### browse
+
+> 知道那段历史
+
+浏览主页的接口，会根据用户的默认设置进行浏览的哦。需要一个参数 `page` 可以是字符串或者整数，从 0 数起，表示页码。返回格式同 `getMainInfo` 接口。
+
+#### allBrowse
+
+> 资料库，对公众的完全开放
+
+同样是浏览接口，但它会直接无视掉你的默认设置和过滤器，并启用可能会使你返回内容更多的选项。同样需要一个参数 `page` 可以是字符串或者整数，从 0 数起，表示页码，返回格式不再赘述。
+
+选项一览：
+
+```python
+{
+    "f_cats": "0",
+    "advsearch": "1",
+    "f_sname": "on",
+    "f_stags": "on",
+    "f_sh": "on",
+    "f_sdt2": "on",
+    "f_sfl": "on",
+    "f_sfu": "on",
+    "f_sft": "on"
+}
+```
+
+#### search
+
+> 谔谔
+
+搜索接口，使用用户默认设置，需要两个参数：`page` 表示页码，从 0 数起，整数或字符串；`text` 表示搜索关键词，字符串。
+
+#### allSearch
+
+> 能量不足，前去摸鱼
+
+
