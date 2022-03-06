@@ -1657,7 +1657,7 @@ Plus 格式：
     "dfl": bool,                            # 是否需要屏蔽语言过滤器
     "dfu": bool,                            # 是否需要屏蔽上传者过滤器
     "dft": bool,                            # 是否需要屏蔽标签过滤器
-    "page": int or str,                     # 页码，从 0 开始数起
+    "page": int or str                      # 页码，从 0 开始数起
 }
 ```
 
@@ -1675,7 +1675,7 @@ Plus 格式：
     "sha1": str,                            # 图片的 SHA-1 值
     "similar": bool,                        # 是否搜索相似图片
     "cover": bool,                          # 是否搜索封面图片
-    "exp": bool,                            # 是否搜索被移除的画廊
+    "exp": bool                             # 是否搜索被移除的画廊
 }
 ```
 
@@ -1687,7 +1687,7 @@ Plus 格式：
     "path": str,                            # 图片的本地路径
     "similar": bool,                        # 是否搜索相似图片
     "cover": bool,                          # 是否搜索封面图片
-    "exp": bool,                            # 是否搜索被移除的画廊
+    "exp": bool                             # 是否搜索被移除的画廊
 }
 ```
 
@@ -1796,10 +1796,279 @@ waziExHentai.customSearch({
     "uploader": str,                        # 画廊上传者
     "uploaderURL": str,                     # 画廊上传者链接
     "rate": float,                          # 画廊评分
-    "cover": str,                           # 画廊封面
+    "cover": str                            # 画廊封面
 }
 ```
 
 #### getComments
 
 > 落枕脖子比较难受，先摸了。
+
+获取一个画廊的评论，根据用户设置的评论显示情况，返回列表，需要一个参数：`link`，应当是字符串，如 `https://exhentai.org/g/2011308/8263590d02/`。
+
+列表格式如下：
+
+```python
+[{
+    "time": str,                            # 评论时间
+    "commenterURL": str,                    # 评论者 URL
+    "commenter": str,                       # 评论者名称
+    "scores": str,                          # 评论评分
+    "htmlComments": str                     # 评论内容
+}]
+```
+
+#### apiInfo
+
+> 悲
+
+通过官方 API 获取一个画廊的详细信息，速度更快，内容更全，返回字典，需要一个参数：`link`，应当是字符串，如 `https://exhentai.org/g/2011308/8263590d02/`。
+
+字典格式如下（可能返回空字典）：
+
+```python
+{
+    'gmetadata': [{
+        'gid': int,
+        'token': str,
+        'archiver_key': str,
+        'title': str,
+        'title_jpn': str,
+        'category': str,
+        'thumb': str,
+        'uploader': str,
+        'posted': str,
+        'filecount': str,
+        'filesize': int,
+        'expunged': bool,
+        'rating': str,
+        'torrentcount': str,
+        'torrents': [{
+            'hash': str,
+            'added': str,
+            'name': str,
+            'tsize': str,
+            'fsize': str
+        }],
+        'tags': [str]
+    }]
+}
+```
+
+#### getPages
+
+> 适时
+
+通过该接口，根据账户设置情况获取一个画廊需要的翻页次数，因为画廊的页数对每个账户而言是不确定的，你可以通过 `Hath` 购买解除相关限制的选项，所以需要一个参数：`link`，应当是字符串，如 `https://exhentai.org/g/2011308/8263590d02/`，最后返回数字表示翻页次数。
+
+#### parseSoupForLargeThumbnails
+
+> 名字就解释了一切
+
+传入一个 `soup` 参数，取得页面中所有的缩略图（前提是你设置了 `large` 缩略图显示并且该 `soup` 中也使用了 `large` 模式），返回列表，列表的格式如下：
+
+```python
+[{
+    "url": str,                             # 缩略图地址
+    "style": str,                           # 缩略图 CSS 样式
+    "alt": str,                             # 缩略图 alt 文字
+    "title": str,                           # 缩略图 title 文字
+    "text": str                             # 缩略图内容
+}]
+```
+
+#### yieldGetLargeThumbnails
+
+> ha na bi
+
+一开始我是没有写生成器的，准确来说，压根没有想到，直到爬了一些比较大的画廊，才觉得一定要写一个生成器了，不然那他妈就是折磨人。你需要 `link` 参数，表示请求地址，如 `https://exhentai.org/g/2011308/8263590d02/`，一页一页来，取得页面中所有的缩略图，每次返回的格式如下：
+
+```python
+[{
+    "url": str,                             # 缩略图地址
+    "style": str,                           # 缩略图 CSS 样式
+    "alt": str,                             # 缩略图 alt 文字
+    "title": str,                           # 缩略图 title 文字
+    "text": str                             # 缩略图内容
+}]
+```
+
+#### getLargeThumbnails
+
+> 如今再回头来看代码，简直像疯子一样的东西
+
+这是一开始的接口，我不太推荐你用，我建议你使用 `yieldGetLargeThumbnails`，如果你的画廊比较大，那么请求时间会比较长。他需要一个参数：`link`，是字符串，如 `https://exhentai.org/g/2011308/8263590d02/`。返回格式如下：
+
+```python
+[[{
+    "url": str,                             # 缩略图地址
+    "style": str,                           # 缩略图 CSS 样式
+    "alt": str,                             # 缩略图 alt 文字
+    "title": str,                           # 缩略图 title 文字
+    "text": str                             # 缩略图内容
+}]]
+```
+
+二维数组注意，第一维是页数，第二维是缩略图列表。
+
+#### parseSoupForNormalThumbnails
+
+> 真的有必要吗
+
+传入一个 `soup` 参数，取得页面中所有的普通模式缩略图（前提是你设置了 `normal` 缩略图显示并且该 `soup` 中也使用了 `normal` 模式），返回列表，列表的格式如下：
+
+```python
+[{
+    "style": str,                           # 缩略图 CSS 样式
+    "divMargin": str,                       # 缩略图 div 的 margin 属性
+    "divWidth": str,                        # 缩略图 div 的 width 属性
+    "url": str,                             # 缩略图地址
+    "transparent": str,                     # 缩略图的 transparent 属性
+    "imgAlt": str,                          # 缩略图的 alt 属性
+    "imgTitle": str,                        # 缩略图的 title 属性
+    "imgWidth": str,                        # 缩略图的 width 属性
+    "imgHeight": str,                       # 缩略图的 height 属性
+    "imgMargin": str                        # 缩略图的 margin 属性
+}]
+```
+
+#### yieldGetNormalThumbnails
+
+> 早上好 Python，现在我有生成器
+
+通过该接口获取一个生成器，用于一页接一页地获取普通模式的缩略图信息，参数是 `link`，每次返回格式如下：
+
+```python
+[{
+    "style": str,                           # 缩略图 CSS 样式
+    "divMargin": str,                       # 缩略图 div 的 margin 属性
+    "divWidth": str,                        # 缩略图 div 的 width 属性
+    "url": str,                             # 缩略图地址
+    "transparent": str,                     # 缩略图的 transparent 属性
+    "imgAlt": str,                          # 缩略图的 alt 属性
+    "imgTitle": str,                        # 缩略图的 title 属性
+    "imgWidth": str,                        # 缩略图的 width 属性
+    "imgHeight": str,                       # 缩略图的 height 属性
+    "imgMargin": str                        # 缩略图的 margin 属性
+}]
+```
+
+#### getNormalThumbnails
+
+> 所以现在不是音乐时间
+
+不是很推荐你使用，同样的，建议你使用 `yieldGetNormalThumbnails`，如果你的画廊比较大，那么请求时间会比较长。他需要一个参数：`link`，是字符串，如 `https://exhentai.org/g/2011308/8263590d02/`。返回格式如下：
+
+```python
+[[{
+    "style": str,                           # 缩略图 CSS 样式
+    "divMargin": str,                       # 缩略图 div 的 margin 属性
+    "divWidth": str,                        # 缩略图 div 的 width 属性
+    "url": str,                             # 缩略图地址
+    "transparent": str,                     # 缩略图的 transparent 属性
+    "imgAlt": str,                          # 缩略图的 alt 属性
+    "imgTitle": str,                        # 缩略图的 title 属性
+    "imgWidth": str,                        # 缩略图的 width 属性
+    "imgHeight": str,                       # 缩略图的 height 属性
+    "imgMargin": str                        # 缩略图的 margin 属性
+}]]
+```
+
+二维数组注意，第一维是页数，第二维是缩略图列表。
+
+#### getTitle
+
+> Time Line
+
+获取一个画廊的 `title` 信息，需要两个参数：`link` 和 `params`，前者是字符串，表示画廊链接；后者是字典，表示相关参数，格式如下：
+
+```python
+{
+    "japanese": bool,               # 是否获取日文标题
+}
+```
+
+最后返回字符串，表示标题。为什么这么设计呢，其实这个接口并不是给用户用的其实，其实是给其他接口用的（笑）
+
+#### createFolder
+
+> Ban
+
+这是一个用于创建文件夹的接口，只是给内部接口用的，当然我没有把它设置为私有的，你可以使用。需要两个参数：`link` 和 `params`，前者是字符串，表示画廊链接；后者是字典，表示相关参数，格式如下：
+
+```python
+{
+    "japanese": bool,               # 是否获取日文标题
+    "path": str                     # 路径
+}
+```
+
+将会获取画廊的标题，然后在指定的路径下创建一个同名的文件夹，如果文件夹已经存在，则不会创建。
+
+#### yieldGetMPVImages
+
+> 本来想摘一点古兰经的，但是这太谔谔了，算了。
+
+通过该接口获取一个生成器以一张一张的获取方式获取 MPV 模式下的图片信息（前提是你的账户要有资格），需要的参数是 `link`，是字符串，表示画廊链接，每次返回格式如下：
+
+```python
+{
+    'name': str,                    # 图片名
+    'url': str                      # 图片地址
+}
+```
+
+#### getMPVImages
+
+> 過去 未来 ぼくら対せかい —— amazarashi ぼくら対せかい
+
+通过该接口获取所有的 MPV 模式下的图片信息（前提是你的账户要有资格），建议使用 `yieldGetMPVImages`，这样可以提高效率。需要的参数有三个：`link`, `method` 和 `params`。`link` 表示字符串，是画廊地址；`method` 是字符串，应该是 `get` 或 `download`；`params` 是字典，是一些参数，格式如下：
+
+```python
+{
+    "japanese": bool,               # 是否获取日文标题
+    "path": str                     # 路径
+}
+```
+
+如果 `method` 选择的是 `get`，那么最后返回的格式是：
+
+```python
+[{
+    'name': str,                    # 图片名
+    'url': str                      # 图片地址
+}]
+```
+
+如果是 `download`，那么最后返回的格式是 `[str]`，表示下载的文件名列表。
+
+#### getImages
+
+> 或许
+
+普通模式下获取单页图片的解析器，你需要四个参数：`soup`, `method`, `title` 和 `params`。`soup` 应当是 `https://exhentai.org/g/2011308/8263590d02/?p=0` 之类的 `BeautifulSoup` 对象；`method` 表示字符串，应当是 `get` 或 `download`；`title` 表示字符串，是标题；`params` 是字典，是一些参数，格式如下：
+
+```python
+{
+    "japanese": bool,               # 是否获取日文标题
+    "path": str                     # 路径
+}
+```
+
+最后返回的结果格式都为：`[str]`，`get` 模式下是图片的地址，`download` 模式下是文件名。
+
+#### yieldGetNormalImagesOneImageByOneImage
+
+> 何だっていいだろ 君の話しをまずは聞かせてくれよ —— amazarashi 名前
+
+这是一个生成器接口，用于获取普通模式下的图片，你可以吐槽这个名字，其实我是故意的，看起来就很玩世不恭。事实上，下文会写到 `yieldGetNormalImages` 这个生成器接口，但是呢，有些账号它一页展示的图片比较多，所以还是非常耗时的，干脆不如一张一张图片依次获取并返回吧。然后就直接取了这么一个好好玩的名字，需要一个参数：`link`，表示画廊地址，每次返回的内容格式是 `str`，表示一张图片的地址。
+
+#### yieldGetNormalImages
+
+> Fork
+
+这是一个生成器接口，用于一页一页地获取普通模式下的图片，可是在一些账户下，一次返回的耗时还是太长了，推荐用上文的那个 `yieldGetNormalImagesOneImageByOneImage`。需要一个参数：`link`，表示画廊地址，每次返回的内容格式是 `str`，表示一张图片的地址。
+
+#### getNormalImages
+
+> 到点了，摸了

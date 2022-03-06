@@ -2120,8 +2120,8 @@ class waziExHentai:
         Parse the soup for get large thumbnails.
 
         Parameters:
-            link: str
-                A link to request. Like https://exhentai.org/g/2011308/8263590d02/
+            soup: BeautifulSoup
+                Like https://exhentai.org/g/2011308/8263590d02/ 's soup.
         
         Return:
             Type: list[dict{}]
