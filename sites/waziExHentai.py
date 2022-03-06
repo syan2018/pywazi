@@ -1207,7 +1207,7 @@ class waziExHentai:
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和标签参数，正在合成 URL。")
         waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {tag}")
-        url = self.urls["main"] + "tag/" + tag + "/" + str(page) + "?empty=0" # Why the empty=0?
+        url = self.urls["main"] + "tag/" + tag + "/" + str(page)
         waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕，递交给 getBooks： {url}")
         return waziExHentai.getBooks(self, url)
 
@@ -1234,8 +1234,43 @@ class waziExHentai:
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和上传者参数，正在合成 URL。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {uploader}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 上传者： {uploader}")
         url = self.urls["main"] + "uploader/" + uploader + "/" + str(page) + "?empty=0" # Why the empty=0?
+        waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕，递交给 getBooks： {url}")
+        return waziExHentai.getBooks(self, url)
+    
+    def tagAllSearch(self, page, tag):
+        """
+        waziExHentai.tagAllSearch(self, page, tage)
+        *Fly me to the moon.*
+
+        Get the books list from tag search page, but it will ignore your filters and settings.
+
+        Parameters:
+            page: int or str
+                The page number. Start from 0.
+            
+            tag: str
+                The tag you want to search. With prefix.
+        
+        Return:
+            Please check waziExHentai.getBooks
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和标签参数，正在合成请求参数。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {tag}")
+        params = {
+            "page": str(page),
+            "f_search": tag,
+            "f_spf": "",
+            "f_spt": ""
+        }
+        waziLog.log("debug", f"({self.name}.{fuName}) 参数合成完毕，正在提交给 getExHentaiAllURL 合成完整 URL。")
+        url = self.URL.getExHentaiAllURL(self.urls["main"], params)
         waziLog.log("debug", f"({self.name}.{fuName}) URL 合成完毕，递交给 getBooks： {url}")
         return waziExHentai.getBooks(self, url)
 
@@ -1262,7 +1297,7 @@ class waziExHentai:
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到页码和上传者参数，正在合成请求参数。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 标签： {uploader}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}， 上传者： {uploader}")
         params = {
             "page": str(page),
             "f_search": "uploader%3A" + uploader,
@@ -1774,7 +1809,7 @@ class waziExHentai:
                 "link": str,                            # Torrent download link.
                 "name": str                             # Torrent name.
             }]
-            May return {}.
+            May return [].
         
         Errors:
             Python:
@@ -1796,7 +1831,7 @@ class waziExHentai:
             tempNum = len(soup.find_all("a")) - 1
         except:
             waziLog.log("error", f"({self.name}.{fuName}) 无法获取种子信息，请检查 URL 或账号信息等排除问题。")
-            return {}
+            return []
         else:
             waziLog.log("debug", f"({self.name}.{fuName}) 获取成功，等待遍历： {tempNum}")
             for tempInfo in range(tempNum):
@@ -1828,9 +1863,9 @@ class waziExHentai:
                 A link to request. Like https://exhentai.org/g/2011308/8263590d02/
         
         Return:
-            Type: list[dict{}]
+            Type: dict
             The gallery information.
-            [{
+            {
                 "title": str,                           # Gallery title.
                 "jTitle": str,                          # Gallery Japanese title. If have.
                 "cat": str,                             # Gallery category.
@@ -1848,7 +1883,7 @@ class waziExHentai:
                 "uploaderURL": str,                     # Gallery uploader URL.
                 "rate": float,                          # Gallery rate.
                 "cover": str,                           # Gallery cover.
-            }]
+            }
         
         Errors:
             Python:

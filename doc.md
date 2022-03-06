@@ -1605,4 +1605,201 @@ Plus 格式：
 
 > 能量不足，前去摸鱼
 
+同样表示搜索接口，但会与 `allBrowse` 一致，无视掉你的默认设置，需要两个参数：`page` 表示页码，从 0 数起，整数或字符串；`text` 表示搜索关键词，字符串。
 
+#### tagSearch
+
+> Epoch 13/50
+
+使用该接口进行标签搜索，你需要两个参数：`page` 和 `tag`。前者是字符串或整数，从 0 数起，表示页码；后者是标签名，字符串，要求如 `artist:matsuriuta` 之类的格式。
+
+#### tagAllSearch
+
+> 雅
+
+使用该接口进行全部标签搜索，emmm，我知道你想说什么，能不能不要这么多接口，似乎有点脱裤子放屁的意思，都一个方法，能不能凑一块写，其实我也不知道。总而言之，你需要两个参数：`page` 和 `tag`。前者是字符串或整数，从 0 数起，表示页码；后者是标签名，字符串，要求如 `artist:matsuriuta` 之类的格式。
+
+#### uploaderSearch
+
+> 这是一种错误。
+
+使用该接口进行上传者搜索，好吧，请原谅一下我写这么多接口，下文会提供一个更不错的接口以代替的。需要 `page` 和 `uploader` 参数，前者不赘述，后者注意需要删除 `uploader:` 前缀。
+
+#### uploaderAllSearch
+
+> 进入了无可挽回的局面
+
+使用该接口进行上传者全部搜索，参数同上，不重复赘述。
+
+#### advancedSearch
+
+> loss: 0.3474 - accuracy: 0.8619
+
+这是提供高级搜索的接口，你需要一个字典参数：`params`，以下列出相关格式：
+
+```python
+{
+    "cats": [str],                          # 需要搜索的分类，如 "Non-H"
+    "search": str,                          # 需要搜索的内容
+    "sgn": bool,                            # 是否搜索画廊名称
+    "sgt": bool,                            # 是否搜索画廊标签
+    "sgd": bool,                            # 是否搜索画廊描述
+    "stf": bool,                            # 是否搜索种子名称
+    "osgwt": bool,                          # 是否搜索只带有种子的画廊
+    "slpt": bool,                           # 是否搜索带有 low-power 的标签
+    "sdt": bool,                            # 是否搜索带有差评的标签
+    "seg": bool,                            # 是否搜索被移除的标签
+    "mr": bool,                             # 是否需要限定最低评分
+    "mrs": int or str,                      # 最低评分，从 2 - 5
+    "b": bool,                              # 是否需要限定搜索范围
+    "b1": int or str,                       # 搜索范围的起始页码
+    "b2": int or str,                       # 搜索范围的结束页码
+    "dfl": bool,                            # 是否需要屏蔽语言过滤器
+    "dfu": bool,                            # 是否需要屏蔽上传者过滤器
+    "dft": bool,                            # 是否需要屏蔽标签过滤器
+    "page": int or str,                     # 页码，从 0 开始数起
+}
+```
+
+#### imageSearch
+
+> 第三拍，军鼓的声音，清脆
+
+提供图片搜索的接口，你需要提供一个字典参数：`params`，以下列出相关格式：
+
+给出图片的 `SHA-1` 值的做法：
+
+```python
+{
+    "type": "sha1",                         # 填写 sha1 表示搜索 SHA-1 值
+    "sha1": str,                            # 图片的 SHA-1 值
+    "similar": bool,                        # 是否搜索相似图片
+    "cover": bool,                          # 是否搜索封面图片
+    "exp": bool,                            # 是否搜索被移除的画廊
+}
+```
+
+给出图片的本地路径值的做法：
+
+```python
+{
+    "type": "path",                         # 填写 path 表示本地路径
+    "path": str,                            # 图片的本地路径
+    "similar": bool,                        # 是否搜索相似图片
+    "cover": bool,                          # 是否搜索封面图片
+    "exp": bool,                            # 是否搜索被移除的画廊
+}
+```
+
+#### customSearch
+
+> 火柴盒
+
+好了，如果你需要一个综合上面所有搜索接口的话，你可以使用这个接口，这大概就是大统一吧（尽管实现时是丑陋的），你需要提供一个字典参数：`params`，以下列出相关格式：
+
+```python
+waziExHentai.customSearch({
+    "cats": ["Doujinshi", "Manga", "Artist CG", "Game CG"],
+    # 需要搜索的分类，如果没有则程序不会指定搜索
+    "uploaders": ["Pokom", "NekoHime27"],
+    # 需要搜索的上传者，如果没有则程序不会指定搜索
+    "tags": ["female:lolicon"],
+    # 需要搜索的标签，如果没有则程序不会指定搜索
+    "text": "",
+    # 需要搜索的内容，如果没有则程序不会指定搜索
+    "advanced": {  # 高级搜索参数，如果你需要的话
+        "search": {
+            "galleryName": True,  # 是否搜索画廊名称
+            "galleryTags": True,  # 是否搜索画廊标签
+            "galleryDescription": False,  # 是否搜索画廊描述
+            "torrentFilenames": False,  # 是否搜索种子文件名
+            "low-powerTags": False,  # 是否搜索 low-power 标签
+            "downvotedTags": False,  # 是否搜索 downvoted 标签
+            "expungedGalleries": False,  # 是否搜索被移除的画廊
+        },
+        "limit": {
+            "onlyShowGalleriesWithTorrents": False,  # 是否只显示有种子的画廊
+            "minimumRating": False,  # 是否限制最低评分
+            "minimumRatingNumber": 2,  # 最低评分的值
+            "between": False,  # 是否限制搜索范围
+            "betweenPages": [0, 0]  # 搜索范围的页码，Index 0 表示起始页，Index 1 表示结束页
+        },
+        "disableFilters": {
+            "language": False,  # 是否禁用语言过滤器
+            "uploader": False,  # 是否禁用上传者过滤器
+            "tags": False  # 是否禁用标签过滤器
+        }
+    },
+    "file": {  # 文件搜索参数，如果你需要的话
+        "main": {
+            "type": "path",  # 文件类型，可选值为 path 和 sha1
+            "value": "./a.jpg"  # 文件的本地路径或者 SHA-1 值
+        },
+        "options": {
+            "useSimilarityScan": True,  # 是否使用相似度扫描
+            "onlySearchCovers": False,  # 是否只搜索封面
+            "showExpunged": False  # 是否显示被移除的画廊
+        }
+    }
+})
+```
+
+#### returnSoup
+
+> 谔谔，落枕了
+
+通过该参数请求一个网页，并返回一个 `BeautifulSoup` 类型的对象，需要 `link` 字符串参数。如果请求失败了，则会返回 `<html></html>` 的 `BeautifulSoup` 对象。
+
+#### getTorrent
+
+> 倚音
+
+通过该接口请求一个画廊的种子信息，返回列表，需要一个参数：`link`，应当是字符串，如 `https://exhentai.org/g/2011308/8263590d02/`。
+
+返回列表的格式如下（可能会因为各种原因返回空列表）：
+
+```python
+[{
+    "time": str,                            # 种子上传时间
+    "size": str,                            # 种子内容大小
+    "seeds": int,                           # 做种数
+    "peers": int,                           # 下载数
+    "total": int,                           # 总数
+    "link": str,                            # 种子链接
+    "name": str                             # 种子名称
+}]
+```
+
+#### getInfo
+
+> 序列化一切我所能见到的，然后浪费我的时间
+
+通过该接口请求一个画廊的基本信息，返回字典，需要一个参数：`link`，应当是字符串，如 `https://exhentai.org/g/2011308/8263590d02/`。
+
+返回字典的格式如下：
+
+```python
+{
+    "title": str,                           # 画廊标题
+    "jTitle": str,                          # 如果存在的话，画廊日文标题
+    "cat": str,                             # 画廊分类
+    "tags": list[str],                      # 画廊标签
+    "time": str,                            # 画廊上传时间
+    "father": str,                          # 画廊父画廊
+    "viewable": str,                        # 画廊是否可见
+    "language": str,                        # 画廊语言
+    "tr": bool,                             # 画廊是否有翻译
+    "rw": bool,                             # 画廊是否有重写
+    "size": str,                            # 画廊大小
+    "pages": int,                           # 画廊页数
+    "favTimes": int,                        # 画廊收藏次数
+    "uploader": str,                        # 画廊上传者
+    "uploaderURL": str,                     # 画廊上传者链接
+    "rate": float,                          # 画廊评分
+    "cover": str,                           # 画廊封面
+}
+```
+
+#### getComments
+
+> 落枕脖子比较难受，先摸了。
