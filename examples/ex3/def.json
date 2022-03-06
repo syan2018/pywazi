@@ -1,0 +1,11 @@
+[{
+	"name": "ExHentai",
+	"params": {
+		"useProxies": true,
+		"proxyAddress": "127.0.0.1",
+		"proxyPort": "7890"
+	},
+	"cookies": "xxxx",
+	"fullComment": true,
+	"setJump": true
+}]
