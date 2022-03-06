@@ -3051,7 +3051,8 @@ class waziExHentai:
                 Download code.
         
         Return:
-            None
+            Type: str
+            The status of the request.
         
         Errors:
             Python:

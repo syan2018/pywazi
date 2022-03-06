@@ -2072,3 +2072,102 @@ waziExHentai.customSearch({
 #### getNormalImages
 
 > 到点了，摸了
+
+用于获取普通模式下所有图片的接口，耗时可能会比较长，建议看看 `yieldGetNormalImages` 和 `yieldGetNormalImagesOneImageByOneImage` 这些生成器。它需要三个参数：`link`, `method` 和 `params`。`link` 表示画廊地址，`method` 表示字符串，应当是 `get` 或 `download`；`params` 是字典，是一些参数，格式如下：
+
+```python
+{
+    "japanese": bool,               # 是否获取日文标题
+    "path": str                     # 路径
+}
+```
+
+最终返回格式是：`[[str]]`，`get` 模式下是图片的地址，`download` 模式下是文件名。第一维表示页码，第二维是图片地址或文件名。
+
+#### getArchivesHATH
+
+> 你说的话 已开始蒸发 你造的梦 已开始崩塌 —— Chinese Football 世界悲
+
+用于获取一个画廊的 `H@H` 下载信息的接口，说实话，作者我也没用过这个，需要一个参数：`link` 是字符串，表示画廊地址。返回格式如下：
+
+```python
+[{
+    "sample": str,                                  # 图像分辨率
+    "size": str,                                    # 压缩包大小
+    "cost": str,                                    # 花费
+    "code": str,                                    # 下载代码
+    "url": str,                                     # 下载地址
+}]
+```
+
+#### toHATH
+
+> Call
+
+发送一个 `H@H` 下载请求，需要两个参数：`link` 和 `code`，`link` 是字符串，表示请求地址，`code` 是字符串，表示 `H@H` 下载代码。返回格式如下：
+
+如果成功：`Done! / 完成！`；如果失败：`Error, check your cookies and something balabala. / 错误，请检查你的 Cookies 或者其他乱七八糟的东西。`。
+
+#### parseArchives
+
+> 我还是太年轻，不知道这东西的严肃性不能被消解
+
+通过该接口获取压缩包下载地址，它需要两个参数：`form` 和 `action`。前者是字典，表示压缩包请求数据；后者是字符串，表示请求地址。返回格式是字符串，表示下载地址。
+
+`form` 的格式有 `Original` 和 `Resample` 两种：
+
+`Orginial`：
+
+```python
+{
+    "dltype": "org",
+    "dlcheck": "Download Original Archive"
+}
+```
+
+`Resample`：
+
+```python
+{
+    "dltype": "res",
+    "dlcheck": "Download Resample Archive"
+}
+```
+
+#### getArchives
+
+> 快结束了
+
+获取一个画廊的所有压缩包下载地址的接口，需要一个参数：`link`，它是字符串，表示画廊地址。返回格式如下：
+
+```python
+[{
+    "type": str,                                    # 压缩包类型
+    "link": str,                                    # 压缩包下载地址
+}]
+```
+
+#### downloadArchives
+
+> 马上，就要到达彼岸
+
+下载一个画廊的压缩包，它需要三个参数：`link`, `params` 和 `sample`。`link` 表示字符串，应该是画廊地址；`params` 是相关参数，格式下文会列出；`sample` 表示需要下载的图片分辨率，如果是空字符串则全部下载。返回格式是字符串，表示下载地址。
+
+`params` 参数：
+
+```python
+{
+    "japanese": bool,               # 是否获取日文标题
+    "path": str                     # 路径
+}
+```
+
+如果你指定了 `sample` 的话，最后只会返回字符串，表示本地文件，否则会返回一个列表，列表中的每一项都是字符串，表示本地文件。
+
+#### downloadFile
+
+> 暂时的中止
+
+好了，这是最后一个 `ExHentai` 接口，用于下载文件，其实很多这种看起来没有意义的功能，其实对我而言，都是非常有用的，因为我做 Discord Bot 的时候发现没有一个下载接口简直想骂娘。
+
+它需要三个参数：`url`, `orgName` 和 `path`。`url` 是字符串，表示下载地址；`orgName` 是字符串，表示文件名；`path` 是字符串，表示文件保存路径。返回格式是布尔值，表示是否成功。
