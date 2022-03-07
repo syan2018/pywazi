@@ -45,6 +45,9 @@ class waziPicAcg:
             The proxy for the request.
             Default: {'proxyAddress': '127.0.0.1', 'proxyPort': '7890'}
         
+        leaveMsg: str
+            The ID of leave message room.
+        
         token: str
             The token for the request.
             The user's token will be filled in the login method.
@@ -88,7 +91,7 @@ class waziPicAcg:
             "nonce": "",
             "signature": "0",
             "app-version": "2.2.1.3.3.4",
-            "app-uuid": "418e56fb-60fb-352b-8fca-c6e8f0737ce6",
+            "app-uuid": "defaultUuid",
             "app-platform": "android",
             "Content-Type": "application/json; charset=UTF-8",
             "User-Agent": "okhttp/3.8.1",
@@ -107,6 +110,7 @@ class waziPicAcg:
             "proxyAddress": "127.0.0.1",
             "proxyPort": "7890"
         }
+        self.leaveMsg = "5822a6e3ad7ede654696e482"
         self.token = ""
         self.urls = {
             "login": "https://picaapi.picacomic.com/auth/sign-in",
@@ -212,7 +216,7 @@ class waziPicAcg:
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 接到 __init__ 指令，正在创建 headers。")
-        self.info["uuid"] = str(uuid.uuid4()).replace("-", "")
+        self.info["uuid"] = str(uuid.uuid1()).replace("-", "")
         self.headers["nonce"] = self.info["uuid"]
         self.headers["api-key"] = self.info["apiKey"]
         waziLog.log("debug", f"({self.name}.{fuName}) 创建完成，header 已写入： {self.headers}")
