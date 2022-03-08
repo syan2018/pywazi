@@ -2496,3 +2496,417 @@ JavBus 是一个 AV 分享网站，在目前的版本中，我们支持镜像网
 #### withStudioBrowse
 
 > 摸了
+
+通过该接口浏览一个工作室整的视频，需要三个参数：`page`, `studioId` 和 `avType`。`page` 表示页码，应当是字符串或整数，从 1 数起；`studioId` 表示工作室 ID，应当是字符串；`avType` 表示 AV 类型，应当是字符串或整数，可以是以下值：0 表示有码，1 表示有码。
+
+最后返回列表，格式如下：
+
+```python
+[{
+    "link": str,                        # AV 链接
+    "frame": str,                       # AV 封面
+    "title": str,                       # AV 标题
+    "avId": str,                        # AV 番号
+    "others": {                         # 其他信息
+        "type": str,                    # AV 其他信息类型
+        "has": [str],                   # AV 其他信息内容
+        "tags": [{                      # AV 其他信息标签
+            "type": str,                # AV 其他信息标签类型
+            "title": str                # AV 其他信息标签标题
+        }]
+    }
+}]
+```
+
+#### withEAStudioBrowse
+
+> 总是这样，为什么不能再和谐一点呢
+
+通过该接口浏览一个欧美工作室整的视频，需要两个参数：`page` 和 `studioId`。`page` 表示页码，应当是字符串或整数，从 1 数起；`studioId` 表示工作室 ID，应当是字符串。
+
+最后返回列表，格式如下：
+
+```python
+[{
+    "link": str,                        # AV 链接
+    "frame": str,                       # AV 封面
+    "title": str,                       # AV 标题
+    "avId": str,                        # AV 番号
+    "others": {                         # 其他信息
+        "type": str,                    # AV 其他信息类型
+        "has": [str],                   # AV 其他信息内容
+        "tags": [{                      # AV 其他信息标签
+            "type": str,                # AV 其他信息标签类型
+            "title": str                # AV 其他信息标签标题
+        }]
+    }
+}]
+```
+
+#### withLabelBrowse
+
+> 透过未来的影子，窥见昨日的自己
+
+通过该接口浏览一个发行商发行的视频，需要三个参数：`page`, `labelId` 和 `avType`。`page` 表示页码，应当是字符串或整数，从 1 数起；`labelId` 表示发行商 ID，应当是字符串；`avType` 表示 AV 类型，应当是字符串或整数，可以是以下值：0 表示有码，1 表示有码。
+
+最后返回列表，格式如下：
+
+```python
+[{
+    "link": str,                        # AV 链接
+    "frame": str,                       # AV 封面
+    "title": str,                       # AV 标题
+    "avId": str,                        # AV 番号
+    "others": {                         # 其他信息
+        "type": str,                    # AV 其他信息类型
+        "has": [str],                   # AV 其他信息内容
+        "tags": [{                      # AV 其他信息标签
+            "type": str,                # AV 其他信息标签类型
+            "title": str                # AV 其他信息标签标题
+        }]
+    }
+}]
+```
+
+#### withEALabelBrowse
+
+> 更加激进地
+
+通过该接口浏览一个欧美发行商发行的视频，需要两个参数：`page` 和 `labelId`。`page` 表示页码，应当是字符串或整数，从 1 数起；`labelId` 表示发行商 ID，应当是字符串。
+
+最后返回列表，格式，额，说了很多次了，不过我还是会复制的：
+
+```python
+[{
+    "link": str,                        # AV 链接
+    "frame": str,                       # AV 封面
+    "title": str,                       # AV 标题
+    "avId": str,                        # AV 番号
+    "others": {                         # 其他信息
+        "type": str,                    # AV 其他信息类型
+        "has": [str],                   # AV 其他信息内容
+        "tags": [{                      # AV 其他信息标签
+            "type": str,                # AV 其他信息标签类型
+            "title": str                # AV 其他信息标签标题
+        }]
+    }
+}]
+```
+
+#### withSeriesBrowse
+
+> 恢弘的铜管乐，那样的主题我写不出来
+
+通过该接口浏览一个系列下的视频，需要三个参数：`page`, `seriesId` 和 `avType`。`page` 表示页码，应当是字符串或整数，从 1 数起；`seriesId` 表示系列 ID，应当是字符串；`avType` 表示 AV 类型，应当是字符串或整数，可以是以下值：0 表示有码，1 表示有码。
+
+最后返回列表：
+
+```python
+[{
+    "link": str,                        # AV 链接
+    "frame": str,                       # AV 封面
+    "title": str,                       # AV 标题
+    "avId": str,                        # AV 番号
+    "others": {                         # 其他信息
+        "type": str,                    # AV 其他信息类型
+        "has": [str],                   # AV 其他信息内容
+        "tags": [{                      # AV 其他信息标签
+            "type": str,                # AV 其他信息标签类型
+            "title": str                # AV 其他信息标签标题
+        }]
+    }
+}]
+```
+
+#### withEASeriesBrowse
+
+> 我听到那段旋律的时候，听到那个铜管，一整个弦乐组的时候...
+
+通过该接口浏览一个欧美的系列下的视频，只需要两个参数：`page` 和 `seriesId`。`page` 表示页码，应当是字符串或整数，从 1 数起；`seriesId` 表示系列 ID，应当是字符串。
+
+最后返回列表：
+
+```python
+[{
+    "link": str,                        # AV 链接
+    "frame": str,                       # AV 封面
+    "title": str,                       # AV 标题
+    "avId": str,                        # AV 番号
+    "others": {                         # 其他信息
+        "type": str,                    # AV 其他信息类型
+        "has": [str],                   # AV 其他信息内容
+        "tags": [{                      # AV 其他信息标签
+            "type": str,                # AV 其他信息标签类型
+            "title": str                # AV 其他信息标签标题
+        }]
+    }
+}]
+```
+
+#### getTagsList
+
+> 换了
+
+通过该接口获取标签列表，需要一个参数：`avType`，0 表示有码，1 表示无码。
+
+最后返回列表，格式换了哦：
+
+```python
+[{
+    "tagType": str,             # Tag 分类
+    "tags": list[str]           # Tag 列表
+}]
+```
+
+#### getEATagsList
+
+> 大抵是自由的味道，跟鲜血一样
+
+通过该接口获取欧美分区的标签列表，不需要任何参数。最后返回格式同上，但我再抄一遍：
+
+```python
+[{
+    "tagType": str,             # Tag 分类
+    "tags": list[str]           # Tag 列表
+}]
+```
+
+#### getAVWorkersList
+
+>　我愿意的话，我会考虑木管，那种金碧辉煌的质感，我已经好久没有接触过了...
+
+通过该接口获取 AV 工作者列表，需要两个参数：`page` 和 `avType`，`page` 表示页码，应当是字符串或整数，从 1 数起；`avType` 表示 AV 类型，应当是字符串或整数，可以是以下值：0 表示有码，1 表示有码。最后返回列表：
+
+```python
+[{
+    "link": str,                            # 工作者链接
+    "frame": str,                           # 工作者封面
+    "name": str,                            # 工作者姓名
+    "workerId": str,                        # 工作者 ID
+    "avType": str or int,                   # 出演 AV 类型
+}]
+```
+
+#### getEAAVWorkersList
+
+> 脚印
+
+通过该接口获取欧美区的 AV 工作者列表，需要一个参数：`page` 表示页码，应当是字符串或整数，从 1 数起。最后返回列表：
+
+```python
+[{
+    "link": str,                            # 工作者链接
+    "frame": str,                           # 工作者封面
+    "name": str,                            # 工作者姓名
+    "workerId": str,                        # 工作者 ID
+    "avType": str or int,                   # 出演 AV 类型
+}]
+```
+
+#### getAVDetails
+
+> 我有点看不下去了，RESTful 设计模式应该也得用在我这上面，我应该给我之前一拳。
+
+通过该接口获取一个 AV 的详细信息，需要一个参数：`avId`，表示 AV 的 ID，应当是字符串。最后返回字典，格式如下：
+
+```python
+{
+    "title": str,                                   # AV 标题
+    "cover": str,                                   # AV 视频封面地址
+    "coverTitle": str,                              # AV 视频封面标题
+    "avId": str,                                    # AV 番号
+    "time": str,                                    # AV 发布时间
+    "long": str,                                    # AV 时长
+    "director": {                                   # AV 导演信息
+        "name": str,                                # AV 导演姓名
+        "id": str,                                  # AV 导演 ID
+        "type": str or int                          # AV 导演类型
+    },
+    "studio": {                                     # AV 制作商信息
+        "name": str,                                # AV 制作商名字
+        "id": str,                                  # AV 制作商 ID
+        "type": str or int                          # AV 制作商类型
+    },
+    "label": {                                      # AV 发行商信息
+        "name": str,                                # AV 发行商名字
+        "id": str,                                  # AV 发行商 ID
+        "type": str or int                          # AV 发行商类型
+    },
+    "series": {                                     # AV 系列信息
+        "name": str,                                # AV 系列名字
+        "id": str,                                  # AV 系列 ID
+        "type": str or int                          # AV 系列类型
+    },
+    "tags": [{                                      # AV 标签信息
+        "name": str,                                # AV 标签名字
+        "id": str,                                  # AV 标签 ID
+        "type": str or int                          # AV 标签类型
+    }],
+    "workers": [{                                   # AV 工作者信息
+        "name": str,                                # AV 工作者姓名
+        "id": str,                                  # AV 工作者 ID
+        "type": str or int                          # AV 工作者类型
+    }],
+    "samples": [{                                   # AV 展示图像信息
+        "title": str,                               # AV 展示图像标题
+        "url": str                                  # AV 展示图像地址
+    }],
+    "sameVideos": [{                                # AV 同类推荐视频信息
+        "frame": str,                               # AV 同类推荐视频封面
+        "title": str,                               # AV 同类推荐视频标题
+        "img": str,                                 # AV 同类推荐视频封面
+        "id": str                                   # AV 同类推荐视频 ID
+    }],
+    "hots": [{                                      # 论坛热门信息
+        "url": str,                                 # 论坛热门信息地址
+        "title": str,                               # 论坛热门信息标题
+        "cover": str                                # 论坛热门信息封面
+    }]
+}
+```
+
+#### getEAAVDetails
+
+> 写文档给我写成了大海
+
+通过该接口获取一个欧美 AV 的详细信息，需要一个参数：`avId`，表示 AV 的 ID，应当是字符串。最后返回字典，格式就不复制了。
+
+#### getAVDetailsWithMagnet
+
+> 像 E 一样
+
+通过该接口获取一个 AV 的相信信息并附带磁力链接，需要一个参数：`avId`，表示 AV 的 ID，应当是字符串。最后返回字典，格式如下：
+
+```python
+{
+    "title": str,                                   # AV 标题
+    "cover": str,                                   # AV 视频封面地址
+    "coverTitle": str,                              # AV 视频封面标题
+    "avId": str,                                    # AV 番号
+    "time": str,                                    # AV 发布时间
+    "long": str,                                    # AV 时长
+    "director": {                                   # AV 导演信息
+        "name": str,                                # AV 导演姓名
+        "id": str,                                  # AV 导演 ID
+        "type": str or int                          # AV 导演类型
+    },
+    "studio": {                                     # AV 制作商信息
+        "name": str,                                # AV 制作商名字
+        "id": str,                                  # AV 制作商 ID
+        "type": str or int                          # AV 制作商类型
+    },
+    "label": {                                      # AV 发行商信息
+        "name": str,                                # AV 发行商名字
+        "id": str,                                  # AV 发行商 ID
+        "type": str or int                          # AV 发行商类型
+    },
+    "series": {                                     # AV 系列信息
+        "name": str,                                # AV 系列名字
+        "id": str,                                  # AV 系列 ID
+        "type": str or int                          # AV 系列类型
+    },
+    "tags": [{                                      # AV 标签信息
+        "name": str,                                # AV 标签名字
+        "id": str,                                  # AV 标签 ID
+        "type": str or int                          # AV 标签类型
+    }],
+    "workers": [{                                   # AV 工作者信息
+        "name": str,                                # AV 工作者姓名
+        "id": str,                                  # AV 工作者 ID
+        "type": str or int                          # AV 工作者类型
+    }],
+    "samples": [{                                   # AV 展示图像信息
+        "title": str,                               # AV 展示图像标题
+        "url": str                                  # AV 展示图像地址
+    }],
+    "sameVideos": [{                                # AV 同类推荐视频信息
+        "frame": str,                               # AV 同类推荐视频封面
+        "title": str,                               # AV 同类推荐视频标题
+        "img": str,                                 # AV 同类推荐视频封面
+        "id": str                                   # AV 同类推荐视频 ID
+    }],
+    "hots": [{                                      # 论坛热门信息
+        "url": str,                                 # 论坛热门信息地址
+        "title": str,                               # 论坛热门信息标题
+        "cover": str                                # 论坛热门信息封面
+    }],
+    "magnets": [{                                   # AV 磁力链接
+        "title": str,                               # 磁力链接标题
+        "tags": [{                                  # 磁力链接标签
+            "title": str,                           # 磁力链接标签标题
+            "type": str or None                     # 磁力链接标签类型
+        }],
+        "size": str,                                # 磁力链接大小
+        "date": str,                                # 磁力链接发布时间
+        "magnet": str                               # 磁力链接地址
+    }]
+}
+```
+
+#### getEAAVDetailsWithMagnet
+
+通过该接口获取一个欧美的 AV 的相信信息并附带磁力链接，需要一个参数：`avId`，表示 AV 的 ID，应当是字符串。最后返回字典，格式同上。
+
+#### search
+
+> 管钟的感觉，就非常宏大叙事，我很喜欢。
+
+搜索接口，需要三个参数：`searchType`, `keyWord` 还有 `page`。`searchType` 应当是字符串或整数，表示搜索类型，可以是 0 到 6 的其中一个，具体如下：
+
++ 0 - 搜索有码影片
++ 1 - 搜索无码影片
++ 2 - 搜索工作者
++ 3 - 搜索导演
++ 4 - 搜索制作商
++ 5 - 搜索发行商
++ 6 - 搜索系列（可能坏了）
+
+`keyWord` 应该是字符串，表示搜索内容；`page` 应当是整数或字符串，表示搜索结果的页数，从 1 开始数起。
+
+如果 `searchType` 为 2 的话，使用和返回的接口是 `getWorkers`，其余则是 `getItems`。
+
+#### eaSearch
+
+> 定音鼓
+
+欧美的搜索接口，需要三个参数：`searchType`, `keyWord` 还有 `page`。`searchType` 应当是字符串或整数，表示搜索类型，应当是 0 或 1，0 表示搜索影片，1 表示搜索工作者；`keyWord` 应当是字符串，表示搜索内容；`page` 应当是整数或字符串，表示搜索结果的页数，从 1 开始数起。同样的，如果 `searchType` 为 1 的话，使用和返回的接口是 `getWorkers`，其余则是 `getItems`。
+
+#### getAjax
+
+> 用沙子堆成的砖头
+
+通过该接口获取一个 AV 的信息 AJAX 获取地址，需要两个参数：`avId` 和 `isEa`。`avId` 应当是字符串，表示 AV 的 ID；`isEa` 应当是布尔值，表示是否是欧美分区的。
+
+最后返回字符串，是 AJAX 请求地址。
+
+#### getMagnet
+
+> Beat Per Minute
+
+通过该接口获取一个 AV 的磁力链接，需要一个参数：`avId`，需要两个参数：`avId` 和 `isEa`。`avId` 应当是字符串，表示 AV 的 ID；`isEa` 应当是布尔值，表示是否是欧美分区的。
+
+最后返回的是列表，格式如下：
+
+```python
+[{
+    "title": str,                               # 磁力链接标题
+    "tags": [{                                  # 磁力链接标签
+        "title": str,                           # 磁力链接标签标题
+        "type": str or None                     # 磁力链接标签类型
+    }],
+    "size": str,                                # 磁力链接大小
+    "date": str,                                # 磁力链接发布时间
+    "magnet": str                               # 磁力链接地址
+}]
+```
+
+#### downloadFile
+
+> 它终于要死去了，我为它热烈地欢呼
+
+通过该接口下载一个文件，额好吧，真的只是给我的 Bot 用的，你需要三个参数：`url`, `orgName` 和 `path`。`url` 是字符串，表示下载地址；`orgName` 是字符串，表示文件名；`path` 是字符串，表示文件保存路径。返回格式是布尔值，表示是否成功。
+
+
+### waziNyaa
+
+> 一直都在开始，一直都不会结束

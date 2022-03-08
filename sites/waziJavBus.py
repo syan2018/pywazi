@@ -1416,7 +1416,6 @@ class waziJavBus:
                 "frame": str,                       # The frame URL of the av.
                 "title": str,                       # The title of the av.
                 "avId": str,                        # The av id.
-                "title": str,                       # The title of the av.
                 "others": {                         # The other information.
                     "type": str,                    # The type of the av.
                     "has": [str],                   # The avs that has type.
@@ -1484,7 +1483,6 @@ class waziJavBus:
                 "frame": str,                       # The frame URL of the av.
                 "title": str,                       # The title of the av.
                 "avId": str,                        # The av id.
-                "title": str,                       # The title of the av.
                 "others": {                         # The other information.
                     "type": str,                    # The type of the av.
                     "has": [str],                   # The avs that has type.
@@ -1545,7 +1543,6 @@ class waziJavBus:
                 "frame": str,                       # The frame URL of the av.
                 "title": str,                       # The title of the av.
                 "avId": str,                        # The av id.
-                "title": str,                       # The title of the av.
                 "others": {                         # The other information.
                     "type": str,                    # The type of the av.
                     "has": [str],                   # The avs that has type.
@@ -1613,7 +1610,6 @@ class waziJavBus:
                 "frame": str,                       # The frame URL of the av.
                 "title": str,                       # The title of the av.
                 "avId": str,                        # The av id.
-                "title": str,                       # The title of the av.
                 "others": {                         # The other information.
                     "type": str,                    # The type of the av.
                     "has": [str],                   # The avs that has type.
@@ -1674,7 +1670,6 @@ class waziJavBus:
                 "frame": str,                       # The frame URL of the av.
                 "title": str,                       # The title of the av.
                 "avId": str,                        # The av id.
-                "title": str,                       # The title of the av.
                 "others": {                         # The other information.
                     "type": str,                    # The type of the av.
                     "has": [str],                   # The avs that has type.
@@ -1742,7 +1737,6 @@ class waziJavBus:
                 "frame": str,                       # The frame URL of the av.
                 "title": str,                       # The title of the av.
                 "avId": str,                        # The av id.
-                "title": str,                       # The title of the av.
                 "others": {                         # The other information.
                     "type": str,                    # The type of the av.
                     "has": [str],                   # The avs that has type.
@@ -1873,7 +1867,8 @@ class waziJavBus:
                 'link': str,
                 'frame': str,
                 'name': str, 
-                'workerId': str, 'avType': int or str
+                'workerId': str,
+                'avType': int or str
             }]
         
         Errors:
@@ -1926,7 +1921,8 @@ class waziJavBus:
                 'link': str,
                 'frame': str,
                 'name': str, 
-                'workerId': str, 'avType': int or str
+                'workerId': str,
+                'avType': int or str
             }]
         
         Errors:
