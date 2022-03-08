@@ -2176,4 +2176,63 @@ waziExHentai.customSearch({
 
 > 无言投下
 
+JavBus 是一个 AV 分享网站，在目前的版本中，我们支持镜像网站和对于欧美分区的单独的 `red` 网站。
 
+#### giveParams
+
+> 保持我的沉默
+
+设置用户参数，参数是 `params` 字典，完成之后返回当前用户的参数。
+
+#### changeType
+
+> 我的心跳
+
+修改获取视频的类型的接口，需要一个参数：`magType`，可以是字符串或整数，应当为 0 或 1，0 表示只显示有磁力链接的视频，1 表示显示所有视频。
+
+#### setApiUrl
+
+> 告诉我新的灯塔，我会跟紧你的步伐
+
+设置 JavBus 镜像站地址，如果你需要的话，就可以使用这个接口。需要一个参数：`url`，应当是字符串，表示你的镜像地址。
+
+#### setEAApiUrl
+
+> 那可能是好的，但是一定是新的
+
+设置 JavBus.red 镜像站地址（事实上不清楚有没有，这是一个欧美成人视频分享网站），如果你需要的话，就可以使用这个接口。需要一个参数：`url`，应当是字符串，表示你的镜像地址。
+
+#### getPage
+
+> 修改关于我对未来的回忆
+
+该接口用于获取 `JavBus` 页面，因为 `urllib3` 导致的字典顺序问题，为了兼容，故单独使其使用 `urllib` 模块以暂时解决这个问题（如果可能，我会重写请求模块以解决这方面的问题）。你可以在 `https://stackoverflow.com/questions/62684468/pythons-requests-triggers-cloudflares-security-while-urllib-does-not` 中获取更多信息。
+
+它需要三个参数: `url`, `headers` 和 `needOrg`。`url` 应当是字符串，表示请求地址；`headers` 表示请求头，应当是字典；`needOrg` 表示是否需要返回原始数据的字符串，否则返回解析后的数据。
+
+#### getItems
+
+> 千变万化
+
+该接口用于从 `BeautifulSoup` 对象中解析相关内容，你需要三个参数以使用它：`soup`, `itemsType`, `ea`。`soup` 是 `BeautifulSoup` 对象，表示搜索结果等或其它内容；`itemsType` 是字符串，表示解析的类型，可以是 `normal`, `worker` 或 `eaWorker`；`ea` 是布尔值，表示是否是欧美分区。
+
+最后返回列表，失败返回空列表，关于格式你应当检查使用了该接口的内容。事实上，很多都是私有的接口，包括这个也是，这只是一个实现，只是我也觉得可以写一个 `_` 区分一下，写文档的时候就不用写了，还比较方便，至少是明确的，告诉用户可以使用哪一个接口干活。
+
+#### getTags
+
+> 私有化进程很慢
+
+该接口用于从 `BeautifulSoup` 对象中解析出标签，你需要一个参数：`soup`，表示网页。最后返回列表，格式如下：
+
+```python
+[{
+    "tagType": str,             # Tag 分类
+    "tags": list[str]           # Tag 列表
+}]
+```
+
+#### getWorkers
+
+> 农民力量，播种，生活；我们思考，大脑，程序；小姐肉体，夜晚，生活
+
+`soup`, `avType`, `avTypeFromWebSite` 和 `ea`。
