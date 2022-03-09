@@ -3218,7 +3218,7 @@ PicAcg 是一个让你可以轻松看到不同的本子的程式，据说官方�
             "_creator": {                                   # 漫画上传者
                 "_id": str,                                 # 漫画上传者 ID
                 "gender": str,                              # 漫画上传者性别
-                "name" str,                                 # 漫画上传者姓名
+                "name": str,                                # 漫画上传者姓名
                 "verified": bool,                           # 漫画上传者是否可行
                 "exp": int,                                 # 漫画上传者经验
                 "level": int,                               # 漫画上传者等级

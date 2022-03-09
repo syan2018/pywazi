@@ -656,7 +656,7 @@ class waziPicAcg:
                         "_creator": {                                   # The creator of comic.
                             "_id": str,                                 # The id of creator.
                             "gender": str,                              # The gender of creator.
-                            "name" str,                                 # The name of creator.
+                            "name": str,                                # The name of creator.
                             "verified": bool,                           # Whether the creator is verified.
                             "exp": int,                                 # The exp of creator.
                             "level": int,                               # The level of creator.
