@@ -661,7 +661,8 @@ class waziPicAcg:
                             "exp": int,                                 # The exp of creator.
                             "level": int,                               # The level of creator.
                             "characters": list[str],                    # The characters of creator.
-                            "role: str,                                 # The role of creator.
+                            "role": str,                                # The role of creator.
+                            "title": str,                               # The title of creator.
                             "avatar": {                                 # The avatar of creator.
                                 "originalName": str,                    # The original name of avatar.
                                 "path": str,                            # The path of avatar.
@@ -723,7 +724,7 @@ class waziPicAcg:
             comicId: str
                 The comic id.
             
-            page: int or int
+            page: int or str
                 The page.
         
         Return:

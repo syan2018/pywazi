@@ -3204,4 +3204,95 @@ PicAcg 是一个让你可以轻松看到不同的本子的程式，据说官方�
 
 #### getComic
 
-> 
+> Deeply
+
+该接口用于获取漫画的信息，需要一个参数：`comicId`，应当是字符串，表示漫画的 ID。最后返回字典：
+
+```python
+{
+    "code": int,                                            # 返回状态码
+    "message": str,                                         # 返回信息
+    "data": {                                               # 返回数据
+        "comic": {                                          # 漫画信息
+            "_id": str,                                     # 漫画 ID
+            "_creator": {                                   # 漫画上传者
+                "_id": str,                                 # 漫画上传者 ID
+                "gender": str,                              # 漫画上传者性别
+                "name" str,                                 # 漫画上传者姓名
+                "verified": bool,                           # 漫画上传者是否可行
+                "exp": int,                                 # 漫画上传者经验
+                "level": int,                               # 漫画上传者等级
+                "characters": list[str],                    # 漫画上传者角色
+                "role": str,                                # 漫画上传者角色
+                "title": str,                               # 漫画上传者头衔
+                "avatar": {                                 # 漫画上传者头像
+                    "originalName": str,                    # 漫画上传者头像原始名称
+                    "path": str,                            # 漫画上传者头像路径
+                    "fileServer": str                       # 漫画上传者头像文件服务器
+                },
+                "slogan": str,                              # 漫画上传者签名
+                "character": str                            # 漫画上传者角色
+            },
+            "title": str,                                   # 漫画标题
+            "description": str,                             # 漫画描述
+            "thumb": {                                      # 漫画缩略图
+                "originalName": str,                        # 漫画缩略图原始名称
+                "path": str,                                # 漫画缩略图路径
+                "fileServer": str                           # 漫画缩略图文件服务器
+            },
+            "author": str or may be other object,           # 漫画作者
+            "chineseTeam": str or may be other object,      # 漫画汉化组
+            "categories": list[str],                        # 漫画分类
+            "tags": list[str],                              # 漫画标签
+            "pagesCount": int,                              # 漫画页数
+            "epsCount": int,                                # 漫画集数
+            "finished": bool,                               # 漫画是否完结
+            "updated_at": str,                              # 漫画更新时间
+            "created_at": str,                              # 漫画创建时间
+            "allowDownload": bool,                          # 漫画是否允许下载
+            "allowComment": bool,                           # 漫画是否允许评论
+            "totalLikes": int,                              # 漫画点赞数
+            "totalViews": int,                              # 漫画浏览数
+            "viewsCount": int,                              # 漫画浏览数
+            "likesCount": int,                              # 漫画点赞数
+            "isFavorite": bool,                             # 漫画是否被用户收藏
+            "isLiked": bool,                                # 漫画是否被用户喜欢
+            "commentsCount": int                            # 漫画评论数
+        }
+    }
+}
+```
+
+#### getComicEps
+
+> 到处是都是意味不明的通告
+
+通过该接口获取漫画的分页信息，需要两个参数：`comicId` 和 `page`，应当是字符串，表示漫画的 ID，后者表示分页页码，可以是字符串或者整数。返回字典，格式如下：
+
+```python
+{
+    "code": int,                                            # 返回状态码
+    "message": str,                                         # 返回信息
+    "data": {                                               # 返回数据
+        "eps": {                                            # 漫画分页信息
+            "docs": [{                                      # 漫画分页列表
+                "_id": str,                                 # 漫画集 ID
+                "title": str,                               # 漫画集标题
+                "order": int,                               # 漫画集顺序
+                "updated_at": str,                          # 漫画集更新时间
+                "id": str                                   # 漫画集 ID
+            }],
+            "total": int,                                   # 漫画集总数
+            "limit": int,                                   # 漫画集每页限制
+            "page": int,                                    # 漫画集当前页码
+            "pages": int                                    # 漫画集总页数
+        }
+    }
+}
+```
+
+#### advancedSearch
+
+> 就很棒
+
+一个高级搜索，用于代替漫画获取等的接口，需要四个参数：`categories`, `keyword`, `sort` 和 `page`。
