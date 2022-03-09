@@ -2906,7 +2906,156 @@ JavBus 是一个 AV 分享网站，在目前的版本中，我们支持镜像网
 
 通过该接口下载一个文件，额好吧，真的只是给我的 Bot 用的，你需要三个参数：`url`, `orgName` 和 `path`。`url` 是字符串，表示下载地址；`orgName` 是字符串，表示文件名；`path` 是字符串，表示文件保存路径。返回格式是布尔值，表示是否成功。
 
-
 ### waziNyaa
 
 > 一直都在开始，一直都不会结束
+
+Nyaa 是一个二次元的磁力链接分享网站，在目前的版本中，我们还支持 `sukebei` 分区。
+
+#### giveParams
+
+> 只剩一次
+
+设置用户参数，参数是 `params` 字典，完成之后返回当前用户的参数。
+
+#### getFiles
+
+> 知晓
+
+一个递归函数，用于从 `ul` 获取所有的文件，并将文件储存在 `self.tempFiles` 列表中。
+
+#### returnSoup
+
+> 即将起程
+
+通过该接口获取一个网站的 BeautifulSoup 对象，为了支持 RSS，现在需要两个参数：`link` 和 `xml`。`link` 应当是字符串，表示网站的链接；`xml` 应当是布尔值，表示是否是 RSS 的链接。如果失败了，则返回 `<html></html>` 的 BeautifulSoup 对象。
+
+#### parsePage
+
+> 竖琴也很雅，那个琶音
+
+解析一个磁力链接的详情主页，需要两个参数：`soup` 和 `site`。前者是 BeautifulSoup 对象，后者是整数，表示什么网站，0 表示 Nyaa，1 表示 Sukebei。最后返回字典，格式如下：
+
+```python
+{
+    "type": str,                                        # 磁力链接类型
+    "title": str,                                       # 磁力链接标题
+    "category": {                                       # 磁力链接分类
+        "fatherCategory": str,                          # 父分类
+        "fatherCategoryId": str,                        # 父分类 ID
+        "subCategory": str,                             # 子分类
+        "subCategoryId": str                            # 子分类 ID
+        "category": str,                                # 分类
+    },
+    "time": str,                                        # 磁力链接发布时间
+    "timeStamp": int,                                   # 磁力链接发布时间戳
+    "uploader": str,                                    # 磁力链接发布者
+    "uploaderLink": str,                                # 磁力链接发布者链接
+    "seeders": int,                                     # 磁力链接种子数
+    "information": str,                                 # 磁力链接信息
+    "informationLink": str,                             # 磁力链接信息链接
+    "leechers": int,                                    # 磁力链接吸血鬼数
+    "size": str,                                        # 磁力链接大小
+    "completes": int,                                   # 磁力链接完成数
+    "hash": str,                                        # 磁力链接哈希值
+    "torrent": str or None,                             # 磁力链接种子链接，如果没有则为 None
+    "magnet": str,                                      # 磁力链接的 magnet 链接
+    "description": str,                                 # 磁力链接的简介
+    "files": str or list[str],                          # 磁力链接的文件列表
+    "comments": [{                                      # 磁力链接的评论列表
+        "name": str,                                    # 评论者名字
+        "link": str,                                    # 评论者链接
+        "extra": str,                                   # 评论者额外信息
+        "time": str,                                    # 评论时间
+        "timeStamp": int,                               # 评论时间戳
+        "editTime": str,                                # 编辑时间
+        "editTimeStamp": float,                         # 编辑时间戳
+    }]
+}
+```
+
+#### parseRSS
+
+> 需要进一步的观望
+
+该接口用于获取 RSS 中的信息，需要一个参数：`rss`，应当是 `BeautifulSoup` 对象，是 RSS 的内容。最后返回列表，格式如下：
+
+```python
+[{
+    "type": str,                        # 磁力链接类型
+    "category": str,                    # 磁力链接分类
+    "categoryId": str,                  # 磁力链接分类 ID
+    "comments": int,                    # 磁力链接评论数
+    "title": str,                       # 磁力链接标题
+    "link": str,                        # 磁力链接链接
+    "id": int,                          # 磁力链接 ID
+    "torrent": str or None,             # 磁力链接种子链接，如果没有则为 None
+    "magnet": str,                      # 磁力链接的 magnet 链接
+    "size": str,                        # 磁力链接大小
+    "time": str,                        # 磁力链接发布时间
+    "seeders": int,                     # 磁力链接种子数
+    "leechers": int,                    # 磁力链接吸血鬼数
+    "completes": int                    # 磁力链接完成数
+}]
+```
+
+#### parseSearch
+
+> 解析，序列化，睡觉
+
+该接口用于解析一个搜索结果页面，需要两个参数：`soup` 和 `site`。前者是 BeautifulSoup 对象，后者是整数，表示什么网站，0 表示 Nyaa，1 表示 Sukebei。最后返回列表，格式如下：
+
+```python
+[{
+    "type": str,                        # 磁力链接类型
+    "typeExtra": str,                   # 磁力链接类型额外信息（若有）
+    "category": str,                    # 磁力链接分类
+    "categoryId": str,                  # 磁力链接分类 ID
+    "comments": int,                    # 磁力链接评论数
+    "title": str,                       # 磁力链接标题
+    "link": str,                        # 磁力链接链接
+    "id": int,                          # 磁力链接 ID
+    "torrent": str,                     # 磁力链接种子链接，如果没有则为 None
+    "magnet": str,                      # 磁力链接的 magnet 链接
+    "size": str,                        # 磁力链接大小
+    "time": str,                        # 磁力链接发布时间
+    "timeStamp": int,                   # 磁力链接发布时间戳
+    "seeders": int,                     # 磁力链接种子数
+    "leechers": int,                    # 磁力链接吸血鬼数
+    "completes": int                    # 磁力链接完成数
+}]
+```
+
+#### search
+
+> 正在激活扩展
+
+该接口是搜索接口，用于搜索磁力链接，需要一个参数：`params`，格式如下：
+
+```python
+{
+    "page": int or str,             # 页码，从 1 开始
+    "keyword": str,                 # 搜索关键词
+    "category": str,                # 分类
+    "filter": str,                  # 过滤器： No / No Remakes / Trusted Only （不过滤 / 不 Remake / 只信任）
+    "order": str,                   # 评分： Comments / Size / Date / Seeders / Leechers / Completed Downloads
+                                    # 评论 / 大小 / 日期 / 种子数 / 吸血鬼数 / 完成下载数
+    "site": str or int,             # 网站. 0 是 https://nyaa.si/, 1 是 https://sukebei.nyaa.si/
+                                    # 这个是必须的，其余都是可选的
+    "orderBy": str                  # 排序 asc / desc （正序 / 倒序）
+}
+```
+
+最后返回列表，格式同 `parseSearch`。
+
+#### searchRSS
+
+> 犯罪活动
+
+该接口是 RSS 搜索接口，用于搜索磁力链接，需要一个参数：`params`，格式同上，最后返回也是列表，格式同 `parseRSS`。
+
+#### getViewFromId
+
+> 签出分支
+
+该接口用于获取一个磁力链接的详细信息，需要两个参数：`id` 和 `site`，前者是整数或字符串，表示磁力链接 ID，后者是整数，表示什么网站，0 表示 Nyaa，1 表示 Sukebei。最后返回字典，格式同 `parsePage`。
