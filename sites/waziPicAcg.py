@@ -994,7 +994,7 @@ class waziPicAcg:
         Get the comments of user.
 
         Parameters:
-            page: int
+            page: int or str
                 The page of comments. Start from 1.
         
         Return:
