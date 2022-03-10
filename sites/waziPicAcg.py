@@ -1641,7 +1641,7 @@ class waziPicAcg:
                                 "gender": str,                  # The gender of user.
                                 "name": str,                    # The name of user.
                                 "title": str,                   # The title of user.
-                                "verified": bool                # The verified of user.
+                                "verified": bool，               # The verified of user.
                                 "exp": int,                     # The exp of user.
                                 "level": int,                   # The level of user.
                                 "characters": list[str],        # The character of user.
@@ -1676,7 +1676,7 @@ class waziPicAcg:
                             "gender": str,                      # The gender of user.
                             "name": str,                        # The name of user.
                             "title": str,                       # The title of user.
-                            "verified": bool                    # The verified of user.
+                            "verified": bool，                   # The verified of user.
                             "exp": int,                         # The exp of user.
                             "level": int,                       # The level of user.
                             "characters": list[str],            # The character of user.
@@ -1815,22 +1815,22 @@ class waziPicAcg:
                         "_id": str,                             # The id of comment.
                         "content": str,                         # The content of comment.
                         "_user": {                              # The user of comment.
-                                "_id": str,                     # The id of user.
-                                "gender": str,                  # The gender of user.
-                                "name": str,                    # The name of user.
-                                "title": str,                   # The title of user.
-                                "verified": bool                # The verified of user.
-                                "exp": int,                     # The exp of user.
-                                "level": int,                   # The level of user.
-                                "characters": list[str],        # The character of user.
-                                "role": str,                    # The role of user.
-                                "avatar": {                     # The avatar of user.
-                                    "originalName": str,        # The original name of avatar.
-                                    "path": str,                # The path of avatar.
-                                    "fileServer": str           # The file server of avatar.
-                                },
-                                "slogan": str,                  # The slogan of user.
-                                "character": str                # The character of user.
+                            "_id": str,                     # The id of user.
+                            "gender": str,                  # The gender of user.
+                            "name": str,                    # The name of user.
+                            "title": str,                   # The title of user.
+                            "verified": bool                # The verified of user.
+                            "exp": int,                     # The exp of user.
+                            "level": int,                   # The level of user.
+                            "characters": list[str],        # The character of user.
+                            "role": str,                    # The role of user.
+                            "avatar": {                     # The avatar of user.
+                                "originalName": str,        # The original name of avatar.
+                                "path": str,                # The path of avatar.
+                                "fileServer": str           # The file server of avatar.
+                            },
+                            "slogan": str,                  # The slogan of user.
+                            "character": str                # The character of user.
                         },
                         "ip": str,                              # The ip of comment.
                         "_comic": str,                          # The comic id of comment.
@@ -1895,6 +1895,133 @@ class waziPicAcg:
         waziLog.log("debug", f"({self.name}.{fuName}) 组合完成： {body}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
         return waziPicAcg.up(self, newUrl, True, body, "POST", True)
+    
+    def getLeaveMessageRoomComments(self, page):
+        """
+        waziPicAcg.getLeaveMessageRoomComments(self, page)
+        *Kind word*
+
+        Get the comments of leave message room.
+        It is actually from a comic id: 5822a6e3ad7ede654696e482
+
+        Parameters:
+            page: int or str
+                The page of comments. Start from 1.
+        
+        Return:
+            Type: dict
+            The return of request.
+            May like:
+            {
+                "code": int,                                    # The code of request.
+                "message": str,                                 # The message of request.
+                "data": {                                       # The data of request.
+                    "comments": {                               # The comments of comic.
+                        "docs": [{                              # The comments of comic.
+                            "_id": str,                         # The id of comment.
+                            "content": str,                     # The content of comment.
+                            "_user": {                          # The user of comment.
+                                "_id": str,                     # The id of user.
+                                "gender": str,                  # The gender of user.
+                                "name": str,                    # The name of user.
+                                "title": str,                   # The title of user.
+                                "verified": bool,               # The verified of user.
+                                "exp": int,                     # The exp of user.
+                                "level": int,                   # The level of user.
+                                "characters": list[str],        # The character of user.
+                                "role": str,                    # The role of user.
+                                "avatar": {                     # The avatar of user.
+                                    "fileServer": str,          # The file server of avatar.
+                                    "path": str,                # The path of avatar.
+                                    "originalName": str         # The original name of avatar.
+                                },
+                                "slogan": str,                  # The slogan of user.
+                                "character": str                # The character of user.
+                            },
+                            "_comic": str,                      # The comic of comment.
+                            "isTop": bool,                      # Whether the comment is top.
+                            "hide": bool,                       # Whether the comment is hide.
+                            "created_at": str,                  # The time of comment.
+                            "id": str,                          # The id of comment.
+                            "likesCount": int,                  # The likes count of comment.
+                            "commentsCount": int,               # The comments count of comment.
+                            "isLiked": bool                     # Whether the user has liked the comment.
+                        }],
+                        "total": int,                           # The total of comments.
+                        "limit": int,                           # The limit of comments.
+                        "page": str,                            # The page of comments.
+                        "pages": int                            # The pages of comments.
+                    },
+                    "topComments": [{                           # The top comments of comic.
+                        "_id": str,                             # The id of comment.
+                        "content": str,                         # The content of comment.
+                        "_user": {                              # The user of comment.
+                            "_id": str,                     # The id of user.
+                            "gender": str,                  # The gender of user.
+                            "name": str,                    # The name of user.
+                            "title": str,                   # The title of user.
+                            "verified": bool                # The verified of user.
+                            "exp": int,                     # The exp of user.
+                            "level": int,                   # The level of user.
+                            "characters": list[str],        # The character of user.
+                            "role": str,                    # The role of user.
+                            "avatar": {                     # The avatar of user.
+                                "originalName": str,        # The original name of avatar.
+                                "path": str,                # The path of avatar.
+                                "fileServer": str           # The file server of avatar.
+                            },
+                            "slogan": str,                  # The slogan of user.
+                            "character": str                # The character of user.
+                        },
+                        "ip": str,                              # The ip of comment.
+                        "_comic": str,                          # The comic id of comment.
+                        "isTop": bool,                          # Whether the comment is top.
+                        "hide": bool,                           # Whether the comment is hide.
+                        "created_at": str,                      # The time of comment.
+                        "likesCount": int,                      # The likes count of comment.
+                        "commentsCount": int,                   # The comments count of comment.
+                        "isLiked": bool                         # Whether the user has liked the comment.
+                    }]
+                }
+            }
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到页码，正在发起请求。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 页码： {page}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 交给 getComicComments 处理。")
+        return waziPicAcg.getComicComments(self, self.leaveMsg, int(page))
+    
+    def postLeaveMessageRoomComment(self, content):
+        """
+        waziPicAcg.postLeaveMessageRoomComment(self, content)
+        *That's only two hours a day*
+
+        Post a comment to leave message room.
+
+        Parameters:
+            content: str
+                The content of comment.
+        
+        Return:
+            Type: dict
+            The return of request.
+
+            Because I am not brave enough to commit such an act,
+            I am not sure exactly how the format would return.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 内容，正在发起请求。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 内容： {content}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 交给 postComicComment 处理。")
+        return waziPicAcg.postComicComment(self, self.leaveMsg, content)
 
     def getSinglePage(self, fileServer, path):
         """

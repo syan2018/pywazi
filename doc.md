@@ -3745,7 +3745,7 @@ PicAcg 是一个让你可以轻松看到不同的本子的程式，据说官方�
                     "gender": str,                  # 用户性别
                     "name": str,                    # 用户名
                     "title": str,                   # 用户头衔
-                    "verified": bool                # 是否认证
+                    "verified": bool,               # 是否认证
                     "exp": int,                     # 用户经验值
                     "level": int,                   # 用户等级
                     "characters": list[str],        # 用户角色
@@ -3780,7 +3780,7 @@ PicAcg 是一个让你可以轻松看到不同的本子的程式，据说官方�
                 "gender": str,                      # 用户性别
                 "name": str,                        # 用户名
                 "title": str,                       # 用户头衔
-                "verified": bool                    # 是否认证
+                "verified": bool,                   # 是否认证
                 "exp": int,                         # 用户经验值
                 "level": int,                       # 用户等级
                 "characters": list[str],            # 用户角色
@@ -3810,5 +3810,157 @@ PicAcg 是一个让你可以轻松看到不同的本子的程式，据说官方�
 
 > 勇敢
 
+使用该接口在一个游戏的评论区下发表一个评论，需要两个参数：`gameId` 和 `content`。都应当是字符串，前者表示游戏 ID，后者表示你的评论内容。
 
+最后返回格式鉴于我没有进行测试故不得而知。
+
+#### getComicComments
+
+> 你还要知道多少
+
+使用该接口获取一个漫画的评论区内容，你需要两个参数：`comicId` 和 `page`。前者是字符串，表示漫画 ID；后者是整数或字符串，表示页码，从 1 数起，最后返回是字典，格式如下：
+
+```python
+{
+    "code": int,                                    # 返回状态码
+    "message": str,                                 # 返回信息
+    "data": {                                       # 返回数据
+        "comments": {                               # 评论
+            "docs": [{                              # 评论列表
+                "_id": str,                         # 评论 ID
+                "content": str,                     # 评论内容
+                "_user": {                          # 用户信息
+                    "_id": str,                     # 用户 ID
+                    "gender": str,                  # 用户性别
+                    "name": str,                    # 用户名
+                    "title": str,                   # 用户头衔
+                    "verified": bool,               # 是否认证
+                    "exp": int,                     # 用户经验值
+                    "level": int,                   # 用户等级
+                    "characters": list[str],        # 用户角色
+                    "role": str,                    # 用户角色
+                    "avatar": {                     # 用户头像
+                        "originalName": str,        # 原始文件名
+                        "path": str,                # 头像路径
+                        "fileServer": str           # 文件服务器
+                    },
+                    "slogan": str,                  # 用户签名
+                    "character": str                # 用户头像框
+                },
+                "_comic": str,                      # 漫画 ID
+                "isTop": bool,                      # 是否置顶
+                "hide": bool,                       # 是否隐藏
+                "created_at": str,                  # 创建时间
+                "id": str,                          # 评论 ID
+                "likesCount": int,                  # 点赞数
+                "commentsCount": int,               # 评论数
+                "isLiked": bool                     # 是否已点赞
+            }],
+            "total": int,                           # 评论总数
+            "limit": int,                           # 每页数量
+            "page": str,                            # 当前页码
+            "pages": int                            # 总页码数
+        },
+        "topComments": [{                           # 置顶评论
+            "_id": str,                             # 评论 ID
+            "content": str,                         # 评论内容
+            "_user": {                              # 用户信息
+                "_id": str,                         # 用户 ID
+                "gender": str,                      # 用户性别
+                "name": str,                        # 用户名
+                "title": str,                       # 用户头衔
+                "verified": bool,                   # 是否认证
+                "exp": int,                         # 用户经验值
+                "level": int,                       # 用户等级
+                "characters": list[str],            # 用户角色
+                "role": str,                        # 用户角色
+                "avatar": {                         # 用户头像
+                    "originalName": str,            # 原始文件名
+                    "path": str,                    # 头像路径
+                    "fileServer": str               # 文件服务器
+                },
+                "slogan": str,                      # 用户签名
+                "character": str                    # 用户头像框
+            },
+            "ip": str,                              # IP 地址
+            "_comic": str,                          # 漫画 ID
+            "isTop": bool,                          # 是否置顶
+            "hide": bool,                           # 是否隐藏
+            "created_at": str,                      # 创建时间
+            "likesCount": int,                      # 点赞数
+            "commentsCount": int,                   # 评论数
+            "isLiked": bool                         # 是否已点赞
+        }]
+    }
+}
+```
+
+#### postComicComment
+
+> 我所能品尝的
+
+使用该接口在一个漫画的评论区下发表一个评论，需要两个参数：`comicId` 和 `content`。都应当是字符串，前者表示漫画 ID，后者表示你的评论内容。
+
+最后返回格式鉴于我没有进行测试故不得而知。
+
+#### getLeaveMessageRoomComments
+
+> 今天的风，很舒服，春天到了，就该吹吹晚风
+
+使用该接口获取留言版的评论，需要一个参数：`page`，表示当前页码，从 1 开始，应当是字符串或者整数。格式同 `self.getComicComments` 一致。
+
+#### postLeaveMessageRoomComment
+
+> Good Morning, Sunshine —— 松本文紀
+
+使用该接口在留言板下面进行一个评论的发表，需要一个参数：`content`，应当是字符串，表示评论的内容。
+
+最后返回格式鉴于我没有进行测试故不得而知。
+
+#### getSinglePage
+
+> 大抵这就叫搜索引擎优化吧
+
+使用该接口拼合 `fileServer` 和 `path` 信息，最后获得字符串，表示文件地址。参数即前文所说的 `fileServer` 和 `path`，都应当是字符串。
+
+#### punchIn
+
+> 比较高的温度，不稳定的结果
+
+使用该接口进行签到，不需要任何参数，最后返回字典，格式如下：
+
+如果成功的话：
+
+```python
+{
+    "code": int,                          # 状态码
+    "message": str,                       # 消息
+    "data": {                             # 返回数据
+        "res": {                          # 内容
+            "status": str,                # 签到状态
+            "punchInLastDay": str         # 签到日期
+        }
+    }
+}
+```
+
+如果失败的话：
+
+```python
+{
+    "code": int,                          # 状态码
+    "message": str,                       # 消息
+    "data": {                             # 返回数据
+        "res": {                          # 内容
+            "status": str                 # 签到状态
+        }
+    }
+}
+```
+
+#### register
+
+> 户籍登记
+
+使用该接口进行一个账号的注册，接口参数较多，以下列出：
 
