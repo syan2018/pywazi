@@ -1480,6 +1480,7 @@ class waziPicAcg:
                             },
                             "_parent": str,                     # The parent comment id of comment.
                             "_comic": str,                      # The comic id of comment.
+                            "_game": str,                       # The game id of comment.
                             "isTop": bool,                      # Whether the comment is top.
                             "hide": bool,                       # Whether the comment is hidden.
                             "created_at": str,                  # The time of comment.
@@ -1671,22 +1672,22 @@ class waziPicAcg:
                         "_id": str,                             # The id of comment.
                         "content": str,                         # The content of comment.
                         "_user": {                              # The user of comment.
-                                "_id": str,                     # The id of user.
-                                "gender": str,                  # The gender of user.
-                                "name": str,                    # The name of user.
-                                "title": str,                   # The title of user.
-                                "verified": bool                # The verified of user.
-                                "exp": int,                     # The exp of user.
-                                "level": int,                   # The level of user.
-                                "characters": list[str],        # The character of user.
-                                "role": str,                    # The role of user.
-                                "avatar": {                     # The avatar of user.
-                                    "originalName": str,        # The original name of avatar.
-                                    "path": str,                # The path of avatar.
-                                    "fileServer": str           # The file server of avatar.
-                                },
-                                "slogan": str,                  # The slogan of user.
-                                "character": str                # The character of user.
+                            "_id": str,                         # The id of user.
+                            "gender": str,                      # The gender of user.
+                            "name": str,                        # The name of user.
+                            "title": str,                       # The title of user.
+                            "verified": bool                    # The verified of user.
+                            "exp": int,                         # The exp of user.
+                            "level": int,                       # The level of user.
+                            "characters": list[str],            # The character of user.
+                            "role": str,                        # The role of user.
+                            "avatar": {                         # The avatar of user.
+                                "originalName": str,            # The original name of avatar.
+                                "path": str,                    # The path of avatar.
+                                "fileServer": str               # The file server of avatar.
+                            },
+                            "slogan": str,                      # The slogan of user.
+                            "character": str                    # The character of user.
                         },
                         "ip": str,                              # The ip of comment.
                         "_game": str,                           # The game id of comment.
