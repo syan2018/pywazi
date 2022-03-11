@@ -4203,3 +4203,450 @@ PicAcg 是一个让你可以轻松看到不同的本子的程式，据说官方�
     }
 }
 ```
+
+#### getRandomComics
+
+> 沙子，泥土
+
+使用该接口获取随机漫画，不需要任何参数，最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                    # 状态码
+    "message": str,                                 # 消息
+    "data": {                                       # 数据
+        "comics": [{                                # 漫画
+            "_id": str,                             # 漫画 ID
+            "title": str,                           # 漫画标题
+            "author": str,                          # 漫画作者
+            "totalViews": int,                      # 漫画总阅读量
+            "totalLikes": int,                      # 漫画总喜欢量
+            "pagesCount": int,                      # 漫画页数
+            "epsCount": int,                        # 漫画集数
+            "finished": bool,                       # 漫画是否完结
+            "categories": [str],                    # 漫画类别
+            "thumb": {                              # 漫画封面
+                "originalName": str,                # 原始文件名
+                "path": str,                        # 文件路径
+                "fileServer": str                   # 文件服务器
+            },
+            "likesCount": int                       # 漫画喜欢量
+        }]
+    }
+}
+```
+
+#### getCollections
+
+> 队列
+
+使用该接口获取官方推荐集合，不需要任何参数，最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                    # 状态码
+    "message": str,                                 # 消息
+    "data": {                                       # 数据
+        "collections": [{                           # 推荐集合
+            "title": str,                           # 推荐集合标题
+            "comics": [{                            # 推荐漫画
+                "_id": str,                         # 漫画 ID
+                "title": str,                       # 漫画标题
+                "thumb": {                          # 漫画封面
+                    "originalName": str,            # 原始文件名
+                    "path": str,                    # 文件路径
+                    "fileServer": str               # 文件服务器
+                },
+                "author": str,                      # 漫画作者
+                "categories": [str],                # 漫画类别
+                "finished": bool,                   # 漫画是否完结
+                "epsCount": int,                    # 漫画集数
+                "pagesCount": int,                  # 漫画页数
+                "totalLikes": int,                  # 漫画总喜欢量
+                "totalViews": int                   # 漫画总阅读量
+            }]
+        }]
+    }
+}
+```
+
+#### getBanners
+
+> 在墙上的口号
+
+使用该接口获取首页滚动横幅信息，不需要任何参数，最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                    # 状态码
+    "message": str,                                 # 消息
+    "data": {                                       # 数据
+        "banners": [{                               # 横幅内容
+            "_id": str,                             # 横幅 ID
+            "title": str,                           # 横幅标题
+            "shortDescription": str,                # 横幅简介
+            "_game": str,                           # 横幅游戏 ID
+            "link": str,                            # 横幅链接
+            "type": str,                            # 横幅类型
+            "thumb": {                              # 横幅封面
+                "fileServer": str,                  # 文件服务器
+                "path": str,                        # 文件路径
+                "originalName": str                 # 原始文件名
+            }
+        }]
+    }
+}
+```
+
+#### init
+
+> 或许是
+
+使用该接口进行一个初始化，反正我什么都不知道，不需要任何参数，最后返回字典，格式如下：
+
+```python
+{
+    "status": str,                                  # 状态
+    "addresses": [str],                             # 地址
+    "waka": str,                                    # WAKA 链接
+    "adKeyword": str                                # 广告关键词
+}
+```
+
+#### initAndroid
+
+> 旅程，正式开始了
+
+该接口应该是安卓用户一开始请求的地址，不需要任何参数，表示初始化？最后反正会返回字典，格式如下：
+
+```python
+{
+    "code": int,                                    # 状态码
+    "message": str,                                 # 消息
+    "data": {                                       # 数据
+        "isPunched": bool,                          # 用户是否已经打卡
+        "latestApplication": {                      # 最新应用版本
+            "_id": str,                             # 应用 ID
+            "downloadUrl": str,                     # 下载地址
+            "updateContent": str,                   # 更新内容
+            "version": str,                         # 版本号
+            "updated_at": str,                      # 更新时间
+            "created_at": str,                      # 创建时间
+            "apk": {                                # APK
+                "originalName": str,                # 原始文件名
+                "path": str,                        # 文件路径
+                "fileServer": str                   # 文件服务器
+            }
+        },
+        "imageServer": str,                         # 图片服务器
+        "apiLevel": int,                            # API 等级
+        "minApiLevel": int,                         # 最小 API 等级
+        "categories": [{                            # 分类
+            "_id": str,                             # 分类 ID
+            "title": str                            # 分类标题
+        }],
+        "notification": None or other object,       # 通知
+        "isIdUpdated": bool,                        # 是否已经更新过 ID
+    }
+}
+```
+
+#### changeImageQuality
+
+> 速度
+
+使用该接口修改请求图片质量，需要一个参数：`number`，字符串或整数，表示图像画质，对应数字如下：
+
++ `0`: 原画质；
++ `1`: 低画质；
++ `2`: 中画质；
++ `3`: 高画质。
+
+程序默认原图画质。
+
+#### createFolder
+
+> 成家立业
+
+使用该接口创建一个文件夹，用于内部下载漫画时使用，需要两个参数：`path` 和 `title`。前者表示路径，字符串格式；后者表示漫画标题，将用来做文件夹名，同样是字符串。
+
+#### createFolderEps
+
+> 族谱
+
+使用该接口为一个漫画的分集创建一个文件夹，用于内部下载漫画时使用，需要三个参数：`path`, `title` 和 `eps`。都是字符串，分别表示路径，漫画标题，漫画分集标题。
+
+#### getThumbImageLink
+
+> 差不多先生
+
+使用该接口获取一个漫画的封面链接（等信息），需要一个参数：`comicId`，表示漫画 ID，最后返回列表，格式如下：
+
+```python
+["文件名", "漫画名", "封面地址链接"]
+```
+
+#### getThumbImage
+
+> 应该这么说 download
+
+使用该接口下载一个漫画的封面，需要两个参数：`comicId` 和 `path`。前者表示漫画 ID，字符串格式；后者表示路径，字符串格式。
+
+#### getChat
+
+> 可以
+
+使用该接口获取聊天室信息，如果你需要聊天室的话，你可以考虑自行实现或使用相关开源客户端。最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                # 状态码
+    "message": str,                             # 消息
+    "data": {                                   # 数据
+        "chatList": [{                          # 聊天室列表
+            "title": str,                       # 聊天室标题
+            "description": str,                 # 聊天室描述
+            "url": str,                         # 聊天室地址
+            "avatar": str,                      # 聊天室头像
+        }]
+    }
+}
+```
+
+#### getAPPs
+
+> 琶音
+
+使用该接口获取小程序信息，不需要任何参数，最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                # 状态码
+    "message": str,                             # 消息
+    "data": {                                   # 数据
+        "apps": [{                              # 小程序列表
+            "title": str,                       # 小程序标题
+            "url": str,                         # 小程序地址
+            "icon": str,                        # 小程序图标
+            "showTitleBar": bool,               # 是否显示标题栏
+            "description": str                  # 小程序描述
+        }]
+    }
+}
+```
+
+#### getComicImageURLs
+
+> 宁静的时光
+
+使用该接口获取漫画中一个分集中一页的漫画图片的地址，需要一个字典参数：`pageDict`，可以从 `waziPicAcg.getComicPages()` 中获得。最后返回列表，列表中每一个内容都是一张图片的地址。
+
+#### singleDownloadComicImage
+
+> 像水一样 保持流动 雅致
+
+使用该接口下载一个漫画中一个分集的一页，需要四个参数：
+
++ `pageDict`: 表示字典，可以从 `waziPicAcg.getComicPages()` 中获得；
++ `path`: 表示路径，字符串格式；
++ `comicName`: 表示漫画标题，字符串格式；
++ `docTitle`: 表示分集标题，字符串格式。
+
+完成之后什么都不会返回。
+
+#### yieldGetComicFilesList
+
+> 生成一段虚假的记忆
+
+使用该接口获取一个生成器，用于获取一个漫画的文件列表，需要一个参数：`comicId`，表示字符串，是漫画的 ID。
+
+第一次返回内容是 `waziPicAcg.getThumbImageLink()` 的返回结果，表示漫画的封面。之后的返回格式是列表，表示一个分集的一页内容。
+
+#### getComicFilesList
+
+> 只是这样保持着
+
+使用该接口用于获取一个漫画的文件列表，建议使用上文的 `yield` 接口。需要一个参数：`comicId`，表示字符串，是漫画的 ID。最后返回列表，格式如下：
+
+第 0 位是 `waziPicAcg.getThumbImageLink()` 的返回结果，其他则是一个分集的一页内容。
+
+#### downloadComic
+
+> 可能有些东西的实现就是比较丑陋吧
+
+使用该接口用于下载一个漫画，好吧，很多东西我应该改成异步吗？我不是很清楚，总而言之，调用它你需要两个参数：`comicId` 和 `path`。前者表示漫画 ID，应当是字符串；后者表示保存路径，应当是字符串。
+
+如果下载成功，则返回字符串：`Done! / 完工！`。
+
+#### getAndroidAPPs
+
+> 保证一定的和谐
+
+使用该接口获取安卓程序的历史更新内容，需要一个参数：`page`，可以是字符串或者整数，表示页码，从 1 开始数起。最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                        # 状态码
+    "message": str,                                     # 消息
+    "data": {                                           # 数据
+        "applications": {                               # 应用信息
+            "docs": [{                                  # 应用列表
+                "_id": str,                             # 应用 ID
+                "downloadUrl": str,                     # 下载地址
+                "updateContent": str,                   # 更新内容
+                "version": str,                         # 版本号
+                "created_at": str,                      # 创建时间
+                "apk": {                                # APK 信息
+                    "originalName": str,                # 原始名称
+                    "path": str,                        # 下载路径
+                    "fileServer": str                   # 文件服务器
+                }
+            }],
+            "total": int,                               # 总数
+            "limit": int,                               # 每页数量
+            "page": int,                                # 当前页码
+            "pages": int                                # 总页数
+        },
+        "apiLevel": int,                                # API 等级
+        "minApiLevel": int                              # 最低 API 等级
+    }
+}
+```
+
+#### blockUser
+
+> 为了一个更好的明天，需要这么做吗？
+
+使用该接口封禁一个用户，需要一个参数：`userId`，表示用户 ID，是字符串。我最后只能拿到 1007 错误，大概是没有权限的原因。
+
+#### getNotifications
+
+> 广播
+
+使用该接口获取通知信息，需要一个参数：`page`，表示页码，可以是字符串或者整数，从 1 开始。最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                        # 状态码
+    "message": str,                                     # 消息
+    "data": {                                           # 数据
+        "notifications": {                              # 通知
+            "docs": [],                                 # 这里面是通知 不过我没有参与这个社群的一些活动 比如评论之类的 就不知道里面应该是啥样子的
+            "total": int,                               # 通知总数
+            "limit": int,                               # 每页限制
+            "page": int,                                # 当前页码
+            "pages": int                                # 总页数
+        }
+    }
+}
+```
+
+#### getAnnouncements
+
+> 电幕
+
+使用该接口获取开屏广告和通知，需要一个参数：`page`，表示页码，可以是字符串或者整数，从 1 开始。最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                        # 状态码
+    "message": str,                                     # 消息
+    "data": {                                           # 数据
+        "announcements": {                              # 通知
+            "docs": [{                                  # 通知列表
+                "_id": str,                             # 通知 ID
+                "title": str,                           # 标题
+                "content": str,                         # 内容
+                "created_at": str,                      # 创建时间
+                "thumb": {                              # 缩略图
+                    "originalName": str,                # 原始名称
+                    "path": str,                        # 路径
+                    "fileServer": str                   # 文件服务器
+                }
+            }],
+            "total": int,                               # 通知总数
+            "limit": int,                               # 每页限制
+            "page": str,                                # 当前页码
+            "pages": int                                # 总页数
+        }
+    }
+}
+```
+
+*准确来说，是通告更为合适。*
+
+#### getUserDirty
+
+> 很神必
+
+使用该接口获取一个用户是否是 `Dirty` 状态，不是很懂这个接口的意思，需要一个参数：`userId`，表示用户 ID，应当是字符串。最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                        # 状态码
+    "message": str,                                     # 消息
+    "data": {                                           # 数据
+        "dirty": bool                                   # 用户 Dirty 情况
+    }
+}
+```
+
+#### getUserProfile
+
+> 盒武器
+
+使用该接口获取一个用户的个人资料，需要一个参数：`userId`，表示用户 ID，应当是字符串。最后返回字典，格式如下：
+
+```python
+{
+    "code": int,                                        # 状态码
+    "message": str,                                     # 消息
+    "data": {                                           # 数据
+        "user": {                                       # 用户信息
+            "_id": str,                                 # 用户 ID
+            "gender": str,                              # 用户性别
+            "name": str,                                # 用户名
+            "slogan": str,                              # 用户签名
+            "title": str,                               # 用户头衔
+            "verified": bool,                           # 用户是否被验证
+            "exp": int,                                 # 用户经验值
+            "level": int,                               # 用户等级
+            "avatar": {                                 # 用户头像
+                "originalName": str,                    # 原始名称
+                "path": str,                            # 路径
+                "fileServer": str                       # 文件服务器
+            },
+            "character": str                            # 用户头像框
+        }
+    }
+}
+```
+
+#### latestUpdate
+
+> 近况
+
+使用该接口获取最近更新内容，需要一个参数：`page`，表示页码，可以是字符串或者整数，从 1 开始。最后返回字典，格式同 `advancedSearch` 一致。
+
+#### filterIt
+
+> 筛子
+
+使用该接口过滤搜索结果，你需要两个参数：
+
++ `backJson`: 应当是字典，是漫画内容，可以是 `waziPicAcg.advancedSearch()`, `waziPicAcg.getComics()` 和 `waziPicAcg.search()` 的返回结果；
++ `filters`: 应当是列表，里面填写你需要过滤的分类。
+
+最后返回时注意 `docs` 内容变了，但是 `limit` 属性没变，不能直接拿 `limit` 的值判断返回漫画的数量。
+
+#### logout
+
+> 结束，撒花
+
+使用该接口退出当前账户，并且重置请求头。
+
+## 结语
+
+> 这里应该显示职员表
+
+我终于写完了，感谢 @Acheron-x 的帮助，我可能会继续更新的！

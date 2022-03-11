@@ -2878,6 +2878,7 @@ class waziPicAcg:
                         "title": str,                           # The title of banner.
                         "shortDescription": str,                # The short description of banner.
                         "_game": str,                           # The game of banner.
+                        "link": str,                            # The link of banner.
                         "type": str,                            # The type of banner.
                         "thumb": {                              # The thumb of banner.
                             "fileServer": str,                  # The file server of thumb.
@@ -2985,7 +2986,7 @@ class waziPicAcg:
         Change the image quality.
 
         Parameters:
-            number: int
+            number: int or str
                 The number of image quality.
                     0: original
                     1: low
@@ -3002,7 +3003,7 @@ class waziPicAcg:
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到图片素质信息，正在写入。")
         waziLog.log("debug", f"({self.name}.{fuName}) 图片素质信息： {number}")
-        self.headers["image-quality"] = self.imageQuality[number]
+        self.headers["image-quality"] = self.imageQuality[int(number)]
         waziLog.log("info", f"({self.name}.{fuName}) 写入完成： {self.headers['image-quality']}")
 
     def createFolder(self, path, title):

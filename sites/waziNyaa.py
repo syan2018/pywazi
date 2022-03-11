@@ -267,7 +267,7 @@ class waziNyaa:
         itemInfo["timeStamp"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[0].find_all(class_ = "col-md-5")[1].attrs["data-timestamp"])
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子上传者。")
         itemInfo["uploader"] = soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].text
-        itemInfo["uploaderLink"] = self.urls[site] + "user/" + soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].attrs["href"].split("/")[-1]
+        itemInfo["uploaderLink"] = self.urls[int(site)] + "user/" + soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[0].find_all("a")[0].attrs["href"].split("/")[-1]
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子做种人数。")
         itemInfo["seeders"] = int(soup.find(class_ = "panel-body").find_all(class_ = "row")[1].find_all(class_ = "col-md-5")[1].text)
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子信息。")
@@ -285,7 +285,7 @@ class waziNyaa:
         if "magnet:?xt=" in soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"]:
             itemInfo["torrent"] = None
         else:
-            itemInfo["torrent"] = self.urls[site] + "download/" + soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"].split("/")[-1]
+            itemInfo["torrent"] = self.urls[int(site)] + "download/" + soup.find(class_ = "panel-footer").find_all("a")[0].attrs["href"].split("/")[-1]
         itemInfo["magnet"] = soup.find(class_ = "panel-footer").find_all("a")[-1].attrs["href"]
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取种子描述信息。")
         itemInfo["description"] = soup.find(id = "torrent-description").text
@@ -306,7 +306,7 @@ class waziNyaa:
             for comment in soup.find_all(class_ = "comment-panel"):
                 commentInfo = {}
                 commentInfo["name"] = comment.find("p").find("a").text
-                commentInfo["link"] = self.urls[site] + "user/" + comment.find("p").find("a").attrs["href"].split("/")[-1]
+                commentInfo["link"] = self.urls[int(site)] + "user/" + comment.find("p").find("a").attrs["href"].split("/")[-1]
                 commentInfo["extra"] = comment.find("p").text.strip().replace(commentInfo["name"], "").strip().replace("(", "").replace(")", "")
                 commentInfo["avatar"] = comment.find("img").attrs["src"]
                 commentInfo["time"] = comment.find(class_ = "comment-details").find("a").text
@@ -494,14 +494,14 @@ class waziNyaa:
                 href = row.find_all("td")[1].find_all("a")[-1]
                 rowInfo["title"] = href.attrs["title"]
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子链接。")
-                rowInfo["link"] = self.urls[site] + "view/" + href.attrs["href"].split("/")[-1]
+                rowInfo["link"] = self.urls[int(site)] + "view/" + href.attrs["href"].split("/")[-1]
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子 ID。")
                 rowInfo["id"] = int(href.attrs["href"].split("/")[-1])
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件下载地址。")
                 if "magnet:?xt=" in row.find_all("td")[2].find("a").attrs["href"]:
                     rowInfo["torrent"] = None
                 else:
-                    rowInfo["torrent"] = self.urls[site] + "download/" + row.find_all("td")[2].find("a").attrs["href"].split("/")[-1]
+                    rowInfo["torrent"] = self.urls[int(site)] + "download/" + row.find_all("td")[2].find("a").attrs["href"].split("/")[-1]
                 rowInfo["magnet"] = row.find_all("td")[2].find_all("a")[-1].attrs["href"]
                 waziLog.log("debug", f"({self.name}.{fuName}) 解析种子文件大小。")
                 rowInfo["size"] = row.find_all("td")[3].text
