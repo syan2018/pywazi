@@ -970,6 +970,89 @@ class waziAsianSister:
         waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，递交至 parseGallery。")
         return waziAsianSister.parseGallery(self, soup)
     
+    def createFolder(self, path):
+        """
+        waziAsianSister.createFolder(self, path)
+        *Darkness.*
+
+        Create a folder.
+
+        Parameters:
+            path: str
+                The path of the folder.
+        
+        Return:
+            Type: bool
+            The status of the creation.
+            True: Success.
+            False: Failed.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到路径信息，正在创建文件夹。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 路径信息： {path}。")
+        isExists = os.path.exists(self.fileName.toRight(path))
+        if not isExists:
+            os.makedirs(self.fileName.toRight(path))
+        waziLog.log("info", f"({self.name}.{fuName}) 文件夹创建完成。")
+
+    def downloadGallery(self, gallery, path, key = "org"):
+        """
+        waziAsianSister.downloadGallery(self, gallery, path, key = "org")
+        *Ring.*
+
+        Download the gallery.
+
+        Parameters:
+            gallery: str
+                The gallery.
+            
+            path: str
+                Path to save.
+            
+            key: str
+                The key of the file. Default: org.
+        
+        Return:
+            Type: tuple
+            Download Information.
+            (
+                list[str],                                      # The downloaded files.
+                list[str]                                       # The failed files' urls.
+            )
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到图集信息，正在生成 URL： {gallery}。")
+        url = "https://asiansister.com/" + gallery
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
+        soup = waziAsianSister.returnSoup(self, url)
+        waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，使用 parseGallery 获取信息。")
+        info = waziAsianSister.parseGallery(self, soup)
+        downloadFiles = []
+        cannotDownloadFiles = []
+        if "pictures" in info:
+            waziLog.log("debug", f"({self.name}.{fuName}) 存在图集信息，正在下载图集。")
+            waziLog.log("debug", f"({self.name}.{fuName}) 正在创建文件夹")
+            waziAsianSister.createFolder(self, os.path.join(path, info["title"]))
+            waziLog.log("debug", f"({self.name}.{fuName}) 文件夹创建完成，正在下载图集。")
+            for picture in info["pictures"]:
+                waziLog.log("debug", f"({self.name}.{fuName}) 正在下载图片： {picture[key]}。")
+                if waziAsianSister.downloadFile(self, picture[key], picture[key].split("/")[-1], os.path.join(path, info["title"])):
+                    waziLog.log("debug", f"({self.name}.{fuName}) 图片下载完成： {picture[key]}。")
+                    downloadFiles.append(os.path.join(os.path.join(path, info["title"]), picture[key].split("/")[-1]))
+                else:
+                    waziLog.log("warn", f"({self.name}.{fuName}) 图片下载失败： {picture[key]}。")
+                    cannotDownloadFiles.append(picture[key])
+        waziLog.log("info", f"({self.name}.{fuName}) 下载完成，数据返回。")
+        return (downloadFiles, cannotDownloadFiles)
+    
     def getVideo(self, video):
         """
         waziAsianSister.getVideo(self, video)
@@ -1016,7 +1099,46 @@ class waziAsianSister:
         soup = waziAsianSister.returnSoup(self, url)
         waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，递交至 parseVideo。")
         return waziAsianSister.parseVideo(self, soup)
+    
+    def downloadVideo(self, video, path):
+        """
+        waziAsianSister.downloadVideo(self, video, path)
+        *Ghost!*
 
+        Download the video.
+
+        Parameters:
+            video: str
+                The video.
+            
+            path: str
+                Path to save.
+        
+        Return:
+            Type: str or bool
+            If success: The path of the video, else return false.
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到视频信息，正在生成 URL： {video}。")
+        url = "https://asiansister.com/" + video
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 returnSoup 获取 Soup。")
+        soup = waziAsianSister.returnSoup(self, url)
+        waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，正在从 parseVideo 中获取信息。")
+        info = waziAsianSister.parseVideo(self, soup)
+        waziLog.log("debug", f"({self.name}.{fuName}) 从 parseVideo 中获取信息完成，正在下载视频。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在创建文件夹。")
+        waziAsianSister.createFolder(self, os.path.join(path, info["title"]))
+        if waziAsianSister.downloadFile(self, info["url"], info["url"].split("?")[0].split("/")[-1], os.path.join(path, info["title"])):
+            waziLog.log("info", f"({self.name}.{fuName}) 视频下载完成，返回路径。")
+            return os.path.join(path, os.path.join(os.path.join(path, info["title"]), info["url"].split("?")[0].split("/")[-1]))
+        else:
+            waziLog.log("warn", f"({self.name}.{fuName}) 视频下载失败，请重试或检查日志！")
+            return False
+        
     def customParse(self, content, type):
         """
         waziAsianSister.customParse(self, content, type)
