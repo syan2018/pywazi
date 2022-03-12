@@ -225,14 +225,16 @@ from pywazi import waziAsianSister, waziDanbooru, waziExHentai, waziJavBus, wazi
 
 > 像大海一样。
 
-如果你需要让所有的站点模块都用同一个 `params` 配置文件（记录了代理信息和请求头信息）的话，可以使用 `globalParamsByFile(filePath)` 函数以获取配置文件。
+在开发版中，你现在需要使用 `from pywazi import waziMain` 来导入配置模块。
+
+如果你需要让所有的站点模块都用同一个 `params` 配置文件（记录了代理信息和请求头信息）的话，可以使用 `waziMain.globalParamsByFile(filePath)` 函数以获取配置文件。
 
 如：
 
 ```python
 from pywazi import *
 
-globalParamsByFile('./config.json')
+waziMain.globalParamsByFile('./config.json')
 ```
 
 文件的格式应当如下：
@@ -258,7 +260,7 @@ globalParamsByFile('./config.json')
 ```python
 from pywazi import *
 
-globalParams({
+waziMain.globalParams({
     "useProxies": True,
     "proxyAddress": "127.0.0.1",
     "proxyPort": 1080
@@ -306,6 +308,10 @@ waziDanbooru.setApi("https://konachan.com")
     "name": "Danbooru",       // 即表示这是 Danbooru 的配置
     "params": {},             // 这里是 Params 内容，跟前文一致
     "url": "",                // 设置 Danbooru 类网站地址
+    "ports": [{               // 设置请求 API 路由，可以设置多个
+        "key": "",            // 设置 key
+        "value": ""           // 设置 value 可见 `waziDanbooru.setPort` 相关内容
+    }]
 }, {
     "name": "ExHentai",       // 即表示这是 ExHentai 的配置
     "params": {},             // 这里是 Params 内容，跟前文一致
