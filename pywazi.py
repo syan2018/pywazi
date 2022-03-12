@@ -15,8 +15,8 @@ from sites.waziDanbooru import waziDanbooru as Wdb
 from sites.waziExHentai import waziExHentai as Weh
 from sites.waziAsianSister import waziAsianSister as Was
 
-__VERSION__ = "1.4"
-__AUTHOR__ = "Yazawazi"
+__VERSION__ = "1.5 Dev"
+__AUTHOR__ = ["Acheron-x", "Yazawazi"]
 
 waziNyaa = Wn()
 waziJavBus = Wjb()

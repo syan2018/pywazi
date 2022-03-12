@@ -2,7 +2,12 @@
 
 > PyWazi 参考文档
 
-该文档使用的版本是与 GitHub 同步（2022.02.22）的 1.4 版本，最近更新时间是 2022.03.12。
+该文档使用的版本是 Dev 版本，最近更新时间是 2022.03.12。
+
+## 需要更新
+
++ Danbooru 扩展；
++ 模块拆分。
 
 ## 前言
 
@@ -1015,6 +1020,35 @@ error()
 该接口的参数为 `content` 字符串和 `type` 字符串。如果 `type` 是 `main / tag / search` 的话会让 `parseImagesAndVideos` 去解析，如果是 `person` 的话会通过 `parsePerson` 去做，如果是 `gallery` 的话会通过 `parseGallery` 去做，如果是 `video` 的话会通过 `parseVideo` 去做。
 
 `content` 字符串将与 `https://asiansister.com/` 进行拼接以获取完整的 URL。
+
+#### createFolder
+
+> 远远没有结束，正如我说的：“一直都在开始，一直都不会结束”
+
+使用该接口创建一个文件夹，用来给下载接口用的。需要一个参数：`path`，表示文件夹路径。
+
+#### downloadGallery
+
+> 我是说，我在写什么
+
+使用该接口下载一个画廊图片，需要三个参数：`gallery`, `path` 和 `key`。`gallery` 字符串应当是 `https://asiansister.com/...` 后面的内容，`path` 字符串应当是文件夹路径，`key` 字符串则表示下载时使用的 `key`，默认 `org` 表示原图，可以输入 `link` 下载缩略图。
+
+最后返回是元组，格式如下：
+
+```python
+(
+    list[str],                                      # 下载好的文件路径
+    list[str]                                       # 下载失败的文件 URL 地址
+)
+```
+
+#### downloadVideo
+
+> 我们万分惋惜的浪费着 用尽一切换来的纸张 —— 草东没有派对 我们
+
+使用该接口下载一个视频，需要两个参数：`video` 和 `path`。`video` 字符串应当是 `https://asiansister.com/...` 后面的内容，`path` 字符串应当是文件夹路径。
+
+如果下载成功，则返回下载文件的路径，否则返回 `False`。
 
 ### waziDanbooru
 
