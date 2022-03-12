@@ -56,12 +56,12 @@ class waziMain:
         Errors:
             None
         """
+        waziNyaa.giveParams(params)
         waziJavBus.giveParams(params)
         waziPicAcg.giveParams(params)
         waziDanbooru.giveParams(params)
         waziExHentai.giveParams(params)
         waziAsianSister.giveParams(params)
-        waziNyaa.giveParams(params)
         return params
 
     @staticmethod
@@ -93,12 +93,12 @@ class waziMain:
             None
         """
         jsonData = waziConfig.readConfig(filePath)
+        waziNyaa.giveParams(jsonData)
         waziJavBus.giveParams(jsonData)
         waziPicAcg.giveParams(jsonData)
         waziDanbooru.giveParams(jsonData)
         waziExHentai.giveParams(jsonData)
         waziAsianSister.giveParams(jsonData)
-        waziNyaa.giveParams(jsonData)
         return jsonData
 
     @staticmethod
