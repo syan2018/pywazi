@@ -2,7 +2,7 @@
 
 > PyWazi 参考文档
 
-该文档使用的版本是与 GitHub 同步（2022.02.22）的 1.4 版本，最近更新时间是 2022.02.22。
+该文档使用的版本是与 GitHub 同步（2022.02.22）的 1.4 版本，最近更新时间是 2022.03.12。
 
 ## 前言
 
@@ -1033,6 +1033,26 @@ error()
 > 摸鱼去了
 
 世界上有很多个 `Danbooru` 类网站，你可以通过这个接口设置当前所要爬取的 `Danbooru` 网站的主域名，参数是 `url` 字符串，返回值是你所设置的 `Danbooru` 网站的主域名。
+
+#### setPort
+
+> 迟来的，因为懒惰
+
+设置 `Danbooru` 类网站的请求接口，事实上，除了我举的 `yande.re` 或者 `konachan` 之类的，其他网站的请求可能不太一致，可以使用这个接口进行一个调整，默认接口如下：
+
+```python
+self.ports = {
+    "post": "/post.json",
+    "tag": "/tag.json",
+    "artist": "/artist.json",
+    "comment": "/comment/show.json",
+    "pool": "/pool.json",
+    "poolShow": "/pool/show.json",
+    "poolZip": "/pool/zip/"
+}
+```
+
+需要两个参数：`key` 和 `value`，表示你要设置的接口名称和接口地址，返回值是当前设置的所有接口信息。
 
 #### toAPIJson
 
