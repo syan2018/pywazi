@@ -1039,9 +1039,6 @@ class waziAsianSister:
         cannotDownloadFiles = []
         if "pictures" in info:
             waziLog.log("debug", f"({self.name}.{fuName}) 存在图集信息，正在下载图集。")
-            waziLog.log("debug", f"({self.name}.{fuName}) 正在创建文件夹")
-            waziAsianSister.createFolder(self, os.path.join(path, info["title"]))
-            waziLog.log("debug", f"({self.name}.{fuName}) 文件夹创建完成，正在下载图集。")
             for picture in info["pictures"]:
                 waziLog.log("debug", f"({self.name}.{fuName}) 正在下载图片： {picture[key]}。")
                 if waziAsianSister.downloadFile(self, picture[key], picture[key].split("/")[-1], os.path.join(path, info["title"])):
@@ -1130,11 +1127,9 @@ class waziAsianSister:
         waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，正在从 parseVideo 中获取信息。")
         info = waziAsianSister.parseVideo(self, soup)
         waziLog.log("debug", f"({self.name}.{fuName}) 从 parseVideo 中获取信息完成，正在下载视频。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 正在创建文件夹。")
-        waziAsianSister.createFolder(self, os.path.join(path, info["title"]))
         if waziAsianSister.downloadFile(self, info["url"], info["url"].split("?")[0].split("/")[-1], os.path.join(path, info["title"])):
             waziLog.log("info", f"({self.name}.{fuName}) 视频下载完成，返回路径。")
-            return os.path.join(path, os.path.join(os.path.join(path, info["title"]), info["url"].split("?")[0].split("/")[-1]))
+            return os.path.join(os.path.join(path, info["title"]), info["url"].split("?")[0].split("/")[-1])
         else:
             waziLog.log("warn", f"({self.name}.{fuName}) 视频下载失败，请重试或检查日志！")
             return False
