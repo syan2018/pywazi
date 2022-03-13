@@ -186,9 +186,12 @@ class waziAsianSister:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在合成请求参数。")
         tempParams = self.params
         tempParams["useHeaders"] = True
+        tempHeaders = self.headers
+        if "asiansister" in url:
+            tempHeaders["Referer"] = "https://asiansister.com/"
         waziLog.log("debug", f"({self.name}.{fuName}) 合成完毕： {tempParams}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在处理请求参数。")
-        requestParams = self.request.handleParams(tempParams, "get", url, self.headers, self.proxies)
+        requestParams = self.request.handleParams(tempParams, "get", url, tempHeaders, self.proxies)
         waziLog.log("debug", f"({self.name}.{fuName}) 处理完毕，正在修正文件名。")
         fileName = os.path.join(path, self.fileName.toRight(name))
         waziLog.log("debug", f"({self.name}.{fuName}) 文件名修正完成： {fileName}")
