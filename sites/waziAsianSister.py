@@ -293,7 +293,7 @@ class waziAsianSister:
                     comment["avatar"] = "https://asiansister.com/" + i.find("img").attrs["src"]
                 else:
                     comment["avatar"] = "https://asiansister.com/" + i.find_all("img")[1].attrs["src"]
-                comment["name"] = i.find("div", class_ = "commentText").find_all("div")[0].text.strip()
+                comment["name"] = i.find("div", class_ = "commentText").find_all("div")[0].text
                 comment["time"] = i.find("div", class_ = "commentText").find_all("div")[1].text.strip()
                 comment["content"] = i.find("div", class_ = "commentText").find_all("div")[2].text.strip()
                 video["comments"].append(comment)
@@ -437,7 +437,7 @@ class waziAsianSister:
                     comment["avatar"] = "https://asiansister.com/" + i.find("img").attrs["src"]
                 else:
                     comment["avatar"] = "https://asiansister.com/" + i.find_all("img")[1].attrs["src"]
-                comment["name"] = i.find("div", class_ = "commentText").find_all("div")[0].text.strip()
+                comment["name"] = i.find("div", class_ = "commentText").find_all("div")[0].text
                 comment["time"] = i.find("div", class_ = "commentText").find_all("div")[1].text.strip()
                 comment["content"] = i.find("div", class_ = "commentText").find_all("div")[2].text.strip()
                 gallery["comments"].append(comment)
@@ -1044,9 +1044,9 @@ class waziAsianSister:
             waziLog.log("debug", f"({self.name}.{fuName}) 存在图集信息，正在下载图集。")
             for picture in info["pictures"]:
                 waziLog.log("debug", f"({self.name}.{fuName}) 正在下载图片： {picture[key]}。")
-                if waziAsianSister.downloadFile(self, picture[key], picture[key].split("/")[-1], os.path.join(path, info["title"])):
+                if waziAsianSister.downloadFile(self, picture[key], picture[key].split("/")[-1], os.path.join(path, info["title"].strip())):
                     waziLog.log("debug", f"({self.name}.{fuName}) 图片下载完成： {picture[key]}。")
-                    downloadFiles.append(os.path.join(os.path.join(path, info["title"]), picture[key].split("/")[-1]))
+                    downloadFiles.append(os.path.join(os.path.join(path, info["title"].strip()), picture[key].split("/")[-1]))
                 else:
                     waziLog.log("warn", f"({self.name}.{fuName}) 图片下载失败： {picture[key]}。")
                     cannotDownloadFiles.append(picture[key])
@@ -1130,9 +1130,9 @@ class waziAsianSister:
         waziLog.log("debug", f"({self.name}.{fuName}) Soup 获取完成，正在从 parseVideo 中获取信息。")
         info = waziAsianSister.parseVideo(self, soup)
         waziLog.log("debug", f"({self.name}.{fuName}) 从 parseVideo 中获取信息完成，正在下载视频。")
-        if waziAsianSister.downloadFile(self, info["url"], info["url"].split("?")[0].split("/")[-1], os.path.join(path, info["title"])):
+        if waziAsianSister.downloadFile(self, info["url"], info["url"].split("?")[0].split("/")[-1], os.path.join(path, info["title"].strip())):
             waziLog.log("info", f"({self.name}.{fuName}) 视频下载完成，返回路径。")
-            return os.path.join(os.path.join(path, info["title"]), info["url"].split("?")[0].split("/")[-1])
+            return os.path.join(os.path.join(path, info["title"].strip()), info["url"].split("?")[0].split("/")[-1])
         else:
             waziLog.log("warn", f"({self.name}.{fuName}) 视频下载失败，请重试或检查日志！")
             return False
