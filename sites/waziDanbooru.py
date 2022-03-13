@@ -42,6 +42,9 @@ class waziDanbooru:
             Proxies for requests.
             Default: {'proxyAddress': '127.0.0.1', 'proxyPort': '7890'}
         
+        ports: dict
+            The ports of the API.
+        
         params: dict
             A dict of user params for requests. User can set the params in config.json.
         
@@ -73,6 +76,15 @@ class waziDanbooru:
         self.proxies = {
             "proxyAddress": "127.0.0.1",
             "proxyPort": "7890"
+        }
+        self.ports = {
+            "post": "/post.json",
+            "tag": "/tag.json",
+            "artist": "/artist.json",
+            "comment": "/comment/show.json",
+            "pool": "/pool.json",
+            "poolShow": "/pool/show.json",
+            "poolZip": "/pool/zip/"
         }
         self.params = {}
         self.name = self.__class__.__name__
@@ -125,6 +137,33 @@ class waziDanbooru:
         self.api = url
         waziLog.log("info", f"({self.name}.{fuName}) 写入完成，目前 API 地址为： {self.api}")
         return self.api
+    
+    def setPort(self, key, value):
+        """
+        waziDanbooru.setPort(self, key, value)
+        *〇〇*
+
+        Set the API port.
+
+        Parameters:
+            key: str
+                The key of the port.
+            value: str
+                The value of the port.
+
+        Return:
+            Type: str
+            The current API port.
+        
+        Errors:
+            None
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 Danbooru 类网站 API 端口，正在写入配置。")
+        waziLog.log("debug", f"({self.name}.{fuName}) 端口键为： {key}，请求地址为： {value}")
+        self.ports[key] = value
+        waziLog.log("info", f"({self.name}.{fuName}) 写入完成！")
+        return self.ports
 
     def toAPIJson(self, port, params):
         """
@@ -254,7 +293,7 @@ class waziDanbooru:
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
-        return waziDanbooru.toAPIJson(self, "/post.json", params)
+        return waziDanbooru.toAPIJson(self, self.ports["post"], params)
 
     def downloadFile(self, url, orgName, path):
         """
@@ -688,7 +727,7 @@ class waziDanbooru:
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
-        return waziDanbooru.toAPIJson(self, "/tag.json", params)
+        return waziDanbooru.toAPIJson(self, self.ports["tag"], params)
 
     def getArtists(self, page, order):
         """
@@ -737,7 +776,7 @@ class waziDanbooru:
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
-        return waziDanbooru.toAPIJson(self, "/artist.json", params)
+        return waziDanbooru.toAPIJson(self, self.ports["artist"], params)
 
     def getComment(self, commentId):
         """
@@ -776,7 +815,7 @@ class waziDanbooru:
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
-        return waziDanbooru.toAPIJson(self, "/comment/show.json", params)
+        return waziDanbooru.toAPIJson(self, self.ports["comment"], params)
 
     def getPools(self, query, page):
         """
@@ -821,7 +860,7 @@ class waziDanbooru:
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
-        return waziDanbooru.toAPIJson(self, "/pool.json", params)
+        return waziDanbooru.toAPIJson(self, self.ports["pool"], params)
 
     def getPoolFromId(self, poolId, page):
         """
@@ -904,7 +943,7 @@ class waziDanbooru:
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
-        return waziDanbooru.toAPIJson(self, "/pool/show.json", params)
+        return waziDanbooru.toAPIJson(self, self.ports["poolShow"], params)
 
     def downloadPool(self, poolId, page, path, key = "file_url"):
         """
@@ -955,7 +994,7 @@ class waziDanbooru:
         }
         waziLog.log("debug", f"({self.name}.{fuName}) 请求参数创建完成： {params}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
-        lists = waziDanbooru.toAPIJson(self, "/pool/show.json", params)
+        lists = waziDanbooru.toAPIJson(self, self.ports["poolShow"], params)
         if not lists:
             waziLog.log("error", f"({self.name}.{fuName}) 无法获取该页内容，返回空元组。")
             return [], []
@@ -1002,9 +1041,9 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 收到图集 ID、是否需要 JPG 格式信息和路径，正在合成 URL。")
         waziLog.log("debug", f"({self.name}.{fuName}) 图集 ID： {poolId}， 是否需要 JPG 格式： {needJPG}， 路径： {path}")
         if needJPG:
-            url = urllib.parse.urljoin(self.api, f"/pool/zip/{poolId}?jpeg=1")
+            url = urllib.parse.urljoin(self.api, f"{self.ports['poolShow']}{poolId}?jpeg=1")
         else:
-            url = urllib.parse.urljoin(self.api, f"/pool/zip/{poolId}")
+            url = urllib.parse.urljoin(self.api, f"{self.ports['poolShow']}{poolId}")
         waziLog.log("debug", f"({self.name}.{fuName}) 合成完成： {url}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 downloadFile 下载。")
         if waziDanbooru.downloadFile(self, url, f"{poolId}.zip", path):

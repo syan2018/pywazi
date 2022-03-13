@@ -2,7 +2,7 @@
 
 > PyWazi 参考文档
 
-该文档使用的版本是与 GitHub 同步（2022.02.22）的 1.4 版本，最近更新时间是 2022.03.12。
+该文档使用的版本是 1.5 版本，最近更新时间是 2022.03.13。
 
 ## 前言
 
@@ -220,14 +220,16 @@ from pywazi import waziAsianSister, waziDanbooru, waziExHentai, waziJavBus, wazi
 
 > 像大海一样。
 
-如果你需要让所有的站点模块都用同一个 `params` 配置文件（记录了代理信息和请求头信息）的话，可以使用 `globalParamsByFile(filePath)` 函数以获取配置文件。
+在开发版中，你现在需要使用 `from pywazi import waziMain` 来导入配置模块。
+
+如果你需要让所有的站点模块都用同一个 `params` 配置文件（记录了代理信息和请求头信息）的话，可以使用 `waziMain.globalParamsByFile(filePath)` 函数以获取配置文件。
 
 如：
 
 ```python
 from pywazi import *
 
-globalParamsByFile('./config.json')
+waziMain.globalParamsByFile('./config.json')
 ```
 
 文件的格式应当如下：
@@ -253,7 +255,7 @@ globalParamsByFile('./config.json')
 ```python
 from pywazi import *
 
-globalParams({
+waziMain.globalParams({
     "useProxies": True,
     "proxyAddress": "127.0.0.1",
     "proxyPort": 1080
@@ -301,6 +303,10 @@ waziDanbooru.setApi("https://konachan.com")
     "name": "Danbooru",       // 即表示这是 Danbooru 的配置
     "params": {},             // 这里是 Params 内容，跟前文一致
     "url": "",                // 设置 Danbooru 类网站地址
+    "ports": [{               // 设置请求 API 路由，可以设置多个
+        "key": "",            // 设置 key
+        "value": ""           // 设置 value 可见 `waziDanbooru.setPort` 相关内容
+    }]
 }, {
     "name": "ExHentai",       // 即表示这是 ExHentai 的配置
     "params": {},             // 这里是 Params 内容，跟前文一致
@@ -1016,6 +1022,35 @@ error()
 
 `content` 字符串将与 `https://asiansister.com/` 进行拼接以获取完整的 URL。
 
+#### createFolder
+
+> 远远没有结束，正如我说的：“一直都在开始，一直都不会结束”
+
+使用该接口创建一个文件夹，用来给下载接口用的。需要一个参数：`path`，表示文件夹路径。
+
+#### downloadGallery
+
+> 我是说，我在写什么
+
+使用该接口下载一个画廊图片，需要三个参数：`gallery`, `path` 和 `key`。`gallery` 字符串应当是 `https://asiansister.com/...` 后面的内容，`path` 字符串应当是文件夹路径，`key` 字符串则表示下载时使用的 `key`，默认 `org` 表示原图，可以输入 `link` 下载缩略图。
+
+最后返回是元组，格式如下：
+
+```python
+(
+    list[str],                                      # 下载好的文件路径
+    list[str]                                       # 下载失败的文件 URL 地址
+)
+```
+
+#### downloadVideo
+
+> 我们万分惋惜的浪费着 用尽一切换来的纸张 —— 草东没有派对 我们
+
+使用该接口下载一个视频，需要两个参数：`video` 和 `path`。`video` 字符串应当是 `https://asiansister.com/...` 后面的内容，`path` 字符串应当是文件夹路径。
+
+如果下载成功，则返回下载文件的路径，否则返回 `False`。
+
 ### waziDanbooru
 
 > 神明伟大，开放世界的创始逻辑和日志
@@ -1033,6 +1068,26 @@ error()
 > 摸鱼去了
 
 世界上有很多个 `Danbooru` 类网站，你可以通过这个接口设置当前所要爬取的 `Danbooru` 网站的主域名，参数是 `url` 字符串，返回值是你所设置的 `Danbooru` 网站的主域名。
+
+#### setPort
+
+> 迟来的，因为懒惰
+
+设置 `Danbooru` 类网站的请求接口，事实上，除了我举的 `yande.re` 或者 `konachan` 之类的，其他网站的请求可能不太一致，可以使用这个接口进行一个调整，默认接口如下：
+
+```python
+self.ports = {
+    "post": "/post.json",
+    "tag": "/tag.json",
+    "artist": "/artist.json",
+    "comment": "/comment/show.json",
+    "pool": "/pool.json",
+    "poolShow": "/pool/show.json",
+    "poolZip": "/pool/zip/"
+}
+```
+
+需要两个参数：`key` 和 `value`，表示你要设置的接口名称和接口地址，返回值是当前设置的所有接口信息。
 
 #### toAPIJson
 
