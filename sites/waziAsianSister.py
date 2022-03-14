@@ -293,7 +293,7 @@ class waziAsianSister:
                     comment["avatar"] = "https://asiansister.com/" + i.find("img").attrs["src"]
                 else:
                     comment["avatar"] = "https://asiansister.com/" + i.find_all("img")[1].attrs["src"]
-                comment["name"] = i.find("div", class_ = "commentText").find_all("div")[0].text
+                comment["name"] = i.find("div", class_ = "commentText").find_all("div")[0].text.strip()
                 comment["time"] = i.find("div", class_ = "commentText").find_all("div")[1].text.strip()
                 comment["content"] = i.find("div", class_ = "commentText").find_all("div")[2].text.strip()
                 video["comments"].append(comment)
@@ -437,7 +437,7 @@ class waziAsianSister:
                     comment["avatar"] = "https://asiansister.com/" + i.find("img").attrs["src"]
                 else:
                     comment["avatar"] = "https://asiansister.com/" + i.find_all("img")[1].attrs["src"]
-                comment["name"] = i.find("div", class_ = "commentText").find_all("div")[0].text
+                comment["name"] = i.find("div", class_ = "commentText").find_all("div")[0].text.strip()
                 comment["time"] = i.find("div", class_ = "commentText").find_all("div")[1].text.strip()
                 comment["content"] = i.find("div", class_ = "commentText").find_all("div")[2].text.strip()
                 gallery["comments"].append(comment)
