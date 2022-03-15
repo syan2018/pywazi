@@ -289,7 +289,7 @@ class waziAsianSister:
                     comment["user"] = "vip"
                 else:
                     comment["user"] = "user"
-                if comments["user"] == "user":
+                if comment["user"] == "user":
                     comment["avatar"] = "https://asiansister.com/" + i.find("img").attrs["src"]
                 else:
                     comment["avatar"] = "https://asiansister.com/" + i.find_all("img")[1].attrs["src"]
@@ -433,7 +433,7 @@ class waziAsianSister:
                     comment["user"] = "vip"
                 else:
                     comment["user"] = "user"
-                if comments["user"] == "user":
+                if comment["user"] == "user":
                     comment["avatar"] = "https://asiansister.com/" + i.find("img").attrs["src"]
                 else:
                     comment["avatar"] = "https://asiansister.com/" + i.find_all("img")[1].attrs["src"]
