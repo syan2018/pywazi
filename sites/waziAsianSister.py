@@ -935,7 +935,7 @@ class waziAsianSister:
                 "pictures": list[dict{"link": str, "org": str}],    # The pictures of the gallery.
                                                                     # org: The original picture.
                 "pageNum": int,                                     # The number of the pictures.
-                "comments": list[dict{                              # The comments of the video.
+                "comments": list[dict{                              # The comments of the gallery.
                     "user": str,                                    # The user group.
                     "avatar": str,                                  # The avatar link.
                     "name": str,                                    # The name of the user.
