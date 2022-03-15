@@ -4,6 +4,8 @@ sites/waziDanbooru.py
 class: waziDanbooru
 """
 
+# 需要反反爬虫的机制和其他接口路径的更便捷的支持
+
 import os
 import json
 import urllib.parse
