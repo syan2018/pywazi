@@ -284,11 +284,11 @@ class waziAsianSister:
             for i in comments.find_all("div", {"style": "padding:15px 10px;"}):
                 comment = {}
                 if i.find("img").attrs["src"] == "images/icon/admin.png":
-                    comments["user"] = "admin"
+                    comment["user"] = "admin"
                 elif i.find("img").attrs["src"] == "images/icon/vip.png":
-                    comments["user"] = "vip"
+                    comment["user"] = "vip"
                 else:
-                    comments["user"] = "user"
+                    comment["user"] = "user"
                 if comments["user"] == "user":
                     comment["avatar"] = "https://asiansister.com/" + i.find("img").attrs["src"]
                 else:
@@ -428,11 +428,11 @@ class waziAsianSister:
             for i in comments.find_all("div", {"style": "padding:15px 10px;"}):
                 comment = {}
                 if i.find("img").attrs["src"] == "images/icon/admin.png":
-                    comments["user"] = "admin"
+                    comment["user"] = "admin"
                 elif i.find("img").attrs["src"] == "images/icon/vip.png":
-                    comments["user"] = "vip"
+                    comment["user"] = "vip"
                 else:
-                    comments["user"] = "user"
+                    comment["user"] = "user"
                 if comments["user"] == "user":
                     comment["avatar"] = "https://asiansister.com/" + i.find("img").attrs["src"]
                 else:
