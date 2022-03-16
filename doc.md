@@ -2,7 +2,7 @@
 
 > PyWazi 参考文档
 
-该文档使用的版本是 1.5 版本，最近更新时间是 2022.03.13。
+该文档使用的版本是 1.5 版本，最近更新时间是 2022.03.17。
 
 ## 前言
 
@@ -835,7 +835,7 @@ error()
         "name": str,                                # 评论者的名字
         "time": str,                                # 评论时间
         "content": str                              # 评论内容
-    }],                                           
+    }],                                         
     "recommends": list[dict{                        # 该视频的有关推荐
         "title": str,                               # 推荐视频的标题
         "link": str,                                # 推荐视频的地址
@@ -869,7 +869,7 @@ error()
         "name": str,                                    # 评论者的名字
         "time": str,                                    # 评论时间
         "content": str                                  # 评论内容
-    }],                                               
+    }],                                             
     "galleries": list[dict{                             # 画廊的推荐画廊
         "link": str,                                    # 推荐画廊的地址
         "cover": str,                                   # 推荐画廊的封面
@@ -1160,6 +1160,8 @@ waziDanbooru.toAPIJson('/posts.json', {'tags': 'tag1 tag2'})
 
 该接口用于从 `Posts` 列表中下载链接。分别是 `posts` 列表，代表 `post` 的信息；`path` 字符串，代表保存文件的路径，`key` 字符串，代表指定下载链接的 `key`，返回一个有下载信息的 `tuple`，格式是：
 
+更新一下，现在有另外一个参数叫 `ext`，应当是字符串，表示 `Referer` 信息，如果没有则不设置。对了，现在开始所有的 `Danbooru` 请求都得携带请求头了，包括基本的 `UA` 和 `Host`，而 `Referer` 交给用户设置。
+
 ```python
 (
     list[str],                                      # 下载的文件
@@ -1172,6 +1174,8 @@ waziDanbooru.toAPIJson('/posts.json', {'tags': 'tag1 tag2'})
 > 我们无法观测物自体，正如我们无法了解任何事件的绝对真相。我们能看到的东西或许都是别人想让我们看到的 -A
 
 从 API 处下载 `posts` 图片，是 `download` 和 `getPosts` 的友善写法，接口有五个参数。依次是 `page` 字符串或整数，表示页码，从 1 开始；`tag` 是字符串，表示标签；`limit` 是整数或是字符串，表示 `posts` 的上限，最大为 `40`（不同网站或有不同的 limit）；`path` 字符串，代表文件保存的路径；`key` 字符串是下载文件地址对应的键，默认为 `file_url`，返回一个有下载信息的 `tuple`，格式同上不多赘述。
+
+现在有一个 `ext` 参数，不是上文所述的字符串，而是布尔值，表示是否自动设置 `Referer` 信息。
 
 #### getSizeLimit
 
@@ -3774,7 +3778,7 @@ PicAcg 是一个让你可以轻松看到不同的本子的程式，据说官方�
     "message": str,                                 # 返回信息
     "data": {                                       # 返回数据
         "isTop": bool                               # 是否置顶
-    }        
+    }      
 }
 ```
 

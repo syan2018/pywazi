@@ -199,7 +199,11 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 请求接口： {port}， GET 参数： {params}")
         url = self.URL.getFullURL(urllib.parse.urljoin(self.api, port), params)
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziRequest 获取完整的参数。")
-        tempParams = self.request.handleParams(self.params, "get", url, self.headers, self.proxies)
+        handleParams = self.params
+        handleParams["useHeaders"] = True
+        tempHeaders = self.headers
+        tempHeaders["Host"] = self.api.split("//")[1].split("/")[0]
+        tempParams = self.request.handleParams(handleParams, "get", url, tempHeaders, self.proxies)
         waziLog.log("debug", f"({self.name}.{fuName}) 完整的参数获取完成： {tempParams}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在尝试通过 waziRequest 请求 URL。")
         try:
@@ -344,7 +348,11 @@ class waziDanbooru:
             else:
                 waziLog.log("debug", f"({self.name}.{fuName}) 成功创建，继续执行。")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在处理请求参数。")
-        requestParams = self.request.handleParams(self.params, "get", url, self.headers, self.proxies)
+        tempParams = self.params
+        tempParams["useHeaders"] = True
+        tempHeaders = self.headers
+        tempHeaders["Host"] = self.api.split("//")[1].split("/")[0]
+        requestParams = self.request.handleParams(tempParams, "get", url, tempHeaders, self.proxies)
         waziLog.log("debug", f"({self.name}.{fuName}) 处理完毕，正在修正文件名。")
         fileName = os.path.join(path, self.fileName.toRight(orgName))
         waziLog.log("debug", f"({self.name}.{fuName}) 文件名修正完成： {fileName}")
@@ -362,9 +370,9 @@ class waziDanbooru:
         waziLog.log("info", f"({self.name}.{fuName}) 文件： {fileName}， 完成。")
         return True
 
-    def download(self, posts, path, key):
+    def download(self, posts, path, key, ext):
         """
-        waziDanbooru.download(self, posts, path, key)
+        waziDanbooru.download(self, posts, path, key, ext)
         *Self-reproach.*
 
         Download the file from the posts with key.
@@ -378,6 +386,9 @@ class waziDanbooru:
             
             key: str
                 The key of the posts to download.
+            
+            ext: str
+                The extension of the Referer.
         
         Return:
             Type: tuple
@@ -429,7 +440,13 @@ class waziDanbooru:
                 return [], []
             waziLog.log("debug", f"({self.name}.{fuName}) 目前正在处理的信息： {i}")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziRequest 请求： {i[key]}")
-            requestParams = self.request.handleParams(self.params, "get", i[key], self.headers, self.proxies)
+            tempHeaders = self.headers
+            tempParams = self.params
+            if ext:
+                tempHeaders["Referer"] = ext
+            tempHeaders["Host"] = self.api.split("//")[1].split("/")[0]
+            tempParams["useHeaders"] = True
+            requestParams = self.request.handleParams(tempParams, "get", i[key], tempHeaders, self.proxies)
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取下载文件路径。")
             fileName = os.path.join(path, self.fileName.toRight(str(i["id"]) + "." + i[key].split(".")[-1]))
             waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {fileName}")
@@ -449,9 +466,9 @@ class waziDanbooru:
         waziLog.log("info", f"({self.name}.{fuName}) 完成下载，返回元组为： {(downloadFiles, cantDownload)}")
         return downloadFiles, cantDownload
 
-    def downloadPosts(self, page, tags, limit, path, key = "file_url"):
+    def downloadPosts(self, page, tags, limit, path, key = "file_url", ext = False):
         """
-        waziDanbooru.downloadPosts(self, page, tags, limit, path, key = "file_url")
+        waziDanbooru.downloadPosts(self, page, tags, limit, path, key = "file_url", ext = False)
         *Go and work.*
 
         Download posts from API.
@@ -472,6 +489,9 @@ class waziDanbooru:
             key: str
                 The key of the download file URL.
                 Default is "file_url".
+            
+            ext: bool
+                Whether to use the referer.
         
         Return:
             Type: tuple
@@ -492,7 +512,27 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 准备递交 getPosts 获取 API 信息列表。")
         lists = waziDanbooru.getPosts(self, page, tags, limit)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
-        return waziDanbooru.download(self, lists, path, key)
+        if ext:
+            params = {
+                "page": str(page),
+                "tags": tags,
+                "limit": str(limit)
+            }
+            return waziDanbooru.download(
+                self,
+                lists,
+                path,
+                key,
+                self.URL.getFullURL(urllib.parse.urljoin(self.api, self.ports["post"]), params
+            ))
+        else:
+            return waziDanbooru.download(
+                self,
+                lists,
+                path,
+                key,
+                ""
+            )
 
     def getSizeLimit(self, size):
         """
