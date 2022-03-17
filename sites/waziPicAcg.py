@@ -305,6 +305,48 @@ class waziPicAcg:
             self.headers["authorization"] = ""
         waziLog.log("debug", f"({self.name}.{fuName}) 递交至 normalUP 处理。")
         return waziPicAcg.normalUP(self, tempParams, url, data, method, jsonNeed)
+    
+    def forHeaderYesUP(self, url, data, method, jsonNeed):
+        """
+        waziPicAcg.forHeaderYesUP(self, url, data, method, jsonNeed)
+        *Kind be nice.*
+
+        Send a request without sign and auth but with Headers.
+
+        Parameters:
+            url: str
+                The url of request.
+            
+            data: object
+                The data of request.
+            
+            method: str
+                The method of request.
+            
+            jsonNeed: bool
+                Whether need return json.
+        
+        Return:
+            jsonNeed: True
+                Type: list or dict Object.
+            
+            jsonNeed: False
+                Type: urllib3.response.HTTPResponse
+        
+        Errors:
+            Python:
+                Perhaps there are potential errors.
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到 URL，数据，请求方式和是否返回 JSON 信息，正在请求。")
+        waziLog.log("debug", f"({self.name}.{fuName}) URL： {url}， 数据： {data}， 请求方式： {method}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 是否返回 JSON 信息： {jsonNeed}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 正在修改用户参数。")
+        tempParams = self.params
+        tempParams["useHeaders"] = True
+        waziLog.log("debug", f"({self.name}.{fuName}) 修改完成： {tempParams}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 递交至 normalUP 处理。")
+        return waziPicAcg.normalUP(self, tempParams, url, data, method, jsonNeed)
 
     def justUP(self, url, data, method, jsonNeed):
         """
@@ -3292,8 +3334,8 @@ class waziPicAcg:
                 fileServer = "https://storage1.picacomic.com"
             waziLog.log("debug", f"({self.name}.{fuName}) fileServer 为 {fileServer}")
             waziLog.log("debug", f"({self.name}.{fuName}) 正在发起请求。")
-            temp = waziPicAcg.justUP(self, waziPicAcg.getSinglePage(self, fileServer, i["media"]["path"]),
-                                     None, "GET", False)
+            temp = waziPicAcg.forHeaderYesUP(self, waziPicAcg.getSinglePage(self, fileServer, i["media"]["path"]),
+                                             None, "GET", False)
             waziLog.log("debug", f"({self.name}.{fuName}) 请求发起完成，正在写入。")
             with open(os.path.join(path, self.fileName.toRight(comicName), self.fileName.toRight(docTitle),
                                    self.fileName.toRight(i["media"]["originalName"])), "wb") as f:
