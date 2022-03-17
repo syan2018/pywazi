@@ -3178,11 +3178,11 @@ class waziPicAcg:
         thumbs = waziPicAcg.getThumbImageLink(self, comicId)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成： {thumbs}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建文件夹。")
-        waziPicAcg.createFolder(self, path, thumbs[1])
+        waziPicAcg.createFolder(self, path, thumbs[1].strip())
         waziLog.log("debug", f"({self.name}.{fuName}) 创建完成，正在发起请求。")
         temp = waziPicAcg.justUP(self, thumbs[2], None, "GET", False)
         waziLog.log("debug", f"({self.name}.{fuName}) 发起完成，正在写入。")
-        filePath = os.path.join(path, self.fileName.toRight(thumbs[1]), "thumb_" + self.fileName.toRight(thumbs[0]))
+        filePath = os.path.join(path, self.fileName.toRight(thumbs[1].strip()), "thumb_" + self.fileName.toRight(thumbs[0]))
         with open(filePath, "wb") as f:
             f.write(temp.data)
         waziLog.log("info", f"({self.name}.{fuName}) 已写入到： {filePath}")
@@ -3338,8 +3338,10 @@ class waziPicAcg:
             temp = waziPicAcg.forHeaderYesUP(self, waziPicAcg.getSinglePage(self, fileServer, i["media"]["path"]),
                                              None, "GET", False)
             waziLog.log("debug", f"({self.name}.{fuName}) 请求发起完成，正在写入。")
-            with open(os.path.join(path, self.fileName.toRight(comicName), self.fileName.toRight(docTitle),
-                                   self.fileName.toRight(i["media"]["originalName"])), "wb") as f:
+            with open(os.path.join(path, self.fileName.toRight(comicName).strip(),
+                                   self.fileName.toRight(docTitle).strip(),
+                                   self.fileName.toRight(i["media"]["originalName"]).strip()
+                                   ), "wb") as f:
                 f.write(temp.data)
             waziLog.log("debug", f"({self.name}.{fuName}) 写入完成。")
     
@@ -3511,7 +3513,7 @@ class waziPicAcg:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在进入循环。")
         for i in epsList:
             waziLog.log("debug", f"({self.name}.{fuName}) 正在创建文件夹。")
-            waziPicAcg.createFolderEps(self, path, comicName, i["title"])
+            waziPicAcg.createFolderEps(self, path, comicName.strip(), i["title"].strip())
             waziLog.log("debug", f"({self.name}.{fuName}) 正在获取详细内容。")
             pageInfo = waziPicAcg.getComicPages(self, comicId, i["order"], 1)
             waziLog.log("debug", f"({self.name}.{fuName}) 正在下载。")
