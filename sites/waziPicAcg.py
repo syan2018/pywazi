@@ -3498,7 +3498,6 @@ class waziPicAcg:
         comicInfo = waziPicAcg.getComic(self, comicId)
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，正在获取漫画名和分页。")
         comicName = comicInfo["data"]["comic"]["title"]
-        eps = comicInfo["data"]["comic"]["epsCount"]
         waziLog.log("debug", f"({self.name}.{fuName}) 正在将所有的分页信息收集起来。")
         epsList = []
         epsInfo = waziPicAcg.getComicEps(self, comicId, 1)
