@@ -1920,7 +1920,7 @@ class waziExHentai:
             "size": soup.find_all(class_ = "gdt2")[4].get_text(),
             "pages": int(soup.find_all(class_ = "gdt2")[5].get_text().split(" ")[0]),
             "favTimes": int(soup.find_all(class_ = "gdt2")[6].get_text().split(" ")[0]),
-            "uploader": soup.find_all(id = "gdn")[0].get_text(),
+            "uploader": uploader,
             "uploaderURL": uploaderURL,
             "rate": float(soup.find_all(id = "rating_label")[0].get_text().split("Average: ")[1]),
             "cover": soup.find_all(id = "gd1")[0].div.attrs["style"].split("(")[1].split(")")[0]
