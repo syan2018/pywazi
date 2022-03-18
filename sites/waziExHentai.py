@@ -1902,6 +1902,10 @@ class waziExHentai:
             tags.append(tagName)
         waziLog.log("debug", f"({self.name}.{fuName}) 标签获取完毕： {tags}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取剩余信息。")
+        uploader = soup.find_all(id = "gdn")[0].get_text()
+        uploaderURL = None
+        if soup.find_all(id = "gdn")[0].a:
+            uploaderURL = soup.find_all(id = "gdn")[0].a.attrs["href"]
         info = {
             "title": soup.h1.get_text(),
             "jTitle": soup.find_all(id = "gj")[0].get_text(),
@@ -1916,8 +1920,8 @@ class waziExHentai:
             "size": soup.find_all(class_ = "gdt2")[4].get_text(),
             "pages": int(soup.find_all(class_ = "gdt2")[5].get_text().split(" ")[0]),
             "favTimes": int(soup.find_all(class_ = "gdt2")[6].get_text().split(" ")[0]),
-            "uploader": soup.find_all(id = "gdn")[0].a.get_text(),
-            "uploaderURL": soup.find_all(id = "gdn")[0].a.attrs["href"],
+            "uploader": soup.find_all(id = "gdn")[0].get_text(),
+            "uploaderURL": uploaderURL,
             "rate": float(soup.find_all(id = "rating_label")[0].get_text().split("Average: ")[1]),
             "cover": soup.find_all(id = "gd1")[0].div.attrs["style"].split("(")[1].split(")")[0]
         }
