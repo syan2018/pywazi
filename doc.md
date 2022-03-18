@@ -2,7 +2,7 @@
 
 > PyWazi 参考文档
 
-该文档使用的版本是 1.5 版本，最近更新时间是 2022.03.17。
+该文档使用的版本是 1.5 版本，最近更新时间是 2022.03.19。
 
 ## 前言
 
@@ -239,7 +239,14 @@ waziMain.globalParamsByFile('./config.json')
 {
     "useProxies": True,             # 要不要用代理
     "proxyAddress": "127.0.0.1",    # 代理地址
-    "proxyPort": 7890,              # 代理端口（整数或者字符串）
+    "proxyPort": 7890,              # 代理端口（整数或者字符串）（事实上，这是 HTTP 代理）
+    "advancedProxies": {            # 如果你没有 HTTP 代理的话，可以填写这个
+        "protocol": "socks5",       # 代理协议
+        "username": "username",     # 代理用户名
+        "password": "password",     # 代理密码
+        "host": "127.0.0.1",        # 代理地址
+        "port": 7890                # 代理端口（整数或者字符串）
+    }
     "useHeaders": True,             # 要不要用请求头（不需要写这个其实，程序会自己写好的）
     "headers": {}                   # 自定义请求头（字典，同样，程序会自动补全的）
 }
@@ -666,6 +673,20 @@ error()
 
 如果你在用户配置里面设置了开启代理，却没有指定代理地址，那么默认或会使用 `http://127.0.0.1:7890` 作为代理。
 
+#### editProxiesWithAllInfo
+
+> 差不多
+
+修改代理，但是不单单是上文的 `HTTP` 代理，你需要以下几个参数：
+
++ `protocol`: 代理协议，字符串；
++ `username`: 代理用户名，没有写 None，有写字符串；
++ `password`: 代理密码，没有写 None，有写字符串；
++ `host`: 代理主机名，字符串；
++ `port`: 代理端口，整数或字符串。
+
+如果 `protocol` 没有就直接返回 `None`，`username` 和 `password` 缺一不可，否则就不添加验证信息。
+
 #### useHeaders
 
 > 辨别我的身份，我需要守卫我的家园。
@@ -799,6 +820,13 @@ error()
     "useProxies": True,             # 要不要用代理
     "proxyAddress": "127.0.0.1",    # 代理地址
     "proxyPort": 7890,              # 代理端口（整数或者字符串）
+    "advancedProxies": {            # 如果你没有 HTTP 代理的话，可以填写这个
+        "protocol": "socks5",       # 代理协议
+        "username": "username",     # 代理用户名
+        "password": "password",     # 代理密码
+        "host": "127.0.0.1",        # 代理地址
+        "port": 7890                # 代理端口（整数或者字符串）
+    }
     "useHeaders": True,             # 要不要用请求头（不需要写这个其实，程序会自己写好的）
     "headers": {}                   # 自定义请求头（字典，同样，程序会自动补全的）
 }

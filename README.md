@@ -3,12 +3,12 @@
 </p>
 
 <p align="center">
-PyWazi 是一个针对一些网站的数据采集、处理和操作模块，使用 Python3 语言。目前版本为 1.4，如果你有想法或在使用中出现问题了，欢迎提出 issue。
+PyWazi 是一个针对一些网站的数据采集、处理和操作模块，使用 Python3 语言。目前版本为 1.5，如果你有想法或在使用中出现问题了，欢迎提出 issue。
 </p>
 
 <p align="center">
 <a href="https://www.python.org/"><img src="https://shields.io/badge/Python-3-green?style=flat-square" /></a>
-<a href="https://github.com/Yazawazi/pywazi"><img src="https://shields.io/badge/Version-1.4-green?style=flat-square" /></a>
+<a href="https://github.com/Yazawazi/pywazi"><img src="https://shields.io/badge/Version-1.5-green?style=flat-square" /></a>
 </p>
 
 > 其实没有什么好说的。
@@ -49,7 +49,7 @@ PyWazi 是一个针对一些网站的数据采集、处理和操作模块，使�
 ## 开发文档
 参见 `doc.md` 或访问 https://yazawazi.github.io/pywazi/。
 
-在新版本中，请使用 `help()` 函数直接获取内嵌文档。
+在新版本中，可以使用 `help()` 函数直接获取内嵌文档。
 
 ## 有什么用
 你可以单独使用 PyWazi 来进行开发爬虫，也可以使用该模块开发其他开源项目。

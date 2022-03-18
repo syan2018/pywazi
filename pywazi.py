@@ -44,6 +44,7 @@ class waziMain:
                     "useProxies": bool,                 # Whether to use proxies.
                     "proxyAddress": str,                # The address of the proxy.
                     "proxyPort": int or str,            # The port of the proxy.
+                    "advancedProxies": dict or None,    # The advanced parameters of the proxy.
                     "useHeaders": bool,                 # (*) Whether to use headers.
                     "headers": dict,                    # (*) The custom headers.
                 }
