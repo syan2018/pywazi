@@ -81,6 +81,63 @@ class waziRequest:
         self.isUseProxies = isUse
         waziLog.log("info", f"({self.name}.{fuName}) 写入完成，目前配置为： {self.isUseProxies}")
         return self.isUseProxies
+    
+    def editProxiesWithAllInfo(self, protocol, username, password, host, port):
+        """
+        waziRequest.editProxiesWithAllInfo(self, protocol, username, password, host, port)
+        *socks5h / tor / http://exhentai55ld2wyap5juskbm67czulomrouspdacjamjeloj7ugjbsad.onion/ *
+
+        Set the proxy address but with all info.
+
+        Parameters:
+            protocol: str or None
+                The proxy protocol.
+            
+            username: str or None
+                The proxy username.
+            
+            password: str or None
+                The proxy password.
+            
+            host: str or None
+                The proxy host.
+            
+            port: str or int or None
+                The proxy port.
+        
+        Return:
+            Type: str or None
+            Current proxy address.
+        
+        Errors:
+            None
+        """
+        fuName = waziFun.getFuncName()
+        waziLog.log("debug", f"({self.name}.{fuName}) 收到代理信息，正在写入配置。")
+        self.proxies = None
+        if protocol:
+            waziLog.log("debug", f"({self.name}.{fuName}) 收到代理协议，正在写入配置。")
+            self.proxies = f"{protocol}://"
+            if username and password:
+                waziLog.log("debug", f"({self.name}.{fuName}) 收到代理用户名和密码，正在写入配置。")
+                self.proxies += f"{username}:{password}@"
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 用户名或密码缺失，亦或者不需要，跳过。")
+            if host:
+                waziLog.log("debug", f"({self.name}.{fuName}) 收到代理主机，正在写入配置。")
+                self.proxies += f"{host}"
+            else:
+                waziLog.log("error", f"({self.name}.{fuName}) 代理主机缺失，请检查你的配置。")
+                self.proxies = None
+                return self.proxies
+            if port:
+                waziLog.log("debug", f"({self.name}.{fuName}) 收到代理端口，正在写入配置。")
+                self.proxies += f":{port}"
+            else:
+                waziLog.log("debug", f"({self.name}.{fuName}) 代理端口缺失，跳过。")
+        else:
+            waziLog.log("error", f"({self.name}.{fuName}) 代理协议缺失，请检查你的配置。")
+            return self.proxies
 
     def editProxies(self, http, port):
         """
@@ -425,6 +482,7 @@ class waziRequest:
                     "useProxies": bool,
                     "proxyAddress": str or None,
                     "proxyPort": int, str or None,
+                    "advancedProxies": dict or None,
                     "useHeaders": bool,
                     "headers": dict,
                     "method": str,
@@ -461,6 +519,11 @@ class waziRequest:
                     waziLog.log("debug", f"({self.name}.{fuName}) 代理信息写入完成。")
                 else:
                     waziLog.log("warn", f"({self.name}.{fuName}) 不存在代理信息，无法写入。")
+                if "advancedProxies" in params:
+                    waziRequest.editProxiesWithAllInfo(self, **params["advancedProxies"])
+                    waziLog.log("debug", f"({self.name}.{fuName}) 高级代理信息写入完成。")
+                else:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 不存在高级代理信息，不写入。")
             else:
                 waziLog.log("debug", f"({self.name}.{fuName}) 不使用代理，不写入代理信息。")
         else:
@@ -549,6 +612,12 @@ class waziRequest:
             waziLog.log("debug", f"({self.name}.{fuName}) 写入代理使用信息成功。")
             if temp["useProxies"]:
                 waziLog.log("debug", f"({self.name}.{fuName}) 正在写入代理信息。")
+                if "advancedProxies" in params:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 基础参数中存在高级代理信息，正在写入。")
+                    temp["advancedProxies"] = params["advancedProxies"]
+                    waziLog.log("debug", f"({self.name}.{fuName}) 高级代理信息写入成功。")
+                else:
+                    waziLog.log("debug", f"({self.name}.{fuName}) 基础参数中不存在高级代理信息，不写入。")
                 if "proxyAddress" in params:
                     waziLog.log("debug", f"({self.name}.{fuName}) 基础参数中存在代理地址，正在写入。")
                     temp["proxyAddress"] = params["proxyAddress"]
