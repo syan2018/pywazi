@@ -2794,7 +2794,7 @@ class waziExHentai:
     
     def yieldGetNormalImagesOneImageByOneImage(self, link):
         """
-        next(waziExHentai.yieldGetNormalImagesCustom(self, link))
+        next(waziExHentai.yieldGetNormalImagesOneImageByOneImage(self, link))
         *6 4 5 1*
 
         A generator to get normal images by user params.

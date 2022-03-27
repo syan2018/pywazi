@@ -6,7 +6,6 @@ class: waziPicAcg
 
 import os
 import json
-from tkinter import W
 import uuid
 import base64
 from mods import waziFun
