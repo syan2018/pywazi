@@ -230,3 +230,102 @@ waziLog.setMinDisplayLevel(-1)
 哈，终于要讲到这个了吗，这个模块是用来获取 `AsianSister` 站点的，如果你不清楚 `AsianSister` 的话，我推荐你访问一下：https://asiansister.com/
 
 总而言之，你能在上面看福利姬的照片和视频，以及一个叫「少年维特」的用户。
+
+### 传入配置
+
+如果你想自定义配置，可以这样：
+
+```python
+from pywazi import *
+
+waziAsianSister.giveParams({
+    "useProxies"    :        True,              # 是否使用代理
+    "proxyAddress"  :        "127.0.0.1",       # 代理地址
+    "proxyPort"     :        1080               # 代理端口
+})
+```
+
+格式就如同上文的全局配置一致。
+
+### 下载单个文件
+
+试着想象一下，你拿到了一个 AsianSister 站点中的图片下载地址，现在你需要把它保存到本地，那么你可以这样：
+
+```python
+from pywazi import * 
+
+waziAsianSister.downloadFile(
+    url  = "https://asiansister.com/images/cover/20/R735AeWiX1J77.jpg",          # 文件地址
+    name = "1.jpg",                                                              # 保存文件名（可不要觉得我会设置的）
+    path = "./download"                                                          # 保存路径
+)
+```
+
+这样就可以下载一个文件了，试着运行一下，如果成功的话会返回 True 的哦，否则就是 False。
+
+### 进行一个浏览
+
+假设只是想随便逛逛 AsianSister，随便翻翻页，看看有没有好玩的，那么你可以这样：
+
+```python
+from pywazi import *
+
+waziAsianSister.getPage(1)
+```
+
+这样就可以获取第一页的内容了，返回的是一个字典，格式是这样的：
+
+```python
+(                                                       # 这是元组
+    [{                                                  # 画廊信息 这是一个列表 列表中每一个都是一个字典 表示一个画廊
+        "views": int,                                   # 画廊浏览数
+        "link": str,                                    # 画廊链接
+        "vip": bool,                                    # 是否是 VIP 画廊
+        "cover": str,                                   # 画廊封面
+        "alt": str,                                     # 画廊封面那个 IMG 标签的 ALT 属性
+        "title": str                                    # 画廊标题
+    }],
+    [{                                                  # 视频信息 这是一个列表 列表中每一个都是一个字典 表示一个画廊
+        "data": str or None,                            # 视频的切割动图，你看了就知道了
+        "views": int,                                   # 视频浏览数
+        "link": str,                                    # 视频链接
+        "vip": bool,                                    # 是否是 VIP 视频
+        "cover": str,                                   # 视频封面
+        "title": str                                    # 视频标题
+    }]
+)
+```
+
+### 进行一个搜索
+
+如果你有目的的话，比如搜索一些福利姬的画廊或者视频，亦或者一些关键词，那么你可以这样：
+
+```python
+from pywazi import *
+
+waziAsianSister.search(
+    keyword = "Cosplay",                                # 搜索关键词
+    page    = 1                                         # 搜索第几页 从 1 开始数起哦
+)
+```
+
+这样子就完成了一次搜索，格式同上哦！
+
+### 进行一个标签搜索
+
+如果你想搜一些标签，比如 `Cosplay` 这个标签的话，那么你可以这样：
+
+```python
+from pywazi import *
+
+waziAsianSister.tagSearch(
+    tag = "Cosplay",                                    # 标签名
+    page = 1                                            # 搜索第几页 从 1 开始数起哦
+)
+```
+
+格式还是同上，就是那个元组哦。
+
+### 查看一个福利姬的信息
+
+> 💤(～﹃～)~zZ 睡了，明天写
