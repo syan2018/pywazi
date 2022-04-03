@@ -502,7 +502,7 @@ class waziAsianSister:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取个人信息。")
         person["name"] = soup.find("center").find("h1").text
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取个人描述。")
-        person["descriptionHTML"] = str(soup.find("div", {"id": "detailBox"})).replace("<br>", "\n").replace("<br/>", "\n")
+        person["descriptionHTML"] = str(soup.find("div", {"id": "detailBox"}))
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取个人浏览量。")
         person["views"] = int(soup.find("div", {"id": "detailBox"}).find("div").text.split(": ")[1].split("标签")[0].replace("Tag ", ""))
         waziLog.log("debug", f"({self.name}.{fuName}) 正在获取个人标签。")

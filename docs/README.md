@@ -328,4 +328,174 @@ waziAsianSister.tagSearch(
 
 ### 查看一个福利姬的信息
 
-> 💤(～﹃～)~zZ 睡了，明天写
+如果你想查询一个福利姬的信息，她的画廊、视频之类的，那么你可以这样：
+
+```python
+from pywazi import *
+
+waziAsianSister.personSearch("m_1_Xidaidai___Misa_n")
+
+# 如果一个福利姬的 URL 地址是： https://asiansister.com/m_1_Xidaidai___Misa_n
+# 那么 m_1_Xidaidai___Misa_n 就是这个福利姬的 ID 填入即可
+```
+
+最后返回的是字典，格式如下：
+
+```python
+{
+    "name": str,                                    # 福利姬叫啥
+    "descriptionHTML": str,                         # 福利姬描述
+    "views": int,                                   # 福利姬浏览数
+    "tags": [{                                      # 福利姬标签
+        "name": str,                                # 标签名
+        "link": str                                 # 标签链接
+    }],
+    "galleries": [{                                 # 福利姬相关画廊
+        "link": str,                                # 画廊链接
+        "cover": str,                               # 画廊封面
+        "alt": str,                                 # 画廊封面那个 IMG 标签的 ALT 属性
+        "title": str,                               # 画廊标题
+        "stars": str,                               # 画廊评分
+        "VIP": bool                                 # 是否是 VIP 画廊
+    }],
+    "videos": [{                                    # 福利姬相关视频
+        "data": str or None,                        # 视频的切割动图，你看了就知道了
+        "link": str,                                # 视频链接
+        "title": str,                               # 视频标题
+        "cover": str,                               # 视频封面
+        "VIP": bool                                 # 是否是 VIP 视频
+    }]
+}
+```
+
+### 获取一个画廊的详细信息
+
+倘若你已经找到了一个满意的画廊了，你现在需要获取它的信息，那么你可以使用如下代码：
+
+```python
+from pywazi import *
+
+waziAsianSister.getGallery("view_2096_Belle_Delphine__OnlyFans_Friendly_Neighborhoodn")
+
+# 如果一个画廊的 URL 地址是： https://asiansister.com/view_2096_Belle_Delphine__OnlyFans_Friendly_Neighborhoodn
+# 那么 view_2096_Belle_Delphine__OnlyFans_Friendly_Neighborhoodn 就是这个画廊的 ID 填入即可
+```
+
+最后返回的是字典，格式如下：
+
+```python
+{
+    "title": str,                                       # 画廊标题
+    "stars": str,                                       # 画廊评分
+    "category": {"name": str, "link": str},             # 画廊分类
+    "tags": [{"name": str, "link": str}],               # 画廊标签
+    "description": str,                                 # 画廊描述
+    "model": {"name": str, "link": str},                # 画廊福利姬
+    "covers": [{"link": str, "alt": str}],              # 画廊封面
+    "pictures": [{"link": str, "org": str}],            # 画廊图片
+                                                        # org: 原图 link: 缩略图
+    "pageNum": int,                                     # 画廊总页数
+    "comments": [{                                      # 画廊评论
+        "user": str,                                    # 评论者用户组
+        "avatar": str,                                  # 评论者头像
+        "name": str,                                    # 评论者名字
+        "time": str,                                    # 评论时间
+        "content": str                                  # 评论内容
+    }],                                                 
+    "galleries": [{                                     # 画廊相关推荐画廊
+        "link": str,                                    # 画廊链接
+        "cover": str,                                   # 画廊封面
+        "alt": str,                                     # 画廊封面那个 IMG 标签的 ALT 属性
+        "title": str,                                   # 画廊标题
+        "stars": str,                                   # 画廊评分
+        "VIP": bool                                     # 是否是 VIP 画廊
+    }],
+    "videos": [{                                        # 画廊相关推荐视频
+        "data": str or None,                            # 视频的切割动图，你看了就知道了
+        "link": str,                                    # 视频链接
+        "title": str,                                   # 视频标题
+        "cover": str,                                   # 视频封面
+        "VIP": bool                                     # 是否是 VIP 视频
+    }]
+}
+```
+
+### 下载一个画廊
+
+如果你想要下载一个画廊，那么你可以使用如下代码：
+
+```python
+from pywazi import *
+
+waziAsianSister.downloadGallery(
+    gallery   =   "view_2072____10Pn",               # 画廊 ID
+    path      =   "./download",                      # 下载路径
+    key       =   "org"                              # 默认是 org 控制下载链接选择的 org 表示原图 link 表示缩略图
+)
+```
+
+其实下载 VIP 画廊也可以这么做，这个网站似乎没有任何鉴权。
+
+最后返回的是元组，格式如下：
+
+```python
+(
+    [str],                                          # 下载成功的文件名（包含路径）
+    [str]                                           # 下载失败的图片地址
+)
+```
+
+### 获取一个视频的详细信息
+
+我可能以后再支持 https://sisterasian.com/ 这个视频站点吧，但是现在还没有支持。现在只能支持 AsianSister 站点内的视频，代码如下：
+
+```python
+from pywazi import *
+
+waziAsianSister.getVideo("v_vide_348_Very_beautiful_pussy_girl_show_her_perfect_pussy_with_cosplay_suitn")
+
+# 如果一个视频的 URL 地址是： https://asiansister.com/v_vide_348_Very_beautiful_pussy_girl_show_her_perfect_pussy_with_cosplay_suitn
+# 那么 v_vide_348_Very_beautiful_pussy_girl_show_her_perfect_pussy_with_cosplay_suitn 就是这个视频的 ID 填入即可
+```
+
+最后返回的是字典，格式如下：
+
+```python
+{
+    "title": str,                                   # 视频标题
+    "views": int,                                   # 视频被观看的次数
+    "tags": [{"name": str, "link": str}],           # 视频标签
+    "cover": str,                                   # 视频封面
+    "url": str,                                     # 视频文件 URL
+    "comments": [{                                  # 视频评论
+        "user": str,                                # 评论者用户组
+        "avatar": str,                              # 评论者头像
+        "name": str,                                # 评论者名字
+        "time": str,                                # 评论时间
+        "content": str                              # 评论内容
+    }],                                             
+    "recommends": [{                                # 视频相关推荐视频
+        "title": str,                               # 视频标题
+        "link": str,                                # 视频链接
+        "cover": str,                               # 视频封面
+        "views": int                                # 视频被观看的次数
+    }]
+}
+```
+
+### 下载一个视频
+
+说实话，我不太支持你使用我内置的下载，因为速度实在是，令人汗颜，主要是我不想做多线程，写一个基础的下载模块，所以我建议你直接复制那个 url 地址，然后用浏览器打开，下载或者用什么 IDM 之类的。
+
+总之代码就在这里：
+
+```python
+from pywazi import *
+
+waziAsianSister.downloadVideo(
+    video = "v_vide_348_Very_beautiful_pussy_girl_show_her_perfect_pussy_with_cosplay_suitn",       # 视频 ID
+    path  = "./download"                                                                            # 保存路径
+)
+```
+
+最后成功就返回文件名（包含路径），否则直接返回 `False`。
