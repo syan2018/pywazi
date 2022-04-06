@@ -499,3 +499,59 @@ waziAsianSister.downloadVideo(
 ```
 
 最后成功就返回文件名（包含路径），否则直接返回 `False`。
+
+## Danbooru 站点模块
+
+或许应该叫做 `Booru` 站点模块更为合适，因为现在可以适配很多类 Booru 站点。一开始只是想着支持以 `yande.re` 为主的 Danbooru，不过后来看到了更多的有趣的站点，提供了一个自定义的接口支持。
+
+### 传入配置
+
+如果你想自定义配置，可以这样：
+
+```python
+from pywazi import *
+
+waziDanbooru.giveParams({
+    "useProxies"    :        True,              # 是否使用代理
+    "proxyAddress"  :        "127.0.0.1",       # 代理地址
+    "proxyPort"     :        1080               # 代理端口
+})
+```
+
+格式就如同上文的全局配置一致。
+
+### 设置爬虫网站
+
+程序一开始并不会设置默认的爬虫网站，你需要手动指定，比如 `yande.re` 之类的网站，应该是其相对 API 接口的根地址，比如 `https://yande.re/post.json` 那就是 `https://yande.re`。
+
+```python
+from pywazi import *
+
+waziDanbooru.setApi("https://yande.re")
+```
+
+### 设置爬虫网站的 API 接口
+
+默认的 API 接口配置如下：
+
+```python
+{
+    "post": "/post.json",
+    "tag": "/tag.json",
+    "artist": "/artist.json",
+    "comment": "/comment/show.json",
+    "pool": "/pool.json",
+    "poolShow": "/pool/show.json",
+    "poolZip": "/pool/zip/"
+}
+```
+
+与 `yande.re` 无异，如果你所爬取的网站的 API 接口（在你设置网站的 API 文档文档）不是这个样子，那么你可以这样设置：
+
+```python
+from pywazi import *
+
+waziDanbooru.setApi("http://behoimi.org")
+
+waziDanbooru.setPort("post", "/post/index.json")
+```
