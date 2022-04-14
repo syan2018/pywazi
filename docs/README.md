@@ -504,6 +504,8 @@ waziAsianSister.downloadVideo(
 
 或许应该叫做 `Booru` 站点模块更为合适，因为现在可以适配很多类 Booru 站点。一开始只是想着支持以 `yande.re` 为主的 Danbooru，不过后来看到了更多的有趣的站点，提供了一个自定义的接口支持。
 
+> 在一些网站中，一些功能可能不可用，建议在使用之前检查该站点的 API 文档的开放内容。
+
 ### 传入配置
 
 如果你想自定义配置，可以这样：
@@ -555,3 +557,202 @@ waziDanbooru.setApi("http://behoimi.org")
 
 waziDanbooru.setPort("post", "/post/index.json")
 ```
+
+### 获取 Posts 时间线内容
+
+使用以下代码获取 Posts 时间线内容：
+
+```python
+from pywazi import *
+
+waziDanbooru.getPosts(
+    page  = 1,                               # 页码 从 1 开始
+    tags  = "",                              # 标签 没有就写空字符串
+    limit = 10                               # 每页显示的数量
+)
+```
+
+最后会返回一个列表，包着一堆字典。主要的关键字有：
+
+- `id` 表示图片 ID；
+- `tags` 表示图片的标签，用空格隔开；
+- `file_url` 表示图片的 URL；
+- `preview_url` 表示图片的预览 URL；
+- `sample_url` 表示图片的缩略 URL。
+
+### 下载 Posts 时间线内容
+
+使用以下代码进行一个 Posts 时间线内容的下载：
+
+```python
+from pywazi import *
+
+waziDanbooru.downloadPosts(
+    page  = 1,                               # 页码 从 1 开始
+    tags  = "",                              # 标签 没有就写空字符串
+    limit = 10,                              # 每页显示的数量
+    path  = "./download",                    # 保存路径
+    key   = "file_url",                      # 获取关键字 填写 file_url 就从 file_url 这个关键词对应的值拿到图片地址 即原图 同理 preivew_url 就是预览图 sample_url 就是缩略图 默认 file_url
+    ext   = True                             # 爬取的时候是否带上 Referer 字段，用于绕过反爬虫 默认 False
+)
+```
+
+最后返回格式如下：
+
+```python
+(
+    [str],                                      # 下载成功的文件路径
+    [{"fileURL": str, "id": int}]               # 下载失败的文件 URL 和图片 ID
+)
+```
+
+### 获取这个网站的标签列表
+
+使用以下代码获取这个网站的标签列表：
+
+```python
+from pywazi import *
+
+waziDanbooru.getTags(
+    page  = 1,                               # 页码 从 1 开始
+    limit = 10,                              # 每页显示的数量
+    order = "count"                          # 排序方式 count: 按创作数量排序 date: 按时间排序 name: 按名称排序
+)
+```
+
+最后返回示例如下：
+
+```python
+[{
+    "id": 45,
+    "name": "long_hair",
+    "count": 105004,
+    "type": 0, 
+    "ambiguous": False
+}]
+```
+
+### 获取这个网站的艺术家列表
+
+使用以下代码获取这个网站的艺术家列表：
+
+```python
+from pywazi import *
+
+waziDanbooru.getArtists(
+    page  = 1,                                # 页码 从 1 开始
+    order = "name"                            # 排序方式 name: 按名称排序 date: 按时间排序
+)
+```
+
+最后返回示例如下：
+
+```python
+[{
+    "id": 4958,
+    "name": "shashaki",
+    "alias_id": None,
+    "group_id": None,
+    "urls": ["https://www.pixiv.net/en/users/9089874"]
+}]
+```
+
+### 搜索图集
+
+使用以下代码搜索图集：
+
+```python
+from pywazi import *
+
+waziDanbooru.getPools(
+    query = "Jack-O' Challenge",             # 搜索关键词
+    page  = 1                                # 页码 从 1 开始
+)
+```
+
+最后返回示例如下：
+
+```python
+[{
+    "id": 509,
+    "name": "Jack-O'_Challenge",
+    "created_at": "2021-08-27T17:55:55.591Z",
+    "updated_at": "2021-12-02T20:39:34.488Z",
+    "user_id": 73632,
+    "is_public": True,
+    "post_count": 160,
+    "description": "A Twitter meme where characters are drawn in an extreme top-down bottom-up resembling Jack-O' Valentine's crouch pose."
+}]
+```
+
+### 通过图集 ID 获取图集详细信息
+
+使用以下代码获取图集详细信息：
+
+```python
+from pywazi import *
+
+waziDanbooru.getPoolFromId(
+    poolId = 489,                            # 图集 ID
+    page   = 1                               # 页码 从 1 开始
+)
+```
+
+最后返回示例如下：
+
+```python
+{
+    'id': 489,
+    'name': 'Sailor_Moon_Redraw_2020',
+    'created_at': '2020-05-20T18:50:05.132Z',
+    'updated_at': '2021-04-19T18:24:09.842Z',
+    'user_id': 73632,
+    'is_public': True,
+    'post_count': 26,
+    'description': 'Art fad started in May 2020 wherein various artists redraw and parody a screenshot from the classic Sailor Moon anime.',
+    'posts': [{...}]
+}
+```
+
+### 下载图集
+
+使用以下代码下载一页图集：
+
+```python
+from pywazi import *
+
+waziDanbooru.downloadPool(
+    poolId = 489,                            # 图集 ID
+    page   = 1,                              # 页码 从 1 开始
+    path   = "./pools",                      # 下载的文件夹路径
+    key    = "file_url",                     # 获取字段 默认 file_url
+    ext    = True                            # 爬取的时候是否带上 Referer 字段，用于绕过反爬虫 默认 False
+)
+```
+
+最后返回格式如下：
+
+```python
+(
+    [str],                                      # 下载成功的文件路径
+    [{"fileURL": str, "id": int}]               # 下载失败的文件 URL 和图片 ID
+)
+```
+
+### 下载打包图集
+
+> 我记得似乎只有 Yande.re 存在这个功能
+
+使用以下代码下载图集的压缩包：
+
+```python
+from pywazi import *
+
+waziDanbooru.downloadPoolWithZip(
+    poolId  = 111,                            # 图集 ID
+    needJPG = True,                           # 是否需要 JPG 格式的图片
+    path    = "./pools"                       # 下载的文件夹路径
+)
+```
+
+最后返回布尔值表示下载是否成功。

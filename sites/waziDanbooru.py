@@ -987,9 +987,9 @@ class waziDanbooru:
         waziLog.log("debug", f"({self.name}.{fuName}) 正在通过 waziDanbooru.toAPIJson 发起请求。")
         return waziDanbooru.toAPIJson(self, self.ports["poolShow"], params)
 
-    def downloadPool(self, poolId, page, path, key = "file_url"):
+    def downloadPool(self, poolId, page, path, key = "file_url", ext = False):
         """
-        waziDanbooru.downloadPool(self, poolId, page, path, key = "file_url")
+        waziDanbooru.downloadPool(self, poolId, page, path, key = "file_url", ext = False)
         *Of course, the gilding of the woodwinds is a must.*
         
         Download the pool's images.
@@ -1007,6 +1007,9 @@ class waziDanbooru:
             key: str
                 The key of the image's url.
                 Default: "file_url"
+            
+            ext: bool
+                Whether to use the referer.
         
         Return:
             Type: tuple
@@ -1028,7 +1031,7 @@ class waziDanbooru:
         """
         fuName = waziFun.getFuncName()
         waziLog.log("debug", f"({self.name}.{fuName}) 收到图集 ID、页码和路径信息，正在合成 URL。")
-        waziLog.log("debug", f"({self.name}.{fuName}) 图集 ID： {poolId}， 页码： {page}， 路径： {path}， 键名： {key}")
+        waziLog.log("debug", f"({self.name}.{fuName}) 图集 ID： {poolId}， 页码： {page}， 路径： {path}， 键名： {key}， 是否反爬虫： {ext}")
         waziLog.log("debug", f"({self.name}.{fuName}) 正在创建 GET 请求参数。")
         params = {
             "id": str(poolId),
@@ -1047,7 +1050,7 @@ class waziDanbooru:
                 waziLog.log("error", f"({self.name}.{fuName}) 无法获取该页详细信息，返回空元组。")
                 return [], []
         waziLog.log("debug", f"({self.name}.{fuName}) 获取完成，提交给 download 函数。")
-        return waziDanbooru.download(self, lists, path, key)
+        return waziDanbooru.download(self, lists, path, key, ext)
 
     def downloadPoolWithZip(self, poolId, needJPG, path):
         """

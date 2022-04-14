@@ -1372,7 +1372,7 @@ waziDanbooru.toAPIJson('/posts.json', {'tags': 'tag1 tag2'})
 
 > 额，后悔吗，好像没有
 
-通过该接口以下载图集的单页，需要四个参数：`poolId` 可以是整数也可以是字符串，表示图集的 ID；`page` 同样可以是字符串或者整数，表示页码，从 1 数起；`path` 是字符串，表示下载目录；`key` 表示下载 URL 对应的键，默认为 `file_url`，也可以是其他键，如 `jpeg_url`，`sample_url` 等。最后返回元组表示下载情况：
+通过该接口以下载图集的单页，需要五个参数：`poolId` 可以是整数也可以是字符串，表示图集的 ID；`page` 同样可以是字符串或者整数，表示页码，从 1 数起；`path` 是字符串，表示下载目录；`key` 表示下载 URL 对应的键，默认为 `file_url`，也可以是其他键，如 `jpeg_url`，`sample_url` 等；最后一个 `ext` 是布尔值，可以简单理解为添加 Referer 字段绕过反爬虫，默认 False，表示不绕过。最后返回元组表示下载情况：
 
 ```python
 (
